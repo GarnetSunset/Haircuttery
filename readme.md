@@ -1,4 +1,6 @@
+Haircuttery
 
+A program I wrote for work, meant to scrape Better Buisness Bureau and 800notes with an excel file.
 
 Dependencies:
 xlrd
@@ -7,6 +9,11 @@ bs4
 requests
 flask
 os
+numpy
+regex
+pyopenssl
+ndg-httpsclient
+pyasn1
 
 pip can fetch these with the command "pip install -r requirements.txt"
 

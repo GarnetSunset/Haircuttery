@@ -7,3 +7,5 @@ os
 pyopenssl
 ndg-httpsclient
 pyasn1
+regex
+numpy
