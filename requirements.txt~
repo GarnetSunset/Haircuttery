@@ -1,0 +1,6 @@
+xlrd
+xlwt
+bs4
+requests
+flask
+os

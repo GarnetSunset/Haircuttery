@@ -1,0 +1,9 @@
+xlrd
+xlwt
+bs4
+requests
+flask
+os
+pyopenssl
+ndg-httpsclient
+pyasn1
