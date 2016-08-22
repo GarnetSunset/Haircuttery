@@ -9,3 +9,4 @@ ndg-httpsclient
 pyasn1
 regex
 numpy
+googleapiclient
