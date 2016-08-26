@@ -74,7 +74,7 @@ if(website =="1"):
    worksheet.write(0,0, "Telephone Number")
    worksheet.write(0,1, "# of Messages")
    worksheet.write(0,2, "Category")
-   workbook.write(0,3, "Last 3 Messages")
+   worksheet.write(0,3, "Last 3 Messages")
 
 if(website == "2"):
    stopPoint = fileName.index('.')
@@ -102,7 +102,10 @@ for idx, cell_obj in enumerate(col):
    worksheet.write(idx+1, 0, perm)
     
    if(website == "1"):  
-      reqInput = ('http://ajax.googleapis.com/ajax/services/search/web?v=1.0&%s+site:800notes.com&rsz=large' % (tele800))
+      reqInput = "http://www.google.com/search?q=%s+site:800notes.com&num=100&hl=en&start=0" % (tele800)
+      urlfile = urllib2.Request(reqInput)
+      page = urlfile.read()
+      soup = BeautifulSoup(page)
       print (reqInput)
       time.sleep(10)
       requestRec = requests.get(reqInput)
@@ -135,4 +138,4 @@ if delMe == 1:
    os.remove(deleteFile)
    print("Temp File Cleaned!\n")
 
-print("Ding! All done!")
+print("Ding! Job Done! ᕕ( ᐛ )ᕗ")
