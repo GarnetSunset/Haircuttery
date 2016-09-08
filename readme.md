@@ -1,3 +1,5 @@
+[![forthebadge](http://forthebadge.com/images/badges/compatibility-betamax.svg)](http://forthebadge.com)
+
 # Haircuttery
 
 A program I wrote for work, meant to scrape Better Buisness Bureau and 800notes with an excel file.
