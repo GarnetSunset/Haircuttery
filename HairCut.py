@@ -94,18 +94,23 @@ for idx, cell_obj in enumerate(col):
    cell_type_str = ctype_text.get(cell_obj.ctype, 'unknown type')  
    cell_obj_str = str(cell_obj)
    
-   tele800 = (cell_obj_str[8:11] + "-" + cell_obj_str[11:14] + "-" + cell_obj_str[14:18])
-   teleBBB = ("%28" + cell_obj_str[8:11] + "%29+" + cell_obj_str[11:14] + "-" + cell_obj_str[14:18])
+   firstStart = cell_obj_str.index('(')+1
+   firstEnd = firstStart + 3   
+   secondStart = cell_obj_str.index(' ')+1
+   secondEnd = secondStart + 3
+   thirdStart = cell_obj_str.index('-')+1
+   thirdEnd = thirdStart + 4
+   
+   tele800 = (cell_obj_str[firstStart:firstEnd] + "-" + cell_obj_str[secondStart:secondEnd] + "-" + cell_obj_str[thirdStart:thirdEnd])
+   teleBBB = "1" + (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
    print('(%s) %s' % (idx, tele800))
    perm = tele800
    site800 = tele800 + " site:800notes.com"
    worksheet.write(idx+1, 0, perm)
-    
+   
    if(website == "1"):  
-      reqInput = "http://www.google.com/search?q=%s+site:800notes.com&num=100&hl=en&start=0" % (tele800)
+      reqInput = "http://www.yellowpages.com/search?q=%s&num=100&hl=en&start=0" % (tele800)
       urlfile = urllib2.Request(reqInput)
-      page = urlfile.read()
-      soup = BeautifulSoup(page)
       print (reqInput)
       time.sleep(10)
       requestRec = requests.get(reqInput)
@@ -138,4 +143,7 @@ if delMe == 1:
    os.remove(deleteFile)
    print("Temp File Cleaned!\n")
 
-print("Ding! Job Done! ᕕ( ᐛ )ᕗ")
+ding = "Ding! Job Done! ᕕ( ᐛ )ᕗ"
+uni = unicode( ding, "utf-8")
+bytesNow = uni.encode( "utf-8" )
+print (ding)
