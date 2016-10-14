@@ -64,6 +64,7 @@ sheet_names = xl_workbook.sheet_names()
 xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 
 website = raw_input("Input 1 for 800Notes Google results, input 2 for BBB\n>")
+numFormat = raw_input("Old or New format? 1 for New, 0 for Old\n")
 
 if(website =="1"):
    stopPoint = fileName.index('.')
@@ -94,15 +95,20 @@ for idx, cell_obj in enumerate(col):
    cell_type_str = ctype_text.get(cell_obj.ctype, 'unknown type')  
    cell_obj_str = str(cell_obj)
    
-   firstStart = cell_obj_str.index('(')+1
-   firstEnd = firstStart + 3   
-   secondStart = cell_obj_str.index(' ')+1
-   secondEnd = secondStart + 3
-   thirdStart = cell_obj_str.index('-')+1
-   thirdEnd = thirdStart + 4
+   if(numFormat == "0"):
+      tele800 = (cell_obj_str[8:11] + "-" + cell_obj_str[11:14] + "-" + cell_obj_str[14:18])
+      teleBBB = ("%28" + cell_obj_str[9:12] + "%29+" + cell_obj_str[12:15] + "-" + cell_obj_str[15:19])   
    
-   tele800 = (cell_obj_str[firstStart:firstEnd] + "-" + cell_obj_str[secondStart:secondEnd] + "-" + cell_obj_str[thirdStart:thirdEnd])
-   teleBBB = "1" + (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
+   if(numFormat == "1"):      
+      firstStart = cell_obj_str.index('(')+1
+      firstEnd = firstStart + 3   
+      secondStart = cell_obj_str.index(' ')+1
+      secondEnd = secondStart + 3
+      thirdStart = cell_obj_str.index('-')+1
+      thirdEnd = thirdStart + 4
+   
+      tele800 = (cell_obj_str[firstStart:firstEnd] + "-" + cell_obj_str[secondStart:secondEnd] + "-" + cell_obj_str[thirdStart:thirdEnd])
+      teleBBB = "1" + (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
    print('(%s) %s' % (idx, tele800))
    perm = tele800
    site800 = tele800 + " site:800notes.com"
