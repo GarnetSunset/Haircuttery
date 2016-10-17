@@ -64,7 +64,7 @@ sheet_names = xl_workbook.sheet_names()
 xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 
 website = raw_input("Input 1 for 800Notes Google results, input 2 for BBB\n>")
-numFormat = raw_input("Old or New format? 1 for New, 0 for Old\n")
+numFormat = raw_input("Which format?\n2 for Simple, 1 for Complex, 0 for Normal\n")
 
 if(website =="1"):
    stopPoint = fileName.index('.')
@@ -96,8 +96,14 @@ for idx, cell_obj in enumerate(col):
    cell_obj_str = str(cell_obj)
    
    if(numFormat == "0"):
-      tele800 = (cell_obj_str[8:11] + "-" + cell_obj_str[11:14] + "-" + cell_obj_str[14:18])
-      teleBBB = ("%28" + cell_obj_str[9:12] + "%29+" + cell_obj_str[12:15] + "-" + cell_obj_str[15:19])   
+      firstStart = cell_obj_str.index('-')-3
+      firstEnd = firstStart + 3   
+      secondStart = cell_obj_str.index('-')+1
+      secondEnd = secondStart + 3
+      thirdStart = cell_obj_str.index('-')+5
+      thirdEnd = thirdStart + 4      
+      tele800 = (cell_obj_str[firstStart:firstEnd] + "-" + cell_obj_str[secondStart:secondEnd] + "-" + cell_obj_str[thirdStart:thirdEnd])
+      teleBBB = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])   
    
    if(numFormat == "1"):      
       firstStart = cell_obj_str.index('(')+1
@@ -106,9 +112,13 @@ for idx, cell_obj in enumerate(col):
       secondEnd = secondStart + 3
       thirdStart = cell_obj_str.index('-')+1
       thirdEnd = thirdStart + 4
-   
       tele800 = (cell_obj_str[firstStart:firstEnd] + "-" + cell_obj_str[secondStart:secondEnd] + "-" + cell_obj_str[thirdStart:thirdEnd])
-      teleBBB = "1" + (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
+      teleBBB = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
+      
+   if(numFormat == "2"):
+      tele800 = (cell_obj_str[8:11] + "-" + cell_obj_str[11:14] + "-" + cell_obj_str[14:18])
+      teleBBB = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
+      
    print('(%s) %s' % (idx, tele800))
    perm = tele800
    site800 = tele800 + " site:800notes.com"
