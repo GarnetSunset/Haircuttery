@@ -3,10 +3,8 @@ xlwt
 bs4
 requests
 flask
-os
 pyopenssl
 ndg-httpsclient
 pyasn1
 regex
 numpy
-googleapiclient

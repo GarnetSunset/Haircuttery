@@ -1,8 +1,6 @@
 from __future__ import print_function
 from bs4 import BeautifulSoup
 from collections import defaultdict
-from flask import Flask, jsonify, make_response, abort, url_for, request
-from googleapiclient import sample_tools
 from Harvard import Excel2CSV
 from IPython.display import HTML
 from os.path import join, dirname, abspath
@@ -147,7 +145,7 @@ for idx, cell_obj in enumerate(col):
       Badge = soup.find_all('img',{'class':'badge-accredited'})
       Hit = soup.find_all('td',{'class':'accredited'})
       if len(Hit)!=0:
-         worksheet.write(idx+1,1,"Got a Hit")      
+         worksheet.write(idx+1,1,"Got a Hit")
       if len(Badge)!=0:
          worksheet.write(idx+1,1,"Is Accredited")
          
@@ -159,7 +157,7 @@ if delMe == 1:
    os.remove(deleteFile)
    print("Temp File Cleaned!\n")
 
-ding = "Ding! Job Done! ᕕ( ᐛ )ᕗ"
+ding = "Ding! Job Done!"
 uni = unicode( ding, "utf-8")
 bytesNow = uni.encode( "utf-8" )
 print (ding)
