@@ -29,7 +29,7 @@ book = xlwt.Workbook(encoding="utf-8")
 
 worksheet = book.add_sheet("Results", cell_overwrite_ok=True)
 
-url = "http://800notes.com/Phone.aspx/*"
+url = "http://whoscall.in/1/*/"
 headers = {'User-Agent': 'Chrome/39.0.2171.95 Safari/537.36 AppleWebKit/537.36 (KHTML, like Gecko)'}
 
 response = requests.get(url, headers=headers)
@@ -55,19 +55,19 @@ if csvTest == ".csv":
 deleteFile = fileName
 
 fname = join(dirname(abspath('__file__')), '%s' % fileName)
-#http://800notes.com/Phone.aspx/*-***-***-**** is the layout#
+#http://whoscall.in/1/**********/ is the layout#
 
 xl_workbook = xlrd.open_workbook(fname)
 sheet_names = xl_workbook.sheet_names()
 xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 
-website = raw_input("Input 1 for 800Notes Google results, input 2 for BBB\n>")
-numFormat = raw_input("Which format?\n2 for Simple, 1 for Complex, 0 for Normal\n")
+website = raw_input("Input 1 for whoscall.in results, input 2 for BBB\n>")
+numFormat = raw_input("Which format?\n2 for Simple, 1 for Complex, 0 for Normal\n>")
 
 if(website =="1"):
    stopPoint = fileName.index('.')
    prepRev = fileName[0:stopPoint]
-   totalName = prepRev + "_rev_800.xlsx"   
+   totalName = prepRev + "_rev_who.xlsx"   
    workbook = xlsxwriter.Workbook(totalName)
    worksheet = workbook.add_worksheet()   
    worksheet.write(0,0, "Telephone Number")
@@ -100,7 +100,7 @@ for idx, cell_obj in enumerate(col):
       secondEnd = secondStart + 3
       thirdStart = cell_obj_str.index('-')+5
       thirdEnd = thirdStart + 4      
-      tele800 = (cell_obj_str[firstStart:firstEnd] + "-" + cell_obj_str[secondStart:secondEnd] + "-" + cell_obj_str[thirdStart:thirdEnd])
+      teleWho = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
       teleBBB = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])   
    
    if(numFormat == "1"):      
@@ -110,29 +110,30 @@ for idx, cell_obj in enumerate(col):
       secondEnd = secondStart + 3
       thirdStart = cell_obj_str.index('-')+1
       thirdEnd = thirdStart + 4
-      tele800 = (cell_obj_str[firstStart:firstEnd] + "-" + cell_obj_str[secondStart:secondEnd] + "-" + cell_obj_str[thirdStart:thirdEnd])
+      teleWho = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
       teleBBB = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
       
    if(numFormat == "2"):
-      tele800 = (cell_obj_str[8:11] + "-" + cell_obj_str[11:14] + "-" + cell_obj_str[14:18])
+      teleWho = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
       teleBBB = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
       
-   print('(%s) %s' % (idx, tele800))
-   perm = tele800
-   site800 = tele800 + " site:800notes.com"
+   print('(%s) %s' % (idx, teleWho))
+   perm = teleWho
+   site800 = teleWho
    worksheet.write(idx+1, 0, perm)
    
    if(website == "1"):  
-      reqInput = "http://www.yellowpages.com/search?q=%s&num=100&hl=en&start=0" % (tele800)
+      reqInput = "http://whoscall.in/1/%s/" % (teleWho)
       urlfile = urllib2.Request(reqInput)
       print (reqInput)
-      time.sleep(10)
+      time.sleep(3)
       requestRec = requests.get(reqInput)
       soup = BeautifulSoup(requestRec.content, "lxml")
       print(requestRec.content)
-      noMatch = soup.body.findAll(text='did not match any documents.')
+      noMatch = soup.find(text=re.compile(r"no reports yet on the phone number"))
       print(noMatch)
-      if len(noMatch)==0:
+      type(noMatch) is str
+      if noMatch is None:
          worksheet.write(idx+1, 2, "Got a hit")     
         
    if(website == "2"):
