@@ -4,7 +4,7 @@
 
 A program I wrote for work, meant to scrape Better Buisness Bureau and 800notes with an excel file.
 
-##Dependencies:
+## Dependencies:
 *xlrd
 *xlwt
 *bs4
@@ -19,7 +19,7 @@ A program I wrote for work, meant to scrape Better Buisness Bureau and 800notes 
 
 pip can fetch these with the command "pip install -r requirements.txt"
 
-##Credits:
+## Credits:
 
 FGAO22, as most of this code is his.
 https://github.com/fgao22/GSD
