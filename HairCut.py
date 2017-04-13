@@ -72,8 +72,8 @@ if(website =="1"):
    worksheet = workbook.add_worksheet()   
    worksheet.write(0,0, "Telephone Number")
    worksheet.write(0,1, "# of Messages")
-   worksheet.write(0,2, "Category")
-   worksheet.write(0,3, "Last 3 Messages")
+   worksheet.write(0,2, "Does it Appear?")
+   worksheet.write(0,3, "Sentiment")
 
 if(website == "2"):
    stopPoint = fileName.index('.')
@@ -126,15 +126,20 @@ for idx, cell_obj in enumerate(col):
       reqInput = "http://whoscall.in/1/%s/" % (teleWho)
       urlfile = urllib2.Request(reqInput)
       print (reqInput)
-      time.sleep(3)
+      time.sleep(1)
       requestRec = requests.get(reqInput)
       soup = BeautifulSoup(requestRec.content, "lxml")
-      print(requestRec.content)
       noMatch = soup.find(text=re.compile(r"no reports yet on the phone number"))
+      #print(requestRec.content)# #only if needed#
       print(noMatch)
       type(noMatch) is str
       if noMatch is None:
-         worksheet.write(idx+1, 2, "Got a hit")     
+         worksheet.write(idx+1, 2, "Got a hit")
+      if noMatch is None:
+         howMany = soup.find_all('img',{'src':'/default-avatar.gif'})
+         howManyAreThere = len(howMany)
+         worksheet.write(idx+1,1,howManyAreThere)
+         print (howManyAreThere)
         
    if(website == "2"):
       reqInput = ('https://www.bbb.org/search/?splashPage=true&type=name&input='+ teleBBB +'&location=&tobid=&filter=business&radius=&country=USA%2CCAN&language=en&codeType=YPPA')
