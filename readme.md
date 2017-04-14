@@ -4,18 +4,26 @@
 
 A program I wrote for work, meant to scrape Better Buisness Bureau and 800notes with an excel file.
 
+### Windows Users
+
+Download and Install this: 
+https://www.microsoft.com/en-us/download/details.aspx?id=44266
+
 ## Dependencies:
 *xlrd
 *xlwt
 *bs4
 *requests
 *flask
-*os
 *numpy
 *regex
 *pyopenssl
 *ndg-httpsclient
 *pyasn1
+*IPython 
+*xlsxwriter
+*lxml
+
 
 pip can fetch these with the command "pip install -r requirements.txt"
 

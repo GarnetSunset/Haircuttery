@@ -131,15 +131,20 @@ for idx, cell_obj in enumerate(col):
       soup = BeautifulSoup(requestRec.content, "lxml")
       noMatch = soup.find(text=re.compile(r"no reports yet on the phone number"))
       #print(requestRec.content)# #only if needed#
-      print(noMatch)
       type(noMatch) is str
       if noMatch is None:
          worksheet.write(idx+1, 2, "Got a hit")
-      if noMatch is None:
          howMany = soup.find_all('img',{'src':'/default-avatar.gif'})
          howManyAreThere = len(howMany)
          worksheet.write(idx+1,1,howManyAreThere)
          print (howManyAreThere)
+         scamNum = soup.find_all(text=re.compile("\bscam\b"))
+         #,'scam','Scammer','scammer'#
+         scamCount = len(scamNum)
+         print(scamCount)
+         searchTerms = {scamCount:scamCount}
+         sentiment = max(searchTerms, key=searchTerms.get)
+         worksheet.write(idx+1,3,sentiment)
         
    if(website == "2"):
       reqInput = ('https://www.bbb.org/search/?splashPage=true&type=name&input='+ teleBBB +'&location=&tobid=&filter=business&radius=&country=USA%2CCAN&language=en&codeType=YPPA')
