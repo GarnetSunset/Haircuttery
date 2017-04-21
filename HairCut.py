@@ -130,7 +130,7 @@ for idx, cell_obj in enumerate(col):
       requestRec = requests.get(reqInput)
       soup = BeautifulSoup(requestRec.content, "lxml")
       noMatch = soup.find(text=re.compile(r"no reports yet on the phone number"))
-      #print(requestRec.content)# #only if needed#
+      #print(requestRec.content)###only if needed#
       type(noMatch) is str
       if noMatch is None:
          worksheet.write(idx+1, 2, "Got a hit")
@@ -138,7 +138,7 @@ for idx, cell_obj in enumerate(col):
          howManyAreThere = len(howMany)
          worksheet.write(idx+1,1,howManyAreThere)
          print (howManyAreThere)
-         scamNum = soup.find_all(text=re.compile("\bscam\b"))
+         scamNum = [ div for div in soup.find_all('div', {'style':'font-size:14px; margin:10px; overflow:hidden'}) if 'scam' in div.text.lower() ]  
          #,'scam','Scammer','scammer'#
          scamCount = len(scamNum)
          print(scamCount)
