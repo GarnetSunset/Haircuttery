@@ -138,10 +138,8 @@ for idx, cell_obj in enumerate(col):
          howManyAreThere = len(howMany)
          worksheet.write(idx+1,1,howManyAreThere)
          print (howManyAreThere)
-         scamNum = [ div for div in soup.find_all('div', {'style':'font-size:14px; margin:10px; overflow:hidden'}) if 'scam' in div.text.lower() ]  
-         #,'scam','Scammer','scammer'#
+         scamNum = [ div for div in soup.find_all('div', {'style':'font-size:14px; margin:10px; overflow:hidden'}) if 'scam' in div.text.lower() or 'Scam' in div.text.lower() or 'scams' in div.text.lower() ]
          scamCount = len(scamNum)
-         print(scamCount)
          searchTerms = {scamCount:scamCount}
          sentiment = max(searchTerms, key=searchTerms.get)
          worksheet.write(idx+1,3,sentiment)
