@@ -73,7 +73,11 @@ if(website =="1"):
    worksheet.write(0,0, "Telephone Number")
    worksheet.write(0,1, "# of Messages")
    worksheet.write(0,2, "Does it Appear?")
-   worksheet.write(0,3, "Sentiment")
+   worksheet.write(0,3, "Number of Scammers")
+   worksheet.write(0,4, "Number of Spammers")
+   worksheet.write(0,5, "Number of Debt Collectors")
+   worksheet.write(0,6, "Number of Hospital")
+   worksheet.write(0,7, "Sentiment")
 
 if(website == "2"):
    stopPoint = fileName.index('.')
@@ -140,9 +144,21 @@ for idx, cell_obj in enumerate(col):
          print (howManyAreThere)
          scamNum = [ div for div in soup.find_all('div', {'style':'font-size:14px; margin:10px; overflow:hidden'}) if 'scam' in div.text.lower() or 'Scam' in div.text.lower() or 'scams' in div.text.lower() ]
          scamCount = len(scamNum)
-         searchTerms = {scamCount:scamCount}
+         spamNum = [ div for div in soup.find_all('div', {'style':'font-size:14px; margin:10px; overflow:hidden'}) if 'spam' in div.text.lower() or 'Spam' in div.text.lower() or 'spams' in div.text.lower() ]
+         spamCount = len(spamNum)     
+         debtNum = [ div for div in soup.find_all('div', {'style':'font-size:14px; margin:10px; overflow:hidden'}) if 'debt' in div.text.lower() or 'Debt' in div.text.lower() or 'credit' in div.text.lower() ]
+         debtCount = len(debtNum)
+         hospitalNum = [ div for div in soup.find_all('div', {'style':'font-size:14px; margin:10px; overflow:hidden'}) if 'hospital' in div.text.lower() or 'Hospital' in div.text.lower() ]
+         hospitalCount = len(hospitalNum)
+         if hospitalCount > 0:
+            hospitalCount+9999
+         searchTerms = {'Scam':scamCount,'Spam':spamCount,'Debt Collector':debtCount,'Hospital':hospitalCount}
          sentiment = max(searchTerms, key=searchTerms.get)
-         worksheet.write(idx+1,3,sentiment)
+         worksheet.write(idx+1,3,scamCount)
+         worksheet.write(idx+1,4,spamCount)
+         worksheet.write(idx+1,5,debtCount)
+         worksheet.write(idx+1,6,hospitalCount)
+         worksheet.write(idx+1,7,sentiment)
         
    if(website == "2"):
       reqInput = ('https://www.bbb.org/search/?splashPage=true&type=name&input='+ teleBBB +'&location=&tobid=&filter=business&radius=&country=USA%2CCAN&language=en&codeType=YPPA')
