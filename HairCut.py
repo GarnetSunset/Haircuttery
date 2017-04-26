@@ -153,12 +153,14 @@ for idx, cell_obj in enumerate(col):
          if hospitalCount > 0:
             hospitalCount+9999
          searchTerms = {'Scam':scamCount,'Spam':spamCount,'Debt Collector':debtCount,'Hospital':hospitalCount}
-         sentiment = max(searchTerms, key=searchTerms.get)
+         sentiment = max(searchTerms, key=searchTerms.get) 
          worksheet.write(idx+1,3,scamCount)
          worksheet.write(idx+1,4,spamCount)
          worksheet.write(idx+1,5,debtCount)
          worksheet.write(idx+1,6,hospitalCount)
          worksheet.write(idx+1,7,sentiment)
+         if scamCount == 0 and spamCount == 0 and debtCount == 0 and hospitalCount == 0:
+            worksheet.write(idx+1,7,"No Entries Detected")
         
    if(website == "2"):
       reqInput = ('https://www.bbb.org/search/?splashPage=true&type=name&input='+ teleBBB +'&location=&tobid=&filter=business&radius=&country=USA%2CCAN&language=en&codeType=YPPA')
