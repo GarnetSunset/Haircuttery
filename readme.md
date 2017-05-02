@@ -2,7 +2,7 @@
 
 # Haircuttery
 
-A program I wrote for work, meant to scrape Better Buisness Bureau and 800notes with an excel file.
+A program I wrote for work, meant to scrape Better Business Bureau and 800notes with an excel file.
 
 ### Windows Users
 
