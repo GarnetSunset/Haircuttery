@@ -10,6 +10,7 @@ import numpy as np
 import os
 import re
 import requests
+import sys
 import time
 import urllib2
 import xlrd
@@ -32,12 +33,22 @@ worksheet = book.add_sheet("Results", cell_overwrite_ok=True)
 url = "http://whoscall.in/1/*/"
 headers = {'User-Agent': 'Chrome/39.0.2171.95 Safari/537.36 AppleWebKit/537.36 (KHTML, like Gecko)'}
 
+file_paths = sys.argv[1:]
+draganddrop = ''.join(file_paths)
+
 response = requests.get(url, headers=headers)
 content = BeautifulSoup(response.content, "lxml")
-fileName = raw_input("\nInput the file with extension\n>")
-stopPoint = fileName.index('.')
-prepRev = fileName[stopPoint:]
-csvTest = prepRev
+
+if draganddrop == "":
+   fileName = raw_input("\nInput the file with extension\n>")
+   stopPoint = fileName.index('.')
+   prepRev = fileName[stopPoint:]
+   csvTest = prepRev   
+else:
+   fileName = draganddrop
+   stopPoint = fileName.index('.')
+   prepRev = fileName[stopPoint:]
+   csvTest = prepRev
 
 if csvTest == ".csv":
    excelFile = xlsxwriter.Workbook(fileName + '.xlsx')
