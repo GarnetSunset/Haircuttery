@@ -129,7 +129,7 @@ for idx, cell_obj in enumerate(col):
    if(website == "1"):  
       reqInput = "http://whoscall.in/1/%s/" % (teleWho)
       urlfile = urllib2.Request(reqInput)
-      print (reqInput)
+      #print (reqInput)#
       time.sleep(1)
       requestRec = requests.get(reqInput)
       soup = BeautifulSoup(requestRec.content, "lxml")
