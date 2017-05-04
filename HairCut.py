@@ -52,7 +52,7 @@ if csvTest == ".csv":
    delMe = 1
    print("Temporary Convert to xlsx done.\n")
 
-deleteFile = fileName
+deleteFile = excelFile
 
 fname = join(dirname(abspath('__file__')), '%s' % fileName)
 #http://whoscall.in/1/**********/ is the layout#
