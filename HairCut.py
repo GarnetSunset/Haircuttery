@@ -40,7 +40,7 @@ prepRev = fileName[stopPoint:]
 csvTest = prepRev
 
 if csvTest == ".csv":
-   excelFile = xlsxwriter.Workbook(fileName + '_temp.xlsx')
+   excelFile = xlsxwriter.Workbook(fileName + '.xlsx')
    worksheet = excelFile.add_worksheet()
    with open(fileName,'rb') as f:
       content = csv.reader(f)
@@ -48,7 +48,7 @@ if csvTest == ".csv":
             for index_row, data_in_cell in enumerate(data_in_col):
                   worksheet.write(index_col,index_row,data_in_cell)
    excelFile.close()
-   fileName = (fileName + '_temp.xlsx')
+   fileName = (fileName + '.xlsx')
    delMe = 1
    print("Temporary Convert to xlsx done.\n")
 
@@ -178,10 +178,13 @@ for idx, cell_obj in enumerate(col):
          
 workbook.close()
 
-Excel2CSV(totalName, "Sheet1", prepRev + '.csv')
+prepRev = prepRev + '_temp.csv'
+
+Excel2CSV(totalName, "Sheet1", prepRev)
 
 if delMe == 1:
    os.remove(deleteFile)
+   os.remove(prepRev)
    print("Temp File Cleaned!\n")
 
 ding = "Ding! Job Done!"
