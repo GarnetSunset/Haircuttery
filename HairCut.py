@@ -48,11 +48,11 @@ if csvTest == ".csv":
             for index_row, data_in_cell in enumerate(data_in_col):
                   worksheet.write(index_col,index_row,data_in_cell)
    excelFile.close()
-   fileName = (fileName + '.xlsx')
+   fileName = (fileName + '_temp.xlsx')
    delMe = 1
    print("Temporary Convert to xlsx done.\n")
 
-deleteFile = fileName + '_temp.xlsx'
+deleteFile = fileName
 
 fname = join(dirname(abspath('__file__')), '%s' % fileName)
 #http://whoscall.in/1/**********/ is the layout#
