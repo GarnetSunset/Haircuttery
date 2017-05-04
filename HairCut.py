@@ -40,7 +40,7 @@ prepRev = fileName[stopPoint:]
 csvTest = prepRev
 
 if csvTest == ".csv":
-   excelFile = xlsxwriter.Workbook(fileName + '.xlsx')
+   excelFile = xlsxwriter.Workbook(fileName + '_temp.xlsx')
    worksheet = excelFile.add_worksheet()
    with open(fileName,'rb') as f:
       content = csv.reader(f)
