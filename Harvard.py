@@ -1,7 +1,7 @@
 #https://blogs.harvard.edu/rprasad/2014/06/16/reading-excel-with-python-xlrd/#
+import csv
 import xlwt
 import xlrd
-import csv
 from HTMLParser import HTMLParser
 
 def construct_entries():

@@ -6,11 +6,13 @@ from IPython.display import HTML
 from os.path import join, dirname, abspath
 import csv
 import glob
+import itertools
 import numpy as np
 import os
 import re
 import requests
 import sys
+import threading
 import time
 import urllib2
 import xlrd
@@ -28,6 +30,16 @@ z=4
 
 book = xlwt.Workbook(encoding="utf-8")
 
+def loading(): 
+   for s in itertools.cycle(['|','/','-','\\']):
+      if done:
+         break
+      sys.stdout.write('\rloading ' + s)
+      sys.stdout.flush()
+      time.sleep(0.1)
+      
+done = False
+      
 worksheet = book.add_sheet("Results", cell_overwrite_ok=True)
 
 url = "http://whoscall.in/1/*/"
@@ -49,7 +61,7 @@ else:
    stopPoint = fileName.index('.')
    prepRev = fileName[stopPoint:]
    csvTest = prepRev
-
+   
 if csvTest == ".csv":
    excelFile = xlsxwriter.Workbook(fileName + '.xlsx')
    worksheet = excelFile.add_worksheet()
@@ -74,6 +86,9 @@ xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 
 website = raw_input("Input 1 for whoscall.in results, input 2 for BBB\n>")
 numFormat = raw_input("Which format?\n2 for Simple, 1 for Complex, 0 for Normal\n>")
+
+g = threading.Thread(target=loading)
+g.start()
 
 if(website =="1"):
    stopPoint = fileName.index('.')
@@ -132,7 +147,7 @@ for idx, cell_obj in enumerate(col):
       teleWho = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
       teleBBB = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
       
-   print('(%s) %s' % (idx, teleWho))
+   #print('(%s) %s' % (idx, teleWho))
    perm = teleWho
    site800 = teleWho
    worksheet.write(idx+1, 0, perm)
@@ -152,7 +167,7 @@ for idx, cell_obj in enumerate(col):
          howMany = soup.find_all('img',{'src':'/default-avatar.gif'})
          howManyAreThere = len(howMany)
          worksheet.write(idx+1,1,howManyAreThere)
-         print (howManyAreThere)
+         #print (howManyAreThere)
          scamNum = [ div for div in soup.find_all('div', {'style':'font-size:14px; margin:10px; overflow:hidden'}) if 'scam' in div.text.lower() or 'Scam' in div.text.lower() or 'scams' in div.text.lower() ]
          scamCount = len(scamNum)
          spamNum = [ div for div in soup.find_all('div', {'style':'font-size:14px; margin:10px; overflow:hidden'}) if 'spam' in div.text.lower() or 'Spam' in div.text.lower() or 'spams' in div.text.lower() ]
@@ -192,6 +207,8 @@ workbook.close()
 prepRev = prepRev + '_temp.csv'
 
 Excel2CSV(totalName, "Sheet1", prepRev)
+
+done = True
 
 if delMe == 1:
    os.remove(deleteFile)
