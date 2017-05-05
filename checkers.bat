@@ -1,1 +1,0 @@
-python checkers/main.py
