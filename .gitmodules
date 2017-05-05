@@ -1,0 +1,3 @@
+[submodule "checkers"]
+	path = checkers
+	url = https://github.com/codeofcarson/Checkers

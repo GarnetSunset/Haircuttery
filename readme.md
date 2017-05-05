@@ -29,7 +29,9 @@ pip can fetch these with the command "pip install -r requirements.txt"
 
 ## Credits:
 
-FGAO22, as most of this code is his.
+CodeOfCarson for a nice checkers submodule.
+
+FGAO22, I used his code as a base for this script.
 https://github.com/fgao22/GSD
 
 rprasad, for his XLRD guide.
