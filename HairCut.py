@@ -84,8 +84,8 @@ xl_workbook = xlrd.open_workbook(fname)
 sheet_names = xl_workbook.sheet_names()
 xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 
-website = raw_input("Input 1 for whoscall.in results, input 2 for BBB\n>")
-numFormat = raw_input("Which format?\n2 for Simple, 1 for Complex, 0 for Normal\n>")
+website = raw_input("Input 1 for whoscall.in results, input 2 for BBB\n>") #, input 3 for 800notes
+numFormat = raw_input("Which format?\n0 for Normal, 1 for Complex, 2 for Simple\n>")
 
 g = threading.Thread(target=loading)
 g.start()
@@ -114,6 +114,22 @@ if(website == "2"):
    worksheet.write(0,0, "Telephone Number")
    worksheet.write(0,1, "Acreditted")
 
+if(website == "3"):
+   stopPoint = fileName.index('.')
+   prepRev = fileName[0:stopPoint]
+   totalName = prepRev + "_rev_800.xlsx"
+   workbook = xlsxwriter.workbook(totalName)
+   worksheet = workbook.add_worksheet()
+   worksheet.write(0,0, "Telephone Number")
+   worksheet.write(0,1, "Number of Pages")
+   worksheet.write(0,2, "Number of Messages Approx.")
+   #dont forget to program the zeroes later#
+   worksheet.write(0,3, "Number of Scammers")
+   worksheet.write(0,4, "Number of Spammers")
+   worksheet.write(0,5, "Number of Debt Collectors")
+   worksheet.write(0,6, "Number of Hospital")
+   worksheet.write(0,7, "Sentiment")
+
 worksheet.set_column('A:A',13)
 
 col = xl_sheet.col_slice(0,1,10101010)
@@ -131,7 +147,8 @@ for idx, cell_obj in enumerate(col):
       thirdStart = cell_obj_str.index('-')+5
       thirdEnd = thirdStart + 4      
       teleWho = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
-      teleBBB = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])   
+      teleBBB = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
+      tele800 = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
    
    if(numFormat == "1"):      
       firstStart = cell_obj_str.index('(')+1
@@ -142,15 +159,16 @@ for idx, cell_obj in enumerate(col):
       thirdEnd = thirdStart + 4
       teleWho = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
       teleBBB = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
+      tele800 = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
       
    if(numFormat == "2"):
       teleWho = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
       teleBBB = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
+      tele800 = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
       
    #print('(%s) %s' % (idx, teleWho))
-   perm = teleWho
-   site800 = teleWho
-   worksheet.write(idx+1, 0, perm)
+   tnList = teleWho
+   worksheet.write(idx+1, 0, tnList)
    
    if(website == "1"):  
       reqInput = "http://whoscall.in/1/%s/" % (teleWho)
@@ -190,7 +208,7 @@ for idx, cell_obj in enumerate(col):
         
    if(website == "2"):
       reqInput = ('https://www.bbb.org/search/?splashPage=true&type=name&input='+ teleBBB +'&location=&tobid=&filter=business&radius=&country=USA%2CCAN&language=en&codeType=YPPA')
-      print (reqInput)
+      #print (reqInput)
       time.sleep(1)
       requestRec = requests.get(reqInput)
       soup = BeautifulSoup(requestRec.content,"lxml")
@@ -201,6 +219,9 @@ for idx, cell_obj in enumerate(col):
          worksheet.write(idx+1,1,"Got a Hit")
       if len(Badge)!=0:
          worksheet.write(idx+1,1,"Is Accredited")
+   
+   if(website == "3"):
+      reqInput = "http://800notes.com/Phone.aspx/%s" % (tele800)
          
 workbook.close()
 
