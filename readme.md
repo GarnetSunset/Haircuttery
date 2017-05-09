@@ -29,7 +29,7 @@ pip can fetch these with the command "pip install -r requirements.txt"
 
 ## Credits:
 
-FGAO22, as most of this code is his.
+FGAO22, for an awesome example and basis. 
 https://github.com/fgao22/GSD
 
 rprasad, for his XLRD guide.
