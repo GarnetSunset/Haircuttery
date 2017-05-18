@@ -84,8 +84,8 @@ xl_workbook = xlrd.open_workbook(fname)
 sheet_names = xl_workbook.sheet_names()
 xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 
-website = raw_input("Input 1 for whoscall.in results, input 2 for BBB\n>") #, input 3 for 800notes
-numFormat = raw_input("Which format?\n0 for Normal, 1 for Complex, 2 for Simple\n>")
+website = raw_input("Input 1 for whoscall.in results, input 2 for BBB, input 3 for You Can't Call Us\n>") #, input 3 for 800notes
+numFormat = raw_input("Which format?\n1 for xxx-xxx-xxxx, 2 for (xxx) xxx-xxxx, 3 for xxxxxxxxxx\n>")
 
 g = threading.Thread(target=loading)
 g.start()
@@ -117,17 +117,17 @@ if(website == "2"):
 if(website == "3"):
    stopPoint = fileName.index('.')
    prepRev = fileName[0:stopPoint]
-   totalName = prepRev + "_rev_800.xlsx"
-   workbook = xlsxwriter.workbook(totalName)
+   totalName = prepRev + "_rev_cant.xlsx"
+   workbook = xlsxwriter.Workbook(totalName)
    worksheet = workbook.add_worksheet()
    worksheet.write(0,0, "Telephone Number")
-   worksheet.write(0,1, "Number of Pages")
-   worksheet.write(0,2, "Number of Messages Approx.")
+   worksheet.write(0,1, "Number of Messages Approx.")
    #dont forget to program the zeroes later#
-   worksheet.write(0,3, "Number of Scammers")
-   worksheet.write(0,4, "Number of Spammers")
-   worksheet.write(0,5, "Number of Debt Collectors")
-   worksheet.write(0,6, "Number of Hospital")
+   worksheet.write(0,2, "Number of Scammers")
+   worksheet.write(0,3, "Number of Spammers")
+   worksheet.write(0,4, "Number of Debt Collectors")
+   worksheet.write(0,5, "Number of Hospital")
+   worksheet.write(0,6, "Number of People")
    worksheet.write(0,7, "Sentiment")
 
 worksheet.set_column('A:A',13)
@@ -139,7 +139,7 @@ for idx, cell_obj in enumerate(col):
    cell_type_str = ctype_text.get(cell_obj.ctype, 'unknown type')  
    cell_obj_str = str(cell_obj)
    
-   if(numFormat == "0"):
+   if(numFormat == "1"):
       firstStart = cell_obj_str.index('-')-3
       firstEnd = firstStart + 3   
       secondStart = cell_obj_str.index('-')+1
@@ -148,9 +148,9 @@ for idx, cell_obj in enumerate(col):
       thirdEnd = thirdStart + 4      
       teleWho = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
       teleBBB = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
-      tele800 = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
+      teleCant = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
    
-   if(numFormat == "1"):      
+   if(numFormat == "2"):      
       firstStart = cell_obj_str.index('(')+1
       firstEnd = firstStart + 3   
       secondStart = cell_obj_str.index(' ')+1
@@ -159,18 +159,18 @@ for idx, cell_obj in enumerate(col):
       thirdEnd = thirdStart + 4
       teleWho = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
       teleBBB = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
-      tele800 = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
+      teleCant = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
       
-   if(numFormat == "2"):
+   if(numFormat == "3"):
       teleWho = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
       teleBBB = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
-      tele800 = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
+      teleCant = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
       
    #print('(%s) %s' % (idx, teleWho))
    tnList = teleWho
    worksheet.write(idx+1, 0, tnList)
    
-   if(website == "1"):  
+   if(website == "1"): 
       reqInput = "http://whoscall.in/1/%s/" % (teleWho)
       urlfile = urllib2.Request(reqInput)
       #print (reqInput)#
@@ -221,8 +221,43 @@ for idx, cell_obj in enumerate(col):
          worksheet.write(idx+1,1,"Is Accredited")
    
    if(website == "3"):
-      reqInput = "http://800notes.com/Phone.aspx/%s" % (tele800)
-         
+      reqInput = "http://youcantcallus.com/%s" % (teleCant)
+      urlfile = urllib2.Request(reqInput)
+      #print (reqInput)#
+      time.sleep(1)
+      requestRec = requests.get(reqInput)
+      soup = BeautifulSoup(requestRec.content, "lxml")
+      noMatch = soup.find(text=re.compile(r"there are 0 comments about this caller"))
+      #print (noMatch)
+      #print(requestRec.content)###only if needed#
+      type(noMatch) is str      
+      if noMatch is None:
+               howMany = soup.find_all('blockquote')
+               howManyAreThere = len(howMany)
+               worksheet.write(idx+1,1,howManyAreThere)
+               #print (howManyAreThere)
+               scamNum = [ span for span in soup.find_all('span', {'style':'color: #999999; font-size: 12px;'}) if 'scam' in span.text.lower() or 'Scam' in span.text.lower() or 'scams' in span.text.lower() ]
+               scamCount = len(scamNum)
+               spamNum = [ span for span in soup.find_all('span', {'style':'color: #999999; font-size: 12px;'}) if 'spam' in span.text.lower() or 'Spam' in span.text.lower() or 'spams' in span.text.lower() or 'Survey' in span.text.lower() or 'Telemarketer' in span.text.lower() or 'Political Campaign' in span.text.lower() ]
+               spamCount = len(spamNum)     
+               debtNum = [ span for span in soup.find_all('span', {'style':'color: #999999; font-size: 12px;'}) if 'debt' in span.text.lower() or 'Debt' in span.text.lower() or 'credit' in span.text.lower() ]
+               debtCount = len(debtNum)
+               personNum = [ span for span in soup.find_all('span', {'style':'color: #999999; font-size: 12px;'}) if 'Individual' in span.text.lower() or 'Person' in span.text.lower() or 'Human' in span.text.lower() ]
+               personCount = len(personNum)               
+               hospitalNum = [ span for span in soup.find_all('span', {'style':'font-size:14px; margin:10px; overflow:hidden'}) if 'hospital' in span.text.lower() or 'Hospital' in span.text.lower() ]
+               hospitalCount = len(hospitalNum)
+               if hospitalCount > 0:
+                  hospitalCount+9999
+               searchTerms = {'Scam':scamCount,'Spam':spamCount,'Debt Collector':debtCount,'Hospital':hospitalCount,'Person':personCount}
+               sentiment = max(searchTerms, key=searchTerms.get) 
+               worksheet.write(idx+1,2,scamCount)
+               worksheet.write(idx+1,3,spamCount)
+               worksheet.write(idx+1,4,debtCount)
+               worksheet.write(idx+1,5,hospitalCount)
+               worksheet.write(idx+1,6,personCount)
+               worksheet.write(idx+1,7,sentiment)
+               if scamCount == 0 and spamCount == 0 and debtCount == 0 and hospitalCount == 0 and personCount == 0:
+                  worksheet.write(idx+1,7,"No Entries Detected")      
 workbook.close()
 
 prepRev = prepRev + '_temp.csv'
