@@ -168,7 +168,7 @@ for idx, cell_obj in enumerate(col):
       
    #print('(%s) %s' % (idx, teleWho))
    tnList = teleWho
-   worksheet.write(idx+1, 0, tnList)
+   worksheet.write(idx+1, 0, "1" + tnList)
    
    if(website == "1"): 
       reqInput = "http://whoscall.in/1/%s/" % (teleWho)
