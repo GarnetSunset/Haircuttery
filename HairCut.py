@@ -4,6 +4,9 @@ from collections import defaultdict
 from Harvard import Excel2CSV
 from IPython.display import HTML
 from os.path import join, dirname, abspath
+#from selenium import webdriver
+#from selenium.webdriver.support.ui import WebDriverWait
+#from selenium.webdriver.support import expected_conditions as EC
 import csv
 import glob
 import itertools
@@ -25,11 +28,6 @@ x=2
 y=3
 z=4
 
-#list800=[cell_obj_str,total_messages,category,last_three]
-#listBBB=[cell_obj_str,category,accredited]
-
-book = xlwt.Workbook(encoding="utf-8")
-
 def loading(): 
    for s in itertools.cycle(['|','/','-','\\']):
       if done:
@@ -39,15 +37,12 @@ def loading():
       time.sleep(0.1)
       
 done = False
-      
-worksheet = book.add_sheet("Results", cell_overwrite_ok=True)
-
 url = "http://whoscall.in/1/*/"
+book = xlwt.Workbook(encoding="utf-8")
 headers = {'User-Agent': 'Chrome/39.0.2171.95 Safari/537.36 AppleWebKit/537.36 (KHTML, like Gecko)'}
-
+worksheet = book.add_sheet("Results", cell_overwrite_ok=True)
 file_paths = sys.argv[1:]
 draganddrop = ''.join(file_paths)
-
 response = requests.get(url, headers=headers)
 content = BeautifulSoup(response.content, "lxml")
 
@@ -76,7 +71,6 @@ if csvTest == ".csv":
    print("Temporary Convert to xlsx done.\n")
 
 deleteFile = fileName
-
 fname = join(dirname(abspath('__file__')), '%s' % fileName)
 #http://whoscall.in/1/**********/ is the layout#
 
@@ -129,9 +123,18 @@ if(website == "3"):
    worksheet.write(0,5, "Number of Hospital")
    worksheet.write(0,6, "Number of People")
    worksheet.write(0,7, "Sentiment")
+   
+if(website == "4"):
+   stopPoint = fileName.index('.')
+   prepRev = fileName[0:stopPoint]
+   totalName = prepRev + "_rev_unknownphone.xlsx"
+   workbook = xlsxwriter.Workbook(totalName)
+   worksheet = workbook.add_worksheet()
+   worksheet.write(0,0, "Telephone Number")
+   worksheet.write(0,1, "Number of Pages")
+   worksheet.write(0,2, "Sentiment")
 
 worksheet.set_column('A:A',13)
-
 col = xl_sheet.col_slice(0,1,10101010)
 from xlrd.sheet import ctype_text
 #print('(Column #) type:value')
@@ -224,7 +227,7 @@ for idx, cell_obj in enumerate(col):
       reqInput = "http://youcantcallus.com/%s" % (teleCant)
       urlfile = urllib2.Request(reqInput)
       #print (reqInput)#
-      time.sleep(1)
+      time.sleep(5)
       requestRec = requests.get(reqInput)
       soup = BeautifulSoup(requestRec.content, "lxml")
       noMatch = soup.find(text=re.compile(r"there are 0 comments about this caller"))
@@ -258,20 +261,42 @@ for idx, cell_obj in enumerate(col):
                worksheet.write(idx+1,7,sentiment)
                if scamCount == 0 and spamCount == 0 and debtCount == 0 and hospitalCount == 0 and personCount == 0:
                   worksheet.write(idx+1,7,"No Entries Detected")      
+                  
+   if(website == "EXP1"):
+      reqInput = "http://unknownphone.com/search.php?num=%s" % (teleCant)
+      browser = webdriver.Ie()
+      browser.get(reqInput)
+      delay = 2
+      WebDriverWait(browser, delay).until(EC.presence_of_all_elements_located(browser.find_elements_by_id('pagination pull-right')))
+      urlfile = BeautifulSoup(browser.page_source)
+      print (urlfile)
+      time.sleep(2)
+      requestRec = requests.get(reqInput)
+      soup = BeautifulSoup(requestRec.content, "lxml")
+      noMatch = soup.find(text=re.compile(r"Unfortunately, nobody has reported this number yet."))
+      #print (noMatch)
+      soup.prettify()
+      #print(requestRec.content)###only if needed#
+      type(noMatch) is str      
+      if noMatch is None:
+               howMany = soup.find_all("li", class_="pagination-mob")
+               howManyAreThere = len(howMany)
+               worksheet.write(idx+1,1,howManyAreThere)
+               #print (howManyAreThere)
+               
+               #worksheet.write(idx+1,2,sentiment)            
+
+
 workbook.close()
-
 prepRev = prepRev + '_temp.csv'
-
 Excel2CSV(totalName, "Sheet1", prepRev)
-
-done = True
 
 if delMe == 1:
    os.remove(deleteFile)
    os.remove(prepRev)
    print("Temp File Cleaned!\n")
 
+done = True
 ding = "Ding! Job Done!"
 uni = unicode( ding, "utf-8")
-bytesNow = uni.encode( "utf-8" )
 print (ding)
