@@ -267,19 +267,16 @@ for idx, cell_obj in enumerate(col):
       driver.get('http://google.com/')      
       driver.get('http://800notes.com/Phone.aspx/%s' % (teleCant))
       delay = 2
-      WebDriverWait(driver, delay).until(EC.presence_of_all_elements_located(driver.find_elements_by_id('pagination pull-right')))
-      urlfile = BeautifulSoup(driver.page_source)
-      print (urlfile)
       time.sleep(2)
       requestRec = driver.page_source
       soup = BeautifulSoup(requestRec, "lxml")
-      noMatch = soup.find(text=re.compile(r"Unfortunately, nobody has reported this number yet."))
+      noMatch = soup.find(text=re.compile(r"Report the call using the form"))
       #print (noMatch)
       soup.prettify()
       #print(requestRec.content)###only if needed#
       type(noMatch) is str      
       if noMatch is None:
-               howMany = soup.find_all("li", class_="pagination-mob")
+               howMany = soup.find_all("div", class_="oos_contletBody")
                howManyAreThere = len(howMany)
                worksheet.write(idx+1,1,howManyAreThere)
                #print (howManyAreThere)
