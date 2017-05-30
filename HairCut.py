@@ -281,9 +281,10 @@ for idx, cell_obj in enumerate(col):
                worksheet.write(idx+1,1,howManyAreThere)
                #print (howManyAreThere)
                
-               #worksheet.write(idx+1,2,sentiment)            
+               #worksheet.write(idx+1,2,sentiment)
+      driver.quit()
 
-driver.quit()
+
 workbook.close()
 prepRev = prepRev + '_temp.csv'
 Excel2CSV(totalName, "Sheet1", prepRev)
