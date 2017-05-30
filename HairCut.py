@@ -45,6 +45,7 @@ file_paths = sys.argv[1:]
 draganddrop = ''.join(file_paths)
 response = requests.get(url, headers=headers)
 content = BeautifulSoup(response.content, "lxml")
+driver = webdriver.Chrome('C:/')
 
 if draganddrop == "":
    fileName = raw_input("\nInput the file with extension\n>")
@@ -264,15 +265,14 @@ for idx, cell_obj in enumerate(col):
                   
    if(website == "EXP1"):
       reqInput = "http://unknownphone.com/search.php?num=%s" % (teleCant)
-      browser = webdriver.Ie()
-      browser.get(reqInput)
+      driver.get(reqInput)
       delay = 2
       WebDriverWait(browser, delay).until(EC.presence_of_all_elements_located(browser.find_elements_by_id('pagination pull-right')))
       urlfile = BeautifulSoup(browser.page_source)
       print (urlfile)
       time.sleep(2)
-      requestRec = requests.get(reqInput)
-      soup = BeautifulSoup(requestRec.content, "lxml")
+      requestRec = driver.page_source
+      soup = BeautifulSoup(requestRec, "lxml")
       noMatch = soup.find(text=re.compile(r"Unfortunately, nobody has reported this number yet."))
       #print (noMatch)
       soup.prettify()
@@ -286,7 +286,7 @@ for idx, cell_obj in enumerate(col):
                
                #worksheet.write(idx+1,2,sentiment)            
 
-
+driver.quit()
 workbook.close()
 prepRev = prepRev + '_temp.csv'
 Excel2CSV(totalName, "Sheet1", prepRev)
