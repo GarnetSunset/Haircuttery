@@ -45,8 +45,6 @@ file_paths = sys.argv[1:]
 draganddrop = ''.join(file_paths)
 response = requests.get(url, headers=headers)
 content = BeautifulSoup(response.content, "lxml")
-driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
-driver.get('http://amiconnectedtotheinternet.com/')
 
 if draganddrop == "":
    fileName = raw_input("\nInput the file with extension\n>")
@@ -126,7 +124,7 @@ if(website == "3"):
    worksheet.write(0,6, "Number of People")
    worksheet.write(0,7, "Sentiment")
    
-if(website == "4"):
+if(website == "EXP1"):
    stopPoint = fileName.index('.')
    prepRev = fileName[0:stopPoint]
    totalName = prepRev + "_rev_unknownphone.xlsx"
@@ -265,8 +263,9 @@ for idx, cell_obj in enumerate(col):
                   worksheet.write(idx+1,7,"No Entries Detected")      
                   
    if(website == "EXP1"):
-      reqInput = "http://unknownphone.com/search.php?num=%s" % (teleCant)
-      driver.get(reqInput)
+      driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
+      driver.get('http://amiconnectedtotheinternet.com/')      
+      driver.get('http://unknownphone.com/search.php?num=%s' % (teleCant))
       delay = 2
       WebDriverWait(browser, delay).until(EC.presence_of_all_elements_located(browser.find_elements_by_id('pagination pull-right')))
       urlfile = BeautifulSoup(browser.page_source)
