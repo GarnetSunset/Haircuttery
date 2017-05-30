@@ -264,11 +264,11 @@ for idx, cell_obj in enumerate(col):
                   
    if(website == "EXP1"):
       driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
-      driver.get('http://amiconnectedtotheinternet.com/')      
-      driver.get('http://unknownphone.com/search.php?num=%s' % (teleCant))
+      driver.get('http://google.com/')      
+      driver.get('http://800notes.com/Phone.aspx/%s' % (teleCant))
       delay = 2
-      WebDriverWait(browser, delay).until(EC.presence_of_all_elements_located(browser.find_elements_by_id('pagination pull-right')))
-      urlfile = BeautifulSoup(browser.page_source)
+      WebDriverWait(driver, delay).until(EC.presence_of_all_elements_located(driver.find_elements_by_id('pagination pull-right')))
+      urlfile = BeautifulSoup(driver.page_source)
       print (urlfile)
       time.sleep(2)
       requestRec = driver.page_source
