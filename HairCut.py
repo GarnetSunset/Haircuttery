@@ -4,9 +4,9 @@ from collections import defaultdict
 from Harvard import Excel2CSV
 from IPython.display import HTML
 from os.path import join, dirname, abspath
-#from selenium import webdriver
-#from selenium.webdriver.support.ui import WebDriverWait
-#from selenium.webdriver.support import expected_conditions as EC
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import csv
 import glob
 import itertools
