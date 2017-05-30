@@ -125,6 +125,7 @@ if(website == "3"):
    worksheet.write(0,7, "Sentiment")
    
 if(website == "EXP1"):
+   driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe") 
    stopPoint = fileName.index('.')
    prepRev = fileName[0:stopPoint]
    totalName = prepRev + "_rev_800notes.xlsx"
@@ -262,8 +263,7 @@ for idx, cell_obj in enumerate(col):
                if scamCount == 0 and spamCount == 0 and debtCount == 0 and hospitalCount == 0 and personCount == 0:
                   worksheet.write(idx+1,7,"No Entries Detected")      
                   
-   if(website == "EXP1"):
-      driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")    
+   if(website == "EXP1"):   
       driver.get('http://800notes.com/Phone.aspx/%s' % (teleCant))
       delay = 2
       time.sleep(2)
@@ -275,17 +275,16 @@ for idx, cell_obj in enumerate(col):
       #print(requestRec.content)
       type(noMatch) is str      
       if noMatch is None:
-               for requestRec in soup.findAll('a', href='/Phone.aspx/'):
-                  print requestRec['href']
-               
+               for a in soup.select('.oos_pager a'):
+                  pages = a['href'], a.get_text()
+                  print(pages)
                howMany = soup.find_all("img", class_="oos_avatar")
                howManyAreThere = len(howMany)
                worksheet.write(idx+1,2,howManyAreThere)
                #print (howManyAreThere)
                #worksheet.write(idx+1,2,sentiment)
-      driver.quit()
 
-
+driver.quit()
 workbook.close()
 prepRev = prepRev + '_temp.csv'
 Excel2CSV(totalName, "Sheet1", prepRev)
