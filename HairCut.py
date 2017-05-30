@@ -45,7 +45,7 @@ file_paths = sys.argv[1:]
 draganddrop = ''.join(file_paths)
 response = requests.get(url, headers=headers)
 content = BeautifulSoup(response.content, "lxml")
-driver = webdriver.Chrome('C:/')
+driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
 
 if draganddrop == "":
    fileName = raw_input("\nInput the file with extension\n>")
