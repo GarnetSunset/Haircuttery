@@ -127,11 +127,11 @@ if(website == "3"):
 if(website == "EXP1"):
    stopPoint = fileName.index('.')
    prepRev = fileName[0:stopPoint]
-   totalName = prepRev + "_rev_unknownphone.xlsx"
+   totalName = prepRev + "_rev_800notes.xlsx"
    workbook = xlsxwriter.Workbook(totalName)
    worksheet = workbook.add_worksheet()
    worksheet.write(0,0, "Telephone Number")
-   worksheet.write(0,1, "Number of Pages")
+   worksheet.write(0,1, "Number of Messages")
    worksheet.write(0,2, "Sentiment")
 
 worksheet.set_column('A:A',13)
@@ -263,8 +263,7 @@ for idx, cell_obj in enumerate(col):
                   worksheet.write(idx+1,7,"No Entries Detected")      
                   
    if(website == "EXP1"):
-      driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
-      driver.get('http://google.com/')      
+      driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")    
       driver.get('http://800notes.com/Phone.aspx/%s' % (teleCant))
       delay = 2
       time.sleep(2)
@@ -273,14 +272,16 @@ for idx, cell_obj in enumerate(col):
       noMatch = soup.find(text=re.compile(r"Report the call using the form"))
       #print (noMatch)
       soup.prettify()
-      #print(requestRec.content)###only if needed#
+      #print(requestRec.content)
       type(noMatch) is str      
       if noMatch is None:
-               howMany = soup.find_all("div", class_="oos_contletBody")
-               howManyAreThere = len(howMany)
-               worksheet.write(idx+1,1,howManyAreThere)
-               #print (howManyAreThere)
+               for requestRec in soup.findAll('a', href='/Phone.aspx/'):
+                  print requestRec['href']
                
+               howMany = soup.find_all("img", class_="oos_avatar")
+               howManyAreThere = len(howMany)
+               worksheet.write(idx+1,2,howManyAreThere)
+               #print (howManyAreThere)
                #worksheet.write(idx+1,2,sentiment)
       driver.quit()
 
