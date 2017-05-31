@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import print_function
 from bs4 import BeautifulSoup
 from collections import defaultdict
@@ -27,6 +28,7 @@ w=1
 x=2
 y=3
 z=4
+countitup=0
 
 def loading(): 
    for s in itertools.cycle(['|','/','-','\\']):
@@ -133,7 +135,13 @@ if(website == "EXP1"):
    worksheet = workbook.add_worksheet()
    worksheet.write(0,0, "Telephone Number")
    worksheet.write(0,1, "Number of Messages")
-   worksheet.write(0,2, "Sentiment")
+   worksheet.write(0,2, "Number of Pages")
+   worksheet.write(0,3, "Number of Scammers")
+   worksheet.write(0,4, "Number of Spammers")
+   worksheet.write(0,5, "Number of Debt Collectors")
+   worksheet.write(0,6, "Number of Hospital")
+   worksheet.write(0,7, "Number of People")
+   worksheet.write(0,8, "Sentiment")
 
 worksheet.set_column('A:A',13)
 col = xl_sheet.col_slice(0,1,10101010)
@@ -152,7 +160,7 @@ for idx, cell_obj in enumerate(col):
       thirdEnd = thirdStart + 4      
       teleWho = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
       teleBBB = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
-      teleCant = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
+      tele800 = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
    
    if(numFormat == "2"):      
       firstStart = cell_obj_str.index('(')+1
@@ -163,12 +171,12 @@ for idx, cell_obj in enumerate(col):
       thirdEnd = thirdStart + 4
       teleWho = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
       teleBBB = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
-      teleCant = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
+      tele800 = (cell_obj_str[firstStart:firstEnd] + cell_obj_str[secondStart:secondEnd] + cell_obj_str[thirdStart:thirdEnd])
       
    if(numFormat == "3"):
       teleWho = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
       teleBBB = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
-      teleCant = (cell_obj_str[8:11] + cell_obj_str[11:14] + cell_obj_str[14:18])
+      tele800 = ("1-" + cell_obj_str[8:11] + "-" + cell_obj_str[11:14] + "-" + cell_obj_str[14:18])
       
    #print('(%s) %s' % (idx, teleWho))
    tnList = teleWho
@@ -225,7 +233,7 @@ for idx, cell_obj in enumerate(col):
          worksheet.write(idx+1,1,"Is Accredited")
    
    if(website == "3"):
-      reqInput = "http://youcantcallus.com/%s" % (teleCant)
+      reqInput = "http://youcantcallus.com/%s" % (tele800)
       urlfile = urllib2.Request(reqInput)
       #print (reqInput)#
       time.sleep(5)
@@ -253,7 +261,7 @@ for idx, cell_obj in enumerate(col):
                if hospitalCount > 0:
                   hospitalCount+9999
                searchTerms = {'Scam':scamCount,'Spam':spamCount,'Debt Collector':debtCount,'Hospital':hospitalCount,'Person':personCount}
-               sentiment = max(searchTerms, key=searchTerms.get) 
+               sentiment = max(searchTerms, key=searchTerms.get)
                worksheet.write(idx+1,2,scamCount)
                worksheet.write(idx+1,3,spamCount)
                worksheet.write(idx+1,4,debtCount)
@@ -264,34 +272,72 @@ for idx, cell_obj in enumerate(col):
                   worksheet.write(idx+1,7,"No Entries Detected")      
                   
    if(website == "EXP1"):   
-      driver.get('http://800notes.com/Phone.aspx/%s' % (teleCant))
-      delay = 2
-      time.sleep(2)
+      driver.get('http://800notes.com/Phone.aspx/%s' % (tele800))
+      delay = 4
+      time.sleep(4)
       requestRec = driver.page_source
       soup = BeautifulSoup(requestRec, "lxml")
       noMatch = soup.find(text=re.compile(r"Report the call using the form"))
       #print (noMatch)
       soup.prettify()
       #print(requestRec.content)
-      type(noMatch) is str      
+      type(noMatch) is str
+      
       if noMatch is None:
-               for a in soup.select('.oos_pager a'):
-                  pages = a['href'], a.get_text()
-                  print(pages)
-               howMany = soup.find_all("img", class_="oos_avatar")
-               howManyAreThere = len(howMany)
-               worksheet.write(idx+1,2,howManyAreThere)
-               #print (howManyAreThere)
-               #worksheet.write(idx+1,2,sentiment)
+               driver.get('http://800notes.com/Phone.aspx/%s/10000' % (tele800))
+               curSite = driver.current_url
+               pageExist = soup.find("div", class_="oos_pager")
+               type(pageExist) is str 
+               if(pageExist is not None):
+                  curBegin = curSite.rfind('/') + 1
+                  curEnd = curBegin + 4
+                  pageNum = curSite[curBegin:curEnd]
+               else:
+                  pageNum = 1
+
+               numMessages = pageNum *20
+               convertNum = str(numMessages)
+               
+               worksheet.write(idx+1,2,"About" + convertNum)
+                  
+               delay = 3
+               driver.get('http://800notes.com/Phone.aspx/%s' % (tele800))
+
+               if(countitup != pageNum and pageExist is not None):
+                     countitup += 1
+                     driver.get('http://800notes.com/Phone.aspx/%s/%s' % (tele800,countitup))
+                     delay = 4
+                     scamNum = soup.find_all('li', text=re.compile(r"Scam", re.IGNORECASE))
+                     spamNum = soup.find_all('li', text=re.compile(r"Telemarketer", re.IGNORECASE))
+                     debtNum = soup.find_all('li', text=re.compile(r"Debt Collector", re.IGNORECASE))
+                     hospitalNum = soup.find_all('li', text=re.compile(r"Hospital", re.IGNORECASE))
+                     
+               if(countitup == pageNum):      
+                  scamCount = len(scamNum)
+                  spamCount = len(spamNum)
+                  debtCount = len(debtNum)
+                  personCount = len(personNum)
+                  hospitalCount = len(hospitalNum)
+                  hospitalStay = HospitalCount
+                  if hospitalCount > 0:
+                     hospitalCount+9999
+                  searchTerms = {'Scam':scamCount,'Spam':spamCount,'Debt Collector':debtCount,'Hospital':hospitalCount}
+                  sentiment = max(searchTerms, key=searchTerms.get) 
+                  worksheet.write(idx+1,3,scamCount)
+                  worksheet.write(idx+1,4,spamCount)
+                  worksheet.write(idx+1,5,debtCount)
+                  worksheet.write(idx+1,6,hospitalStay)
+                  worksheet.write(idx+1,7,sentiment)
+                  if scamCount == 0 and spamCount == 0 and debtCount == 0 and hospitalCount == 0 and personCount == 0:
+                     worksheet.write(idx+1,7,"No Entries Detected")
+               
+               worksheet.write(idx+1,2,pageNum)                  
 
 driver.quit()
 workbook.close()
-prepRev = prepRev + '_temp.csv'
-Excel2CSV(totalName, "Sheet1", prepRev)
 
 if delMe == 1:
    os.remove(deleteFile)
-   os.remove(prepRev)
    print("Temp File Cleaned!\n")
 
 done = True
