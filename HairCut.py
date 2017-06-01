@@ -240,14 +240,11 @@ for idx, cell_obj in enumerate(col):
       requestRec = requests.get(reqInput)
       soup = BeautifulSoup(requestRec.content, "lxml")
       noMatch = soup.find(text=re.compile(r"there are 0 comments about this caller"))
-      #print (noMatch)
-      #print(requestRec.content)###only if needed#
       type(noMatch) is str      
       if noMatch is None:
                howMany = soup.find_all('blockquote')
                howManyAreThere = len(howMany)
                worksheet.write(idx+1,1,howManyAreThere)
-               #print (howManyAreThere)
                scamNum = [ span for span in soup.find_all('span', {'style':'color: #999999; font-size: 12px;'}) if 'scam' in span.text.lower() or 'Scam' in span.text.lower() or 'scams' in span.text.lower() ]
                scamCount = len(scamNum)
                spamNum = [ span for span in soup.find_all('span', {'style':'color: #999999; font-size: 12px;'}) if 'spam' in span.text.lower() or 'Spam' in span.text.lower() or 'spams' in span.text.lower() or 'Survey' in span.text.lower() or 'Telemarketer' in span.text.lower() or 'Political Campaign' in span.text.lower() ]
@@ -295,10 +292,13 @@ for idx, cell_obj in enumerate(col):
                else:
                   pageNum = 1
 
-               numMessages = pageNum *20
+               numMessages = int(pageNum) - 1
+               numMessages = numMessages * 20
                convertNum = str(numMessages)
-               
-               worksheet.write(idx+1,2,"About" + convertNum)
+               thumbs = soup.find_all('a',{'class':'oos_i_thumbDown'})
+               thumbsLen = len(thumbs)
+               thumbPlus = thumbsLen + int(convertNum)
+               worksheet.write(idx+1,1,"About " + str(thumbPlus))
                   
                delay = 3
                driver.get('http://800notes.com/Phone.aspx/%s' % (tele800))
@@ -307,10 +307,10 @@ for idx, cell_obj in enumerate(col):
                      countitup += 1
                      driver.get('http://800notes.com/Phone.aspx/%s/%s' % (tele800,countitup))
                      delay = 4
-                     scamNum = soup.find_all('li', text=re.compile(r"Scam", re.IGNORECASE))
-                     spamNum = soup.find_all('li', text=re.compile(r"Telemarketer", re.IGNORECASE))
-                     debtNum = soup.find_all('li', text=re.compile(r"Debt Collector", re.IGNORECASE))
-                     hospitalNum = soup.find_all('li', text=re.compile(r"Hospital", re.IGNORECASE))
+                     scamNum = soup.find_all(text=re.compile(r"Scam", re.IGNORECASE))
+                     spamNum = soup.find_all(text=re.compile(r"Telemarketer", re.IGNORECASE))
+                     debtNum = soup.find_all(text=re.compile(r"Debt Collector", re.IGNORECASE))
+                     hospitalNum = soup.find_all(text=re.compile(r"Hospital", re.IGNORECASE))
                      
                if(countitup == pageNum):      
                   scamCount = len(scamNum)
@@ -341,6 +341,6 @@ if delMe == 1:
    print("Temp File Cleaned!\n")
 
 done = True
-ding = "Ding! Job Done!"
+ding = "\nDing! Job Done!"
 uni = unicode( ding, "utf-8")
 print (ding)
