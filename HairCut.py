@@ -292,6 +292,11 @@ for idx, cell_obj in enumerate(col):
                else:
                   pageNum = 1
 
+
+               block = soup.find(text=re.compile(r"OctoNet HTTP filter"))
+               type(block) is str 
+               if(block is not None):
+                  time.sleep(5400)
                numMessages = int(pageNum) - 1
                numMessages = numMessages * 20
                convertNum = str(numMessages)
@@ -311,6 +316,11 @@ for idx, cell_obj in enumerate(col):
                      spamNum = soup.find_all(text=re.compile(r"Telemarketer", re.IGNORECASE))
                      debtNum = soup.find_all(text=re.compile(r"Debt Collector", re.IGNORECASE))
                      hospitalNum = soup.find_all(text=re.compile(r"Hospital", re.IGNORECASE))
+                     block = soup.find(text=re.compile(r"OctoNet HTTP filter"))
+                     type(block) is str 
+                     if(block is not None):
+                        time.sleep(5400)
+
                      
                if(countitup == pageNum):      
                   scamCount = len(scamNum)
