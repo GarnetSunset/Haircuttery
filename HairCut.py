@@ -296,6 +296,7 @@ for idx, cell_obj in enumerate(col):
                block = soup.find(text=re.compile(r"OctoNet HTTP filter"))
                type(block) is str 
                if(block is not None):
+                  print("\n Damn. Gimme an hour to fix this.")
                   time.sleep(5400)
                numMessages = int(pageNum) - 1
                numMessages = numMessages * 20
@@ -319,8 +320,8 @@ for idx, cell_obj in enumerate(col):
                      block = soup.find(text=re.compile(r"OctoNet HTTP filter"))
                      type(block) is str 
                      if(block is not None):
+                        print("\n Damn. Gimme an hour to fix this.")
                         time.sleep(5400)
-
                      
                if(countitup == pageNum):      
                   scamCount = len(scamNum)
