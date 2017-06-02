@@ -279,6 +279,13 @@ for idx, cell_obj in enumerate(col):
       soup.prettify()
       #print(requestRec.content)
       type(noMatch) is str
+      block = soup.find(text=re.compile(r"OctoNet HTTP filter"))
+      extrablock = soup.find(text=re.compile(r"returning an unknown error"))
+      type(block) is str 
+      type(extrablock) is str 
+      if(block is not None or extrablock is not None):
+         print("\n Damn. Gimme an hour to fix this.")
+         time.sleep(5400)
       
       if noMatch is None:
                driver.get('http://800notes.com/Phone.aspx/%s/10000' % (tele800))
@@ -292,12 +299,7 @@ for idx, cell_obj in enumerate(col):
                else:
                   pageNum = 1
 
-
-               block = soup.find(text=re.compile(r"OctoNet HTTP filter"))
-               type(block) is str 
-               if(block is not None):
-                  print("\n Damn. Gimme an hour to fix this.")
-                  time.sleep(5400)
+               
                numMessages = int(pageNum) - 1
                numMessages = numMessages * 20
                convertNum = str(numMessages)
@@ -313,15 +315,17 @@ for idx, cell_obj in enumerate(col):
                      countitup += 1
                      driver.get('http://800notes.com/Phone.aspx/%s/%s' % (tele800,countitup))
                      delay = 4
-                     scamNum = soup.find_all(text=re.compile(r"Scam", re.IGNORECASE))
-                     spamNum = soup.find_all(text=re.compile(r"Telemarketer", re.IGNORECASE))
-                     debtNum = soup.find_all(text=re.compile(r"Debt Collector", re.IGNORECASE))
-                     hospitalNum = soup.find_all(text=re.compile(r"Hospital", re.IGNORECASE))
+                     scamNum = soup.find_all(text=re.compile(r"Scam"))
+                     spamNum = soup.find_all(text=re.compile(r"Telemarketer"))
+                     debtNum = soup.find_all(text=re.compile(r"Debt Collector"))
+                     hospitalNum = soup.find_all(text=re.compile(r"Hospital"))
                      block = soup.find(text=re.compile(r"OctoNet HTTP filter"))
+		     extrablock = soup.find(text=re.compile(r"returning an unknown error"))
                      type(block) is str 
-                     if(block is not None):
+		     type(extrablock) is str 
+                     if(block is not None or extrablock is not None):
                         print("\n Damn. Gimme an hour to fix this.")
-                        time.sleep(5400)
+                        time.sleep(2000)
                      
                if(countitup == pageNum):      
                   scamCount = len(scamNum)
