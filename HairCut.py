@@ -24,11 +24,15 @@ import xlsxwriter
 import xlwt
 
 delMe = 0
-w=1
-x=2
-y=3
-z=4
-countitup=0
+w = 1
+x = 2
+y = 3
+z = 4
+countitup = 0
+scamCount = 0
+spamCount = 0
+debtCount = 0
+hospitalCount = 0
 
 def loading(): 
    for s in itertools.cycle(['|','/','-','\\']):
@@ -311,14 +315,19 @@ for idx, cell_obj in enumerate(col):
                delay = 3
                driver.get('http://800notes.com/Phone.aspx/%s' % (tele800))
 
-               if(countitup != pageNum and pageExist is not None):
-                     countitup += 1
+               if(pageExist is not None):
+                  if(countitup != pageNum):
+                     countitup = countitup + 1
                      driver.get('http://800notes.com/Phone.aspx/%s/%s' % (tele800,countitup))
                      delay = 4
                      scamNum = soup.find_all(text=re.compile(r"Scam"))
-                     spamNum = soup.find_all(text=re.compile(r"Telemarketer"))
-                     debtNum = soup.find_all(text=re.compile(r"Debt Collector"))
+                     spamNum = soup.find_all(text=re.compile(r"Call type: Telemarketer"))
+                     debtNum = soup.find_all(text=re.compile(r"Call type: Debt Collector"))
                      hospitalNum = soup.find_all(text=re.compile(r"Hospital"))
+                     scamCount = len(scamNum) + scamCount
+                     spamCount = len(spamNum) + spamCount
+                     debtCount = len(debtNum) + debtCount
+                     hospitalCount = len(hospitalNum) + hospitalCount
                      block = soup.find(text=re.compile(r"OctoNet HTTP filter"))
 		     extrablock = soup.find(text=re.compile(r"returning an unknown error"))
                      type(block) is str 
@@ -326,14 +335,7 @@ for idx, cell_obj in enumerate(col):
                      if(block is not None or extrablock is not None):
                         print("\n Damn. Gimme an hour to fix this.")
                         time.sleep(2000)
-                     
-               if(countitup == pageNum):      
-                  scamCount = len(scamNum)
-                  spamCount = len(spamNum)
-                  debtCount = len(debtNum)
-                  personCount = len(personNum)
-                  hospitalCount = len(hospitalNum)
-                  hospitalStay = HospitalCount
+                        
                   if hospitalCount > 0:
                      hospitalCount+9999
                   searchTerms = {'Scam':scamCount,'Spam':spamCount,'Debt Collector':debtCount,'Hospital':hospitalCount}
@@ -341,10 +343,15 @@ for idx, cell_obj in enumerate(col):
                   worksheet.write(idx+1,3,scamCount)
                   worksheet.write(idx+1,4,spamCount)
                   worksheet.write(idx+1,5,debtCount)
-                  worksheet.write(idx+1,6,hospitalStay)
+                  worksheet.write(idx+1,6,hospitalCount)
                   worksheet.write(idx+1,7,sentiment)
                   if scamCount == 0 and spamCount == 0 and debtCount == 0 and hospitalCount == 0 and personCount == 0:
                      worksheet.write(idx+1,7,"No Entries Detected")
+                  countitup = 0
+                  scamCount = 0
+                  spamCount = 0
+                  debtCount = 0
+                  hospitalCount = 0
                
                worksheet.write(idx+1,2,pageNum)                  
 
