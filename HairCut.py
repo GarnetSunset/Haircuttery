@@ -6,7 +6,8 @@ from Harvard import Excel2CSV
 from IPython.display import HTML
 from os.path import join, dirname, abspath
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
+import selenium.webdriver.support.ui as ui
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import csv
 import glob
@@ -28,7 +29,7 @@ w = 1
 x = 2
 y = 3
 z = 4
-countitup = 0
+countitup = 1
 scamCount = 0
 spamCount = 0
 debtCount = 0
@@ -41,7 +42,7 @@ def loading():
       sys.stdout.write('\rloading ' + s)
       sys.stdout.flush()
       time.sleep(0.1)
-      
+
 done = False
 url = "http://whoscall.in/1/*/"
 book = xlwt.Workbook(encoding="utf-8")
@@ -84,7 +85,7 @@ xl_workbook = xlrd.open_workbook(fname)
 sheet_names = xl_workbook.sheet_names()
 xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 
-website = raw_input("Input 1 for whoscall.in results, input 2 for BBB, input 3 for You Can't Call Us\n>") #, input 3 for 800notes
+website = raw_input("Input 1 for whoscall.in results, input 2 for BBB\n>") #, input 3 for 800notes
 numFormat = raw_input("Which format?\n1 for xxx-xxx-xxxx, 2 for (xxx) xxx-xxxx, 3 for xxxxxxxxxx\n>")
 
 g = threading.Thread(target=loading)
@@ -138,14 +139,13 @@ if(website == "EXP1"):
    workbook = xlsxwriter.Workbook(totalName)
    worksheet = workbook.add_worksheet()
    worksheet.write(0,0, "Telephone Number")
-   worksheet.write(0,1, "Number of Messages")
+   worksheet.write(0,1, "Approximate Number of Messages")
    worksheet.write(0,2, "Number of Pages")
    worksheet.write(0,3, "Number of Scammers")
    worksheet.write(0,4, "Number of Spammers")
    worksheet.write(0,5, "Number of Debt Collectors")
    worksheet.write(0,6, "Number of Hospital")
-   worksheet.write(0,7, "Number of People")
-   worksheet.write(0,8, "Sentiment")
+   worksheet.write(0,7, "Sentiment")
 
 worksheet.set_column('A:A',13)
 col = xl_sheet.col_slice(0,1,10101010)
@@ -303,57 +303,62 @@ for idx, cell_obj in enumerate(col):
                else:
                   pageNum = 1
 
-               
                numMessages = int(pageNum) - 1
                numMessages = numMessages * 20
                convertNum = str(numMessages)
                thumbs = soup.find_all('a',{'class':'oos_i_thumbDown'})
                thumbsLen = len(thumbs)
                thumbPlus = thumbsLen + int(convertNum)
-               worksheet.write(idx+1,1,"About " + str(thumbPlus))
+               worksheet.write(idx+1,1,thumbPlus)
                   
                delay = 3
                driver.get('http://800notes.com/Phone.aspx/%s' % (tele800))
 
                if(pageExist is not None):
-                  if(countitup != pageNum):
-                     countitup = countitup + 1
-                     driver.get('http://800notes.com/Phone.aspx/%s/%s' % (tele800,countitup))
-                     delay = 4
-                     scamNum = soup.find_all(text=re.compile(r"Scam"))
-                     spamNum = soup.find_all(text=re.compile(r"Call type: Telemarketer"))
-                     debtNum = soup.find_all(text=re.compile(r"Call type: Debt Collector"))
-                     hospitalNum = soup.find_all(text=re.compile(r"Hospital"))
-                     scamCount = len(scamNum) + scamCount
-                     spamCount = len(spamNum) + spamCount
-                     debtCount = len(debtNum) + debtCount
-                     hospitalCount = len(hospitalNum) + hospitalCount
-                     block = soup.find(text=re.compile(r"OctoNet HTTP filter"))
-		     extrablock = soup.find(text=re.compile(r"returning an unknown error"))
-                     type(block) is str 
-		     type(extrablock) is str 
-                     if(block is not None or extrablock is not None):
-                        print("\n Damn. Gimme an hour to fix this.")
-                        time.sleep(2000)
+                  if(pageNum != 1):
+                     while(int(countitup) != int(pageNum) + 1):
+                        countitup = int(countitup) + 1
+                        driver.get('http://800notes.com/Phone.aspx/{}/{}/'.format(tele800, countitup))
+                        delay = 4
+                        time.sleep(2)
+                        if (countitup % 2 == 0):
+                           time.sleep(4)
+                        else:
+                           time.sleep(3)
+                        scamNum = soup.find_all('div', class_="oos_contletBody", text=re.compile(r"Scam"))
+                        spamNum = soup.find_all(text=re.compile(r"Call type: Telemarketer"))
+                        debtNum = soup.find_all(text=re.compile(r"Debt collector"))
+                        hospitalNum = soup.find_all(text=re.compile(r"Hospital"))
+                        scamCount = len(scamNum) + scamCount
+                        spamCount = len(spamNum) + spamCount
+                        debtCount = len(debtNum) + debtCount
+                        hospitalCount = len(hospitalNum) + hospitalCount
+                        block = soup.find(text=re.compile(r"OctoNet HTTP filter"))
+                        extrablock = soup.find(text=re.compile(r"returning an unknown error"))
+                        type(block) is str 
+                        type(extrablock) is str 
+                        if(block is not None or extrablock is not None):
+                           print("\n Damn. Gimme an hour to fix this.")
+                           time.sleep(2000)
                         
-                  if hospitalCount > 0:
-                     hospitalCount+9999
-                  searchTerms = {'Scam':scamCount,'Spam':spamCount,'Debt Collector':debtCount,'Hospital':hospitalCount}
-                  sentiment = max(searchTerms, key=searchTerms.get) 
-                  worksheet.write(idx+1,3,scamCount)
-                  worksheet.write(idx+1,4,spamCount)
-                  worksheet.write(idx+1,5,debtCount)
-                  worksheet.write(idx+1,6,hospitalCount)
-                  worksheet.write(idx+1,7,sentiment)
-                  if scamCount == 0 and spamCount == 0 and debtCount == 0 and hospitalCount == 0 and personCount == 0:
-                     worksheet.write(idx+1,7,"No Entries Detected")
-                  countitup = 0
-                  scamCount = 0
-                  spamCount = 0
-                  debtCount = 0
-                  hospitalCount = 0
+                     if hospitalCount > 0:
+                        hospitalCount+9999
+                     searchTerms = {'Scam':scamCount,'Spam':spamCount,'Debt Collector':debtCount,'Hospital':hospitalCount}
+                     sentiment = max(searchTerms, key=searchTerms.get) 
+                     worksheet.write(idx+1,3,scamCount)
+                     worksheet.write(idx+1,4,spamCount)
+                     worksheet.write(idx+1,5,debtCount)
+                     worksheet.write(idx+1,6,hospitalCount)
+                     worksheet.write(idx+1,7,sentiment)
+                     if scamCount == 0 and spamCount == 0 and debtCount == 0 and hospitalCount == 0 and personCount == 0:
+                        worksheet.write(idx+1,7,"No Entries Detected")
+                     countitup = 1
+                     scamCount = 0
+                     spamCount = 0
+                     debtCount = 0
+                     hospitalCount = 0
                
-               worksheet.write(idx+1,2,pageNum)                  
+               worksheet.write(idx+1,2,int(pageNum))                  
 
 driver.quit()
 workbook.close()
