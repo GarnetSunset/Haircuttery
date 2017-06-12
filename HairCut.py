@@ -3,11 +3,11 @@ from __future__ import print_function
 from bs4 import BeautifulSoup
 from collections import defaultdict
 from Harvard import Excel2CSV
+from impala.dbapi import connect
 from IPython.display import HTML
 from os.path import join, dirname, abspath
 from selenium import webdriver
 import selenium.webdriver.support.ui as ui
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import csv
 import glob
@@ -89,7 +89,8 @@ website = raw_input("Input 1 for whoscall.in results, input 2 for BBB\n>") #, in
 numFormat = raw_input("Which format?\n1 for xxx-xxx-xxxx, 2 for (xxx) xxx-xxxx, 3 for xxxxxxxxxx\n>")
 
 g = threading.Thread(target=loading)
-g.start()
+if(website != "EXP2"):
+   g.start()
 
 if(website =="1"):
    stopPoint = fileName.index('.')
@@ -132,10 +133,26 @@ if(website == "3"):
    worksheet.write(0,7, "Sentiment")
    
 if(website == "EXP1"):
-   driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe") 
+   driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
+   driver.set_page_load_timeout(600)
    stopPoint = fileName.index('.')
    prepRev = fileName[0:stopPoint]
    totalName = prepRev + "_rev_800notes.xlsx"
+   workbook = xlsxwriter.Workbook(totalName)
+   worksheet = workbook.add_worksheet()
+   worksheet.write(0,0, "Telephone Number")
+   worksheet.write(0,1, "Approximate Number of Messages")
+   worksheet.write(0,2, "Number of Pages")
+   worksheet.write(0,3, "Number of Scammers")
+   worksheet.write(0,4, "Number of Spammers")
+   worksheet.write(0,5, "Number of Debt Collectors")
+   worksheet.write(0,6, "Number of Hospital")
+   worksheet.write(0,7, "Sentiment")
+
+if(website == "EXP2"):
+   stopPoint = fileName.index('.')
+   prepRev = fileName[0:stopPoint]
+   totalName = prepRev + "_rev_dataBase.xlsx"
    workbook = xlsxwriter.Workbook(totalName)
    worksheet = workbook.add_worksheet()
    worksheet.write(0,0, "Telephone Number")
@@ -302,7 +319,7 @@ for idx, cell_obj in enumerate(col):
                   pageNum = curSite[curBegin:curEnd]
                else:
                   pageNum = 1
-
+               
                numMessages = int(pageNum) - 1
                numMessages = numMessages * 20
                convertNum = str(numMessages)
@@ -318,7 +335,10 @@ for idx, cell_obj in enumerate(col):
                   if(pageNum != 1):
                      while(int(countitup) != int(pageNum) + 1):
                         countitup = int(countitup) + 1
-                        driver.get('http://800notes.com/Phone.aspx/{}/{}/'.format(tele800, countitup))
+                        try:
+                           driver.get('http://800notes.com/Phone.aspx/{}/{}/'.format(tele800, countitup))
+                        except TimeoutException:
+                           break
                         delay = 4
                         time.sleep(2)
                         if (countitup % 2 == 0):
@@ -336,7 +356,7 @@ for idx, cell_obj in enumerate(col):
                         block = soup.find(text=re.compile(r"OctoNet HTTP filter"))
                         extrablock = soup.find(text=re.compile(r"returning an unknown error"))
                         type(block) is str 
-                        type(extrablock) is str 
+                        type(extrablock) is str
                         if(block is not None or extrablock is not None):
                            print("\n Damn. Gimme an hour to fix this.")
                            time.sleep(2000)
@@ -358,7 +378,46 @@ for idx, cell_obj in enumerate(col):
                      debtCount = 0
                      hospitalCount = 0
                
-               worksheet.write(idx+1,2,int(pageNum))                  
+               worksheet.write(idx+1,2,int(pageNum))
+               
+   if(website == "EXP2"):
+      print("\nWould you like to drag the database or\ninput it manually?\n\nPress Enter when you're ready...>")
+      #if len(sys.argv) == 0:EXP
+      #   dataBase = sys.argv 
+      #else:
+      dataBase = raw_input("\nEnter the database file name\n>")
+      ld = open(dataBase, "r")
+      hostAdd = ld.readline()
+      portNum = ld.readline()
+      authType = ld.readline()
+      userNam = ld.readline()
+      passWor = ld.readline()
+      tableLis = ld.readline()
+      headerNM = ld.readline()
+      conn = connect(host=hostAdd, port=int(portNum), user=userNam, password=passWor, database=tableLis)
+      cursor = conn.cursor()
+      cursor.execute("select * from %s where %s = %s" % (tableLis, headerNM, tele800))
+      print(cursor.description)
+      results = cursor.fetchall()
+      print(results)
+         
+      scamCount = len(scamNum) + scamCount
+      spamCount = len(spamNum) + spamCount
+      debtCount = len(debtNum) + debtCount
+      hospitalCount = len(hospitalNum) + hospitalCount
+      if hospitalCount > 0:
+         hospitalCount+9999
+      searchTerms = {'Scam':scamCount,'Spam':spamCount,'Debt Collector':debtCount,'Hospital':hospitalCount}
+      sentiment = max(searchTerms, key=searchTerms.get) 
+      worksheet.write(idx+1,3,scamCount)
+      worksheet.write(idx+1,4,spamCount)
+      worksheet.write(idx+1,5,debtCount)
+      worksheet.write(idx+1,6,hospitalCount)
+      worksheet.write(idx+1,7,sentiment)
+      if scamCount == 0 and spamCount == 0 and debtCount == 0 and hospitalCount == 0 and personCount == 0:
+         worksheet.write(idx+1,7,"No Entries Detected")
+               
+      worksheet.write(idx+1,2,int(pageNum))
 
 driver.quit()
 workbook.close()
