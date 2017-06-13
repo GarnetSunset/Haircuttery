@@ -3,7 +3,7 @@ from __future__ import print_function
 from bs4 import BeautifulSoup
 from collections import defaultdict
 from Harvard import Excel2CSV
-from impala.dbapi import connect
+from pyhive import hive
 from IPython.display import HTML
 from os.path import join, dirname, abspath
 from selenium import webdriver
@@ -34,10 +34,13 @@ scamCount = 0
 spamCount = 0
 debtCount = 0
 hospitalCount = 0
+breaker = 0
 
 def loading(): 
    for s in itertools.cycle(['|','/','-','\\']):
       if done:
+         break
+      if(breaker == 1):
          break
       sys.stdout.write('\rloading ' + s)
       sys.stdout.flush()
@@ -132,7 +135,7 @@ if(website == "3"):
    worksheet.write(0,6, "Number of People")
    worksheet.write(0,7, "Sentiment")
    
-if(website == "EXP1"):
+if(website == "EXP1" and os.path.exists(r"C:/echromedriver.exe")):
    driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
    driver.set_page_load_timeout(600)
    stopPoint = fileName.index('.')
@@ -149,6 +152,12 @@ if(website == "EXP1"):
    worksheet.write(0,6, "Number of Hospital")
    worksheet.write(0,7, "Sentiment")
 
+if(website == "EXP1" and not os.path.exists(r"C:/echromedriver.exe")):
+   breaker = 1
+   print("\nPlease refer to the Readme, you don't have chromedriver.exe in 'C:\chromedriver'")
+   time.sleep(15)
+   sys.exit()
+   
 if(website == "EXP2"):
    stopPoint = fileName.index('.')
    prepRev = fileName[0:stopPoint]
@@ -340,7 +349,7 @@ for idx, cell_obj in enumerate(col):
                         except TimeoutException:
                            break
                         delay = 4
-                        time.sleep(2)
+                        time.sleep(1)
                         if (countitup % 2 == 0):
                            time.sleep(4)
                         else:
@@ -385,30 +394,31 @@ for idx, cell_obj in enumerate(col):
       #if len(sys.argv) == 0:EXP
       #   dataBase = sys.argv 
       #else:
+      #g.start()
       dataBase = raw_input("\nEnter the database file name\n>")
       ld = open(dataBase, "r")
-      hostAdd = ld.readline()
-      portNum = ld.readline()
-      authType = ld.readline()
-      userNam = ld.readline()
-      passWor = ld.readline()
-      tableLis = ld.readline()
-      headerNM = ld.readline()
-      conn = connect(host=hostAdd, port=int(portNum), user=userNam, password=passWor, database=tableLis)
-      cursor = conn.cursor()
-      cursor.execute("select * from %s where %s = %s" % (tableLis, headerNM, tele800))
+      itemList = ld.read().splitlines()
+      hostAdd = itemList[0]
+      portNum = itemList[1]
+      authType = itemList[2]
+      userNam = itemList[3]
+      passWor = itemList[4]
+      tableLis = itemList[5]
+      headerNM = itemList[6]
+      print("Connecting to your Host...")
+      conn = hive.Connection(host=hostAdd, port=int(portNum), auth_mechanism=authType , user=userNam, password=passWor, database=tableLis)
+      print(conn)
+      curbed = conn.cursor()
+      print("select * from %s where %s = %s" % (tableLis, headerNM, tele800))
+      curbed.execute("select * from %s where %s = %s" % (tableLis, headerNM, tele800))
       print(cursor.description)
       results = cursor.fetchall()
       print(results)
-         
-      scamCount = len(scamNum) + scamCount
-      spamCount = len(spamNum) + spamCount
-      debtCount = len(debtNum) + debtCount
-      hospitalCount = len(hospitalNum) + hospitalCount
+      sentiment = cursor.fetchall()
       if hospitalCount > 0:
          hospitalCount+9999
       searchTerms = {'Scam':scamCount,'Spam':spamCount,'Debt Collector':debtCount,'Hospital':hospitalCount}
-      sentiment = max(searchTerms, key=searchTerms.get) 
+      #sentiment = max(searchTerms, key=searchTerms.get) 
       worksheet.write(idx+1,3,scamCount)
       worksheet.write(idx+1,4,spamCount)
       worksheet.write(idx+1,5,debtCount)
