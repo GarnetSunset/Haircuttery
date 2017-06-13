@@ -3,7 +3,7 @@ from __future__ import print_function
 from bs4 import BeautifulSoup
 from collections import defaultdict
 from Harvard import Excel2CSV
-from pyhive import hive
+from impala.dbapi import connect
 from IPython.display import HTML
 from os.path import join, dirname, abspath
 from selenium import webdriver
@@ -135,7 +135,7 @@ if(website == "3"):
    worksheet.write(0,6, "Number of People")
    worksheet.write(0,7, "Sentiment")
    
-if(website == "EXP1" and os.path.exists(r"C:/echromedriver.exe")):
+if(website == "EXP1" and os.path.exists(r"C:/chromedriver.exe")):
    driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
    driver.set_page_load_timeout(600)
    stopPoint = fileName.index('.')
@@ -152,7 +152,7 @@ if(website == "EXP1" and os.path.exists(r"C:/echromedriver.exe")):
    worksheet.write(0,6, "Number of Hospital")
    worksheet.write(0,7, "Sentiment")
 
-if(website == "EXP1" and not os.path.exists(r"C:/echromedriver.exe")):
+if(website == "EXP1" and not os.path.exists(r"C:/chromedriver.exe")):
    breaker = 1
    print("\nPlease refer to the Readme, you don't have chromedriver.exe in 'C:\chromedriver'")
    time.sleep(15)
@@ -406,7 +406,7 @@ for idx, cell_obj in enumerate(col):
       tableLis = itemList[5]
       headerNM = itemList[6]
       print("Connecting to your Host...")
-      conn = hive.Connection(host=hostAdd, port=int(portNum), auth_mechanism=authType , user=userNam, password=passWor, database=tableLis)
+      conn = connect(host=hostAdd, port=int(portNum), auth_mechanism=authType , user=userNam, password=passWor, database=tableLis)
       print(conn)
       curbed = conn.cursor()
       print("select * from %s where %s = %s" % (tableLis, headerNM, tele800))

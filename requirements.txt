@@ -12,4 +12,4 @@ IPython
 xlsxwriter
 lxml
 selenium
-pyhive
+impyla
