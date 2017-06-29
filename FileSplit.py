@@ -103,7 +103,6 @@ if(int(row) > 1000):
     copyfile('HairCut.py', "WorkingDir/" + preName + '/HairCut.py')
     copyfile('Harvard.py', "WorkingDir/" + preName + '/Harvard.py')
     tempFile = open('tempFile', 'w')
-    print(str(tempFile))
     tempFile.write(preName)
     tempFile.close()
 
