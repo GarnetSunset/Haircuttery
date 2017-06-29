@@ -1,7 +1,7 @@
 from __future__ import print_function
 from bs4 import BeautifulSoup
 from collections import defaultdict
-from Harvard import Excel2CSV, enumColumn
+from Harvard import Excel2CSV, enumColumn, TimeOutHandler
 from IPython.display import HTML
 from os.path import join, dirname, abspath
 from selenium import webdriver
@@ -299,10 +299,7 @@ for idx, cell_obj in enumerate(col):
                 driver.get('http://800notes.com/Phone.aspx/%s/10000' %
                            (tele800))
             except TimeoutException as ex:
-                driver.close()
-                driver = webdriver.Chrome()
-                worksheet.write(idx + 1, 7, "Timeout Exception")
-                break
+                TimeOutHandler(driver=driver,worksheet=worksheet,webdriver=webdriver)
             curSite = driver.current_url
             pageExist = soup.find("a", class_="oos_i_thumbDown")
             type(pageExist) is str
@@ -332,10 +329,7 @@ for idx, cell_obj in enumerate(col):
                             driver.get(
                                 'http://800notes.com/Phone.aspx/{}/{}/'.format(tele800, countitup))
                     except TimeoutException as ex:
-                        driver.close()
-                        driver = webdriver.Chrome()
-                        worksheet.write(idx + 1, 7, "Timeout Exception")
-                        break
+                        TimeOutHandler(driver=driver,worksheet=worksheet,webdriver=webdriver)
                     delay = 4
                     requestRec = driver.page_source
                     soup = BeautifulSoup(requestRec, "lxml")
