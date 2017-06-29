@@ -409,4 +409,3 @@ move(preName + "_temp.csv", "WorkingDir/" +
 
 done = True
 print ("\nDing! Job Done!")
-sys.exit()
