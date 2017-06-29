@@ -95,11 +95,11 @@ if(int(row) > 1000):
         if(totalName.rfind('\\') != None):
             postSlash = fileName.rfind('\\') + 1
             folderName = totalName[postSlash:]
-            move(folderName, preName + '/' + folderName)
+            move(folderName, "WorkingDir/" +  preName + '/' + folderName)
         else:
-            move(totalName, preName + '/' + totalName)
+            move(totalName, "WorkingDir/" +  preName + '/' + totalName)
 
-    copyfile(fileName, preName + '/' + fileName)
+    copyfile(fileName, "WorkingDir/" +  preName + '/' + fileName)
     copyfile('HairCut.py', "WorkingDir/" + preName + '/HairCut.py')
     copyfile('Harvard.py', "WorkingDir/" + preName + '/Harvard.py')
     tempFile = open('tempFile', 'w')
