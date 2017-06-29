@@ -27,6 +27,16 @@ import xlrd
 import xlsxwriter
 import xlwt
 
+def loading():
+    for s in itertools.cycle(['|', '/', '-', '\\']):
+        if done:
+            break
+        if(breaker == 1):
+            break
+        sys.stdout.write('\rloading ' + s)
+        sys.stdout.flush()
+        time.sleep(0.1)
+
 breaker = 0
 countitup = 1
 debtCount = 0
