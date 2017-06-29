@@ -21,33 +21,33 @@ https://www.microsoft.com/en-us/download/details.aspx?id=44266
 
 
 ## Dependencies:
-*xlrd
+* xlrd
 
-*xlwt
+* xlwt
 
-*bs4
+* bs4
 
-*requests
+* requests
 
-*flask
+* flask
 
-*numpy
+* numpy
 
-*regex
+* regex
 
-*pyopenssl
+* pyopenssl
 
-*ndg-httpsclient
+* ndg-httpsclient
 
-*pyasn1
+* pyasn1
 
-*IPython 
+* IPython 
 
-*xlsxwriter
+* xlsxwriter
 
-*lxml
+* lxml
 
-*selenium
+* selenium
 
 
 pip can fetch these with the command "pip install -r requirements.txt"

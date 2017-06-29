@@ -366,7 +366,7 @@ prepRev = preName + '_temp.csv'
 Excel2CSV(totalName, "Sheet1", prepRev)
 
 if not os.path.exists(preName):
-   os.makedirs(preName)
+   os.makedirs("WorkingDir/" + preName)
 if prepRev == ".csv":
    totalName = preName + prepRev
 else:
