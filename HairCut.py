@@ -125,8 +125,11 @@ if(website == "1"):
 
 if(website == "2"):
     if(os.path.exists(r"C:/chromedriver.exe") or os.path.exists(r"chromedriver.exe")):
-        driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
-        driver.set_page_load_timeout(5006900)
+        if(os.path.exists(r"C:/chromedriver.exe")):
+            driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
+        if(os.path.exists(r"chromedriver.exe")):
+            driver = webdriver.Chrome(executable_path=r"chromedriver.exe")
+        driver.set_page_load_timeout(600)
         stopPoint = fileName.index('.')
         prepRev = fileName[0:stopPoint]
         totalName = prepRev + "_rev_BBB.xlsx"
@@ -143,7 +146,10 @@ if(website == "2"):
 
 if(website == "3"):
     if(os.path.exists(r"C:/chromedriver.exe") or os.path.exists(r"chromedriver.exe")):
-        driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
+        if(os.path.exists(r"C:/chromedriver.exe")):
+            driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
+        if(os.path.exists(r"chromedriver.exe")):
+            driver = webdriver.Chrome(executable_path=r"chromedriver.exe")
         driver.set_page_load_timeout(600)
         stopPoint = fileName.index('.')
         prepRev = fileName[0:stopPoint]
