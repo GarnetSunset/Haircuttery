@@ -87,7 +87,6 @@ if prepRev == ".csv":
     print("Temporary Convert to xlsx done.\n")
 
 fname = join(dirname(abspath('__file__')), '%s' % fileName)
-#http://whoscall.in/1/**********/ is the layout#
 
 xl_workbook = xlrd.open_workbook(fname)
 sheet_names = xl_workbook.sheet_names()
@@ -124,47 +123,47 @@ if(website == "1"):
     worksheet.write(0, 7, "Sentiment")
     siteType = "_rev_who.xlsx"
 
-if(website == "2" and os.path.exists(r"C:/chromedriver.exe")):
-    driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
-    driver.set_page_load_timeout(5006900)
-    stopPoint = fileName.index('.')
-    prepRev = fileName[0:stopPoint]
-    totalName = prepRev + "_rev_BBB.xlsx"
-    workbook = xlsxwriter.Workbook(totalName)
-    worksheet = workbook.add_worksheet()
-    worksheet.write(0, 0, "Telephone Number")
-    worksheet.write(0, 1, "Acreditted")
-    siteType = "_rev_BBB.xlsx"
+if(website == "2"):
+    if(os.path.exists(r"C:/chromedriver.exe") or os.path.exists(r"chromedriver.exe")):
+        driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
+        driver.set_page_load_timeout(5006900)
+        stopPoint = fileName.index('.')
+        prepRev = fileName[0:stopPoint]
+        totalName = prepRev + "_rev_BBB.xlsx"
+        workbook = xlsxwriter.Workbook(totalName)
+        worksheet = workbook.add_worksheet()
+        worksheet.write(0, 0, "Telephone Number")
+        worksheet.write(0, 1, "Acreditted")
+        siteType = "_rev_BBB.xlsx"
+    else:
+        breaker = 1
+        print("\nPlease refer to the Readme, you don't have chromedriver.exe in 'C:\chromedriver'")
+        time.sleep(15)
+        sys.exit()
 
-if(website == "2" and not os.path.exists(r"C:/chromedriver.exe")):
-    breaker = 1
-    print("\nPlease refer to the Readme, you don't have chromedriver.exe in 'C:\chromedriver'")
-    time.sleep(15)
-    sys.exit()
-
-if(website == "3" and os.path.exists(r"C:/chromedriver.exe")):
-    driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
-    driver.set_page_load_timeout(600)
-    stopPoint = fileName.index('.')
-    prepRev = fileName[0:stopPoint]
-    totalName = prepRev + "_rev_800notes.xlsx"
-    workbook = xlsxwriter.Workbook(totalName)
-    worksheet = workbook.add_worksheet()
-    worksheet.write(0, 0, "Telephone Number")
-    worksheet.write(0, 1, "Approximate Number of Messages")
-    worksheet.write(0, 2, "Number of Pages")
-    worksheet.write(0, 3, "Number of Scammers")
-    worksheet.write(0, 4, "Number of Spammers")
-    worksheet.write(0, 5, "Number of Debt Collectors")
-    worksheet.write(0, 6, "Number of Hospital")
-    worksheet.write(0, 7, "Sentiment")
-    siteType = "_rev_800notes.xlsx"
-
-if(website == "3" and not os.path.exists(r"C:/chromedriver.exe")):
-    breaker = 1
-    print("\nPlease refer to the Readme, you don't have chromedriver.exe in 'C:\chromedriver'")
-    time.sleep(15)
-    sys.exit()
+if(website == "3"):
+    if(os.path.exists(r"C:/chromedriver.exe") or os.path.exists(r"chromedriver.exe")):
+        driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
+        driver.set_page_load_timeout(600)
+        stopPoint = fileName.index('.')
+        prepRev = fileName[0:stopPoint]
+        totalName = prepRev + "_rev_800notes.xlsx"
+        workbook = xlsxwriter.Workbook(totalName)
+        worksheet = workbook.add_worksheet()
+        worksheet.write(0, 0, "Telephone Number")
+        worksheet.write(0, 1, "Approximate Number of Messages")
+        worksheet.write(0, 2, "Number of Pages")
+        worksheet.write(0, 3, "Number of Scammers")
+        worksheet.write(0, 4, "Number of Spammers")
+        worksheet.write(0, 5, "Number of Debt Collectors")
+        worksheet.write(0, 6, "Number of Hospital")
+        worksheet.write(0, 7, "Sentiment")
+        siteType = "_rev_800notes.xlsx"
+    else:
+        breaker = 1
+        print("\nPlease refer to the Readme, you don't have chromedriver.exe in 'C:\chromedriver'")
+        time.sleep(15)
+        sys.exit()
 
 worksheet.set_column('A:A', 13)
 col = xl_sheet.col_slice(0, 1, 10101010)
