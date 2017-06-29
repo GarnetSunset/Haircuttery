@@ -1,8 +1,8 @@
 # Documents
-.pyc
-.csv
-.xlsx
-.xls
+*.pyc
+*.csv
+*.xlsx
+*.xls
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -33,7 +33,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-.log
+*.log
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
