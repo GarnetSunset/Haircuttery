@@ -40,18 +40,6 @@ x = 2
 y = 3
 z = 4
 
-def loading():
-    for s in itertools.cycle(['|', '/', '-', '\\']):
-        if done:
-            break
-        if(breaker == 1):
-            break
-        sys.stdout.write('\rloading ' + s)
-        sys.stdout.flush()
-        time.sleep(0.1)
-
-
-url = "http://github.com/"
 book = xlwt.Workbook(encoding="utf-8")
 headers = {
     'User-Agent': 'Chrome/39.0.2171.95 Safari/537.36 AppleWebKit/537.36 (KHTML, like Gecko)'}
@@ -62,8 +50,6 @@ webType = sys.argv[2:3]
 dragNDrop2 = ''.join(webType)
 numType = sys.argv[3:4]
 dragNDrop3 = ''.join(numType)
-response = requests.get(url, headers=headers)
-content = BeautifulSoup(response.content, "lxml")
 
 if draganddrop == "":
     fileName = raw_input("\nInput the file with extension\n>")
@@ -274,9 +260,7 @@ for idx, cell_obj in enumerate(col):
         try:
             driver.get('http://800notes.com/Phone.aspx/%s' % (tele800))
         except TimeoutException as ex:
-            driver.close()
-            driver = webdriver.Chrome()
-            worksheet.write(idx + 1, 7, "Timeout Exception")
+            TimeOutHandler(driver=driver,worksheet=worksheet,webdriver=webdriver)
             break
         delay = 4
         time.sleep(4)
@@ -300,6 +284,7 @@ for idx, cell_obj in enumerate(col):
                            (tele800))
             except TimeoutException as ex:
                 TimeOutHandler(driver=driver,worksheet=worksheet,webdriver=webdriver)
+                break
             curSite = driver.current_url
             pageExist = soup.find("a", class_="oos_i_thumbDown")
             type(pageExist) is str
@@ -330,6 +315,7 @@ for idx, cell_obj in enumerate(col):
                                 'http://800notes.com/Phone.aspx/{}/{}/'.format(tele800, countitup))
                     except TimeoutException as ex:
                         TimeOutHandler(driver=driver,worksheet=worksheet,webdriver=webdriver)
+                        break
                     delay = 4
                     requestRec = driver.page_source
                     soup = BeautifulSoup(requestRec, "lxml")

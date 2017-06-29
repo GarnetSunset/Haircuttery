@@ -66,4 +66,3 @@ def TimeOutHandler(driver,webdriver,worksheet):
     driver.close()
     driver = webdriver.Chrome()
     worksheet.write(idx + 1, 7, "Timeout Exception")
-    break
