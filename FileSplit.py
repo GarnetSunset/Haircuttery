@@ -1,3 +1,4 @@
+from Harvard import enumColumn
 from os.path import join, dirname, abspath
 from shutil import copyfile
 from shutil import move

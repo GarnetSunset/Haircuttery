@@ -1,7 +1,7 @@
 from __future__ import print_function
 from bs4 import BeautifulSoup
 from collections import defaultdict
-from Harvard import Excel2CSV
+from Harvard import Excel2CSV, enumColumn
 from IPython.display import HTML
 from os.path import join, dirname, abspath
 from selenium import webdriver
@@ -39,7 +39,6 @@ w = 1
 x = 2
 y = 3
 z = 4
-
 
 def loading():
     for s in itertools.cycle(['|', '/', '-', '\\']):
@@ -85,11 +84,7 @@ if prepRev == ".csv":
     excelFile.close()
     excelFile = xlsxwriter.Workbook(totalName)
     worksheet = excelFile.add_worksheet()
-    with open(fileName, 'rb') as f:
-        content = csv.reader(f)
-        for index_col, data_in_col in enumerate(content):
-            for index_row, data_in_cell in enumerate(data_in_col):
-                worksheet.write(index_col, index_row, data_in_cell)
+    enumColumn(fileName=fileName,worksheet=worksheet)
     excelFile.close()
     fileName = (preName + '.xlsx')
     delMe = 1

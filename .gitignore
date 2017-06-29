@@ -3,6 +3,7 @@
 *.csv
 *.xlsx
 *.xls
+tempFile
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -108,4 +109,3 @@ ENV/
 
 # mypy
 .mypy_cache/
-
