@@ -124,11 +124,11 @@ if(website == "1"):
     siteType = "_rev_who.xlsx"
 
 if(website == "2"):
-    if(os.path.exists(r"C:/chromedriver.exe") or os.path.exists(r"chromedriver.exe")):
+    if(os.path.exists(r"C:/chromedriver.exe") or os.path.isfile('chromedriver.exe')):
         if(os.path.exists(r"C:/chromedriver.exe")):
             driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
-        if(os.path.exists(r"chromedriver.exe")):
-            driver = webdriver.Chrome(executable_path=r"chromedriver.exe")
+        if(os.path.isfile('chromedriver.exe')):
+            driver = webdriver.Chrome(executable_path='chromedriver.exe')
         driver.set_page_load_timeout(600)
         stopPoint = fileName.index('.')
         prepRev = fileName[0:stopPoint]
@@ -145,11 +145,11 @@ if(website == "2"):
         sys.exit()
 
 if(website == "3"):
-    if(os.path.exists(r"C:/chromedriver.exe") or os.path.exists(r"chromedriver.exe")):
+    if(os.path.exists(r"C:/chromedriver.exe") or os.path.isfile('chromedriver.exe')):
         if(os.path.exists(r"C:/chromedriver.exe")):
             driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
-        if(os.path.exists(r"chromedriver.exe")):
-            driver = webdriver.Chrome(executable_path=r"chromedriver.exe")
+        if(os.path.isfile('chromedriver.exe')):
+            driver = webdriver.Chrome(executable_path='chromedriver.exe')
         driver.set_page_load_timeout(600)
         stopPoint = fileName.index('.')
         prepRev = fileName[0:stopPoint]
@@ -167,7 +167,7 @@ if(website == "3"):
         siteType = "_rev_800notes.xlsx"
     else:
         breaker = 1
-        print("\nPlease refer to the Readme, you don't have chromedriver.exe in 'C:\chromedriver'")
+        print("\nPlease refer to the Readme, you don't have chromedriver.exe in 'C:\chromedriver.exe'")
         time.sleep(15)
         sys.exit()
 
