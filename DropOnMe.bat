@@ -26,8 +26,6 @@ SET /P tnFormat=Which format? 1 for xxx-xxx-xxxx, 2 for (xxx) xxx-xxxx, 3 for xx
 
 :HairCut
 
-echo 8
-
 if exist %fileName% (
 
 python "HairCut.py" %fileName% %webSite% %tnFormat%
