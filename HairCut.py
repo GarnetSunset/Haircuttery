@@ -390,8 +390,6 @@ for idx, cell_obj in enumerate(col):
             spamCount = 0
             worksheet.write(idx + 1, 2, int(pageNum))
 
-if(website == "2" or website == "3"):
-    driver.close()
 workbook.close()
 prepRev = preName + '_temp.csv'
 Excel2CSV(totalName, "Sheet1", prepRev)
