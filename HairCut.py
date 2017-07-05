@@ -1,7 +1,7 @@
 from __future__ import print_function
 from bs4 import BeautifulSoup
 from collections import defaultdict
-from Harvard import Excel2CSV, enumColumn, TimeOutHandler
+from Harvard import Excel2CSV, enumColumn
 from IPython.display import HTML
 from os.path import join, dirname, abspath
 from selenium import webdriver
