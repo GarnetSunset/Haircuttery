@@ -392,15 +392,14 @@ prepRev = preName + '_temp.csv'
 Excel2CSV(totalName, "Sheet1", prepRev)
 
 if not os.path.exists(preName):
-    os.makedirs("WorkingDir/" + preName)
+    os.makedirs(preName)
 if prepRev == ".csv":
     totalName = preName + prepRev
 else:
     totalName = preName + ".xlsx"
-copyfile(totalName, "WorkingDir/" + preName + '/' + totalName)
-move(preName + siteType, "WorkingDir/" + preName + '/' + preName + siteType)
-move(preName + "_temp.csv", "WorkingDir/" +
-     preName + '/' + preName + "_temp.csv")
+copyfile(totalName, preName + '/' + totalName)
+move(preName + siteType, preName + '/' + preName + siteType)
+move(preName + "_temp.csv", preName + '/' + preName + "_temp.csv")
 
 done = True
 print ("\nDing! Job Done!")
