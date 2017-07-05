@@ -104,8 +104,7 @@ else:
     website = dragNDrop2
 
 if dragNDrop3 == "":
-    numFormat = raw_input(
-        "Which format?\n1 for xxx-xxx-xxxx, 2 for (xxx) xxx-xxxx, 3 for xxxxxxxxxx\n>")
+    numFormat = "3"
 else:
     numFormat = dragNDrop3
 
@@ -181,6 +180,12 @@ col = xl_sheet.col_slice(0, 1, 10101010)
 for idx, cell_obj in enumerate(col):
     cell_type_str = ctype_text.get(cell_obj.ctype, 'unknown type')
     cell_obj_str = str(cell_obj)
+
+    if "-" in cell_obj_str:
+        numFormat = "1"
+
+    if "(" in cell_obj_str:
+        numFormat = "2"
 
     if(numFormat == "1"):
         firstStart = cell_obj_str.index('-') - 3

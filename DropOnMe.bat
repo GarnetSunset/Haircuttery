@@ -21,9 +21,9 @@ set fileName="%folderName%_%COUNTER%.xlsx"
 cls
 
 SET /P webSite=Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes:
-
+goto ignore
 SET /P tnFormat=Which format? 1 for xxx-xxx-xxxx, 2 for (xxx) xxx-xxxx, 3 for xxxxxxxxxx:
-
+:ignore
 :HairCut
 
 if exist %fileName% (
