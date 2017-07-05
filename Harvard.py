@@ -61,8 +61,3 @@ def Excel2CSV(ExcelFile, SheetName, CSVFile):
                  for x in worksheet.row_values(rownum)))
 
     csvfile.close()
-
-def TimeOutHandler(driver,webdriver,worksheet):
-    driver.close()
-    driver = webdriver.Chrome()
-    worksheet.write(idx + 1, 7, "Timeout Exception")

@@ -37,6 +37,11 @@ def loading():
         sys.stdout.flush()
         time.sleep(0.1)
 
+def TimeOutHandler(driver,webdriver,worksheet):
+    driver.close()
+    driver = webdriver.Chrome()
+    worksheet.write(idx + 1, 7, "Timeout Exception")
+
 breaker = 0
 countitup = 1
 debtCount = 0
