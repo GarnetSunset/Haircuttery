@@ -115,7 +115,9 @@ if(int(row) > 1000):
 else:
     if not os.path.exists("WorkingDir"):
         os.makedirs("WorkingDir")
-    copyfile(fileName,"WorkingDir/" + fileName)
+    copyfile(fileName,"WorkingDir/" + preName + "/" + fileName)
+    copyfile('HairCut.py', "WorkingDir/" + preName + '/HairCut.py')
+    copyfile('Harvard.py', "WorkingDir/" + preName + '/Harvard.py')
     tempFile = open('tempSmall.log', 'w')
     tempFile.write(preName)
     tempFile.close()
