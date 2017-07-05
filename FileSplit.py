@@ -113,6 +113,9 @@ if(int(row) > 1000):
         print("Temp File Cleaned!\n")
 
 else:
+    if not os.path.exists("WorkingDir"):
+        os.makedirs("WorkingDir")
+    copyfile(fileName,"WorkingDir/" + fileName)
     tempFile = open('tempSmall.log', 'w')
     tempFile.write(preName)
     tempFile.close()
