@@ -16,13 +16,13 @@ cd /d %folderName%
 
 Set COUNTER=1
 
-set fileName="%folderName%_%COUNTER%.xlsx"
-
 cls
 
 SET /P webSite=Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes:
 
 :HairCut
+
+set fileName="%folderName%_%COUNTER%.xlsx"
 
 if exist %fileName% (
 
