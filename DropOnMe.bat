@@ -48,6 +48,10 @@ EXIT /B
 
 :JustGoForIt
 
+cd /d WorkingDir
+
+cd /d %folderName%
+
 cls
 
 del /f "tempSmall.log"
