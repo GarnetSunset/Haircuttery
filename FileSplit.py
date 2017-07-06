@@ -115,6 +115,8 @@ if(int(row) > 1000):
 else:
     if not os.path.exists("WorkingDir"):
         os.makedirs("WorkingDir")
+    if not os.path.exists("WorkingDir/" + preName):
+        os.makedirs("WorkingDir/" + preName)
     copyfile(fileName,"WorkingDir/" + preName + "/" + fileName)
     copyfile('HairCut.py', "WorkingDir/" + preName + '/HairCut.py')
     copyfile('Harvard.py', "WorkingDir/" + preName + '/Harvard.py')
