@@ -44,7 +44,9 @@ def TimeOutHandler(driver, webdriver, worksheet):
     driver = webdriver.Chrome()
     worksheet.write(idx + 1, 7, "Timeout Exception")
 
-
+bbbEnd = "&locationText=&locationLatLng=&page=1"
+bbbUrl = "https://www.bbb.org/en/us/search?inputText="
+bbbUrlAC = "https://www.bbb.org/en/us/search?accreditedFilter=1&inputText="
 breaker = 0
 countitup = 1
 debtCount = 0
@@ -268,14 +270,14 @@ for idx, cell_obj in enumerate(col):
                 worksheet.write(idx + 1, 7, "No Entries Detected")
 
     if(website == "2"):
-        driver.get('https://www.bbb.org/en/us/search?inputText=' +
-                   teleBBB + '&locationText=&locationLatLng=&page=1')
+        driver.get(bbbUrl+
+                   teleBBB + bbbEnd)
         time.sleep(1)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, "lxml")
         Hit = soup.find_all('aside', {'class': 'search-result__aside'})
-        driver.get('https://www.bbb.org/en/us/search?accreditedFilter=1&inputText=' +
-                   teleBBB + '&locationText=&locationLatLng=&page=1')
+        driver.get(bbbURLAC +
+                   teleBBB + bbbEnd)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, "lxml")
         Badge = soup.find_all('aside', {'class': 'search-result__aside'})
