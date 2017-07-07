@@ -48,13 +48,15 @@ EXIT /B
 
 :JustGoForIt
 
+set /p folderName=<"tempSmall.log"
+
+del /f "tempSmall.log"
+
 cd /d WorkingDir
 
 cd /d %folderName%
 
 cls
-
-del /f "tempSmall.log"
 
 python "Haircut.py" %*
 
