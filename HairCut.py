@@ -400,21 +400,22 @@ workbook.close()
 prepRev = preName + '_temp.csv'
 Excel2CSV(totalName, "Sheet1", prepRev)
 
-if not os.path.exists("WorkingDir"):
-    os.makedirs("WorkingDir")
-
-if not os.path.exists("WorkingDir/" + preName):
-    os.makedirs("WorkingDir/" + preName)
+if draganddrop == "":
+    if not os.path.exists("WorkingDir"):
+        os.makedirs("WorkingDir")
+    if not os.path.exists("WorkingDir/" + preName):
+        os.makedirs("WorkingDir/" + preName)
 
 if prepRev == ".csv":
     totalName = preName + prepRev
 else:
     totalName = preName + ".xlsx"
 
-copyfile(totalName, "WorkingDir/" + preName + '/' + totalName)
-move(preName + siteType, "WorkingDir/" + preName + '/' + preName + siteType)
-move(preName + "_temp.csv", "WorkingDir/" +
-     preName + '/' + preName + "_temp.csv")
+if draganddrop == "":
+    copyfile(totalName, "WorkingDir/" + preName + '/' + totalName)
+    move(preName + siteType, "WorkingDir/" + preName + '/' + preName + siteType)
+    move(preName + "_temp.csv", "WorkingDir/" +
+        preName + '/' + preName + "_temp.csv")
 
 done = True
 print ("\nDing! Job Done!")
