@@ -27,6 +27,7 @@ import xlrd
 import xlsxwriter
 import xlwt
 
+
 def loading():
     for s in itertools.cycle(['|', '/', '-', '\\']):
         if done:
@@ -37,10 +38,12 @@ def loading():
         sys.stdout.flush()
         time.sleep(0.1)
 
-def TimeOutHandler(driver,webdriver,worksheet):
+
+def TimeOutHandler(driver, webdriver, worksheet):
     driver.close()
     driver = webdriver.Chrome()
     worksheet.write(idx + 1, 7, "Timeout Exception")
+
 
 breaker = 0
 countitup = 1
@@ -85,7 +88,7 @@ if prepRev == ".csv":
     excelFile.close()
     excelFile = xlsxwriter.Workbook(totalName)
     worksheet = excelFile.add_worksheet()
-    enumColumn(fileName=fileName,worksheet=worksheet)
+    enumColumn(fileName=fileName, worksheet=worksheet)
     excelFile.close()
     fileName = (preName + '.xlsx')
     delMe = 1
@@ -285,7 +288,8 @@ for idx, cell_obj in enumerate(col):
         try:
             driver.get('http://800notes.com/Phone.aspx/%s' % (tele800))
         except TimeoutException as ex:
-            TimeOutHandler(driver=driver,worksheet=worksheet,webdriver=webdriver)
+            TimeOutHandler(driver=driver, worksheet=worksheet,
+                           webdriver=webdriver)
             break
         delay = 4
         time.sleep(4)
@@ -308,7 +312,8 @@ for idx, cell_obj in enumerate(col):
                 driver.get('http://800notes.com/Phone.aspx/%s/10000' %
                            (tele800))
             except TimeoutException as ex:
-                TimeOutHandler(driver=driver,worksheet=worksheet,webdriver=webdriver)
+                TimeOutHandler(driver=driver, worksheet=worksheet,
+                               webdriver=webdriver)
                 break
             curSite = driver.current_url
             pageExist = soup.find("a", class_="oos_i_thumbDown")
@@ -339,7 +344,8 @@ for idx, cell_obj in enumerate(col):
                             driver.get(
                                 'http://800notes.com/Phone.aspx/{}/{}/'.format(tele800, countitup))
                     except TimeoutException as ex:
-                        TimeOutHandler(driver=driver,worksheet=worksheet,webdriver=webdriver)
+                        TimeOutHandler(
+                            driver=driver, worksheet=worksheet, webdriver=webdriver)
                         break
                     delay = 4
                     requestRec = driver.page_source
@@ -394,15 +400,21 @@ workbook.close()
 prepRev = preName + '_temp.csv'
 Excel2CSV(totalName, "Sheet1", prepRev)
 
-if not os.path.exists(preName):
-    os.makedirs(preName)
+if not os.path.exists("WorkingDir"):
+    os.makedirs("WorkingDir")
+
+if not os.path.exists("WorkingDir/" + preName):
+    os.makedirs("WorkingDir/" + preName)
+
 if prepRev == ".csv":
     totalName = preName + prepRev
 else:
     totalName = preName + ".xlsx"
-copyfile(totalName, preName + '/' + totalName)
-move(preName + siteType, preName + '/' + preName + siteType)
-move(preName + "_temp.csv", preName + '/' + preName + "_temp.csv")
+
+copyfile(totalName, "WorkingDir/" + preName + '/' + totalName)
+move(preName + siteType, "WorkingDir/" + preName + '/' + preName + siteType)
+move(preName + "_temp.csv", "WorkingDir/" +
+     preName + '/' + preName + "_temp.csv")
 
 done = True
 print ("\nDing! Job Done!")
