@@ -14,6 +14,7 @@ from xlrd.sheet import ctype_text
 import csv
 import glob
 import itertools
+import logging
 import numpy as np
 import os
 import re
@@ -112,6 +113,16 @@ if dragNDrop3 == "":
     numFormat = "3"
 else:
     numFormat = dragNDrop3
+
+if(website == "v"):
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
+    website = raw_input(
+        "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
+    logging.basicConfig(level=logging.DEBUG)
+    logging.debug('Only shown in debug mode')
 
 g = threading.Thread(target=loading)
 g.start()
@@ -276,7 +287,7 @@ for idx, cell_obj in enumerate(col):
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, "lxml")
         Hit = soup.find_all('aside', {'class': 'search-result__aside'})
-        driver.get(bbbURLAC +
+        driver.get(bbbUrlAC +
                    teleBBB + bbbEnd)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, "lxml")
