@@ -190,7 +190,7 @@ if(website == "2"):
         workbook = xlsxwriter.Workbook(totalName)
         worksheet = workbook.add_worksheet()
         worksheet.write(0, 0, "Telephone Number")
-        worksheet.write(0, 1, "Acreditted")
+        worksheet.write(0, 1, "Accredited")
         siteType = "_rev_BBB.xlsx"
     else:
         breaker()
