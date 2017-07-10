@@ -1,6 +1,11 @@
 @ECHO OFF
 
-pip install -r requirements.txt
+where /q pip
+IF ERRORLEVEL 1 (
+    cls
+) ELSE (
+    pip install -q -r requirements.txt
+)
 
 cls
 
