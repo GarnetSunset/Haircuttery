@@ -11,19 +11,18 @@ import xlrd
 import xlsxwriter
 import xlwt
 
-file_paths = sys.argv[1:]
-draganddrop = ''.join(file_paths)
+dragNDrop = ''.join(sys.argv[1:])
 beginGrab = 1
 counting = 0
 delMe = 0
 endGame = "HairCut.py"
 thousands = 0
 
-if draganddrop == "":
+if dragNDrop == "":
     fileName = raw_input("\nInput the file with extension\n>")
 else:
-    fileOnly = draganddrop.rfind('\\') + 1
-    fileName = draganddrop[fileOnly:]
+    fileOnly = dragNDrop.rfind('\\') + 1
+    fileName = dragNDrop[fileOnly:]
 
 stopPoint = fileName.index('.')
 prepRev = fileName[stopPoint:]
@@ -48,7 +47,6 @@ if prepRev == ".csv":
                 worksheet.write(index_col, index_row, data_in_cell)
     excelFile.close()
     fileName = (preName + '.xlsx')
-    delMe = 1
     print("Temporary Convert to xlsx done.\n")
 
 stopPoint = fileName.index('.')
