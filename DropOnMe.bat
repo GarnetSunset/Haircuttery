@@ -1,5 +1,9 @@
 @ECHO OFF
 
+pip install -r requirements.txt
+
+cls
+
 python "FileSplit.py" %*
 
 cls
