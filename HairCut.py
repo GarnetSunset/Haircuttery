@@ -300,7 +300,8 @@ if(website == "4"):
             breaker()
     driver.set_page_load_timeout(600)
     stopPoint = fileName.index('.')
-    prepRev = fileName[0:stopPoint]
+    prepRev = fileName[0:stopPoint]3
+    countitup = 0
     siteType = "_rev_wp.xlsx"
     totalName = prepRev + siteType
     workbook = xlsxwriter.Workbook(totalName)
@@ -535,6 +536,10 @@ for idx, cell_obj in enumerate(col):
             worksheet.write(idx + 1, 2, int(pageNum))
 
     if(website == "4"):
+
+        if(countitup == 0):
+            driver.get('http://www.whitepages.com/)
+        countitup=1
 
         # Selenium, get that site for me!
         try:
