@@ -557,12 +557,13 @@ for idx, cell_obj in enumerate(col):
 
         # If the number has searches, enter the 'if'
         if noMatch is None:
-            print("memeschool")
+            for elem in soup(text=re.compile(r'user searches complete')):
+                worksheet.write(idx + 1, 2, elem.text)
         else:
             worksheet.write(idx + 1, 2, "No searches in the last 30 days.")
 
         for elem in soup(text=re.compile(r'Risk')):
-            worksheet.write(idx + 1, 1, elem.parent)
+            worksheet.write(idx + 1, 1, elem.text)
 
 # Close up Shop!
 workbook.close()
