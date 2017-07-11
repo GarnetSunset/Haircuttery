@@ -120,6 +120,7 @@ def TimeOutHandler(driver, webdriver, worksheet):
     driver = webdriver.Chrome()
     worksheet.write(idx + 1, 7, "Timeout Exception")
 
+
 # Create a UTF-8 Workbook.
 book = xlwt.Workbook(encoding="utf-8")
 
@@ -217,46 +218,60 @@ if(website == "1"):
     siteType = "_rev_who.xlsx"
 
 if(website == "2"):
-    if(os.path.exists(r"C:/chromedriver.exe") or os.path.isfile('chromedriver.exe')):
-        if(os.path.exists(r"C:/chromedriver.exe")):
-            driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
-        if(os.path.isfile('chromedriver.exe')):
-            driver = webdriver.Chrome(executable_path='chromedriver.exe')
-        driver.set_page_load_timeout(600)
-        stopPoint = fileName.index('.')
-        prepRev = fileName[0:stopPoint]
-        totalName = prepRev + "_rev_BBB.xlsx"
-        workbook = xlsxwriter.Workbook(totalName)
-        worksheet = workbook.add_worksheet()
-        worksheet.write(0, 0, "Telephone Number")
-        worksheet.write(0, 1, "Accredited")
-        siteType = "_rev_BBB.xlsx"
+    if os.path.isfile('chrome.ini'):
+        with open('chrome.ini', 'r') as locationString:
+            driver = webdriver.Chrome(executable_path=locationString)
+            print('\nThe location of ChromeDriver you selected is "' +
+                  str(locationString) + '"')
     else:
-        breaker()
+        if(os.path.exists(r"C:/chromedriver.exe") or os.path.isfile('chromedriver.exe')):
+            if(os.path.exists(r"C:/chromedriver.exe")):
+                driver = webdriver.Chrome(
+                    executable_path=r"C:/chromedriver.exe")
+            if(os.path.isfile('chromedriver.exe')):
+                driver = webdriver.Chrome(executable_path='chromedriver.exe')
+        else:
+            breaker()
+    driver.set_page_load_timeout(600)
+    stopPoint = fileName.index('.')
+    prepRev = fileName[0:stopPoint]
+    totalName = prepRev + "_rev_BBB.xlsx"
+    workbook = xlsxwriter.Workbook(totalName)
+    worksheet = workbook.add_worksheet()
+    worksheet.write(0, 0, "Telephone Number")
+    worksheet.write(0, 1, "Accredited")
+    siteType = "_rev_BBB.xlsx"
 
 if(website == "3"):
-    if(os.path.exists(r"C:/chromedriver.exe") or os.path.isfile('chromedriver.exe')):
-        if(os.path.exists(r"C:/chromedriver.exe")):
-            driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
-        if(os.path.isfile('chromedriver.exe')):
-            driver = webdriver.Chrome(executable_path='chromedriver.exe')
-        driver.set_page_load_timeout(600)
-        stopPoint = fileName.index('.')
-        prepRev = fileName[0:stopPoint]
-        totalName = prepRev + "_rev_800notes.xlsx"
-        workbook = xlsxwriter.Workbook(totalName)
-        worksheet = workbook.add_worksheet()
-        worksheet.write(0, 0, "Telephone Number")
-        worksheet.write(0, 1, "Approximate Number of Messages")
-        worksheet.write(0, 2, "Number of Pages")
-        worksheet.write(0, 3, "Number of Scammers")
-        worksheet.write(0, 4, "Number of Spammers")
-        worksheet.write(0, 5, "Number of Debt Collectors")
-        worksheet.write(0, 6, "Number of Hospital")
-        worksheet.write(0, 7, "Sentiment")
-        siteType = "_rev_800notes.xlsx"
+    if os.path.isfile('chrome.ini'):
+        with open('chrome.ini', 'r') as locationString:
+            driver = webdriver.Chrome(executable_path=locationString)
+            print('\nThe location of ChromeDriver you selected is "' +
+                  str(locationString) + '"')
     else:
-        breaker()
+        if(os.path.exists(r"C:/chromedriver.exe") or os.path.isfile('chromedriver.exe')):
+            if(os.path.exists(r"C:/chromedriver.exe")):
+                driver = webdriver.Chrome(
+                    executable_path=r"C:/chromedriver.exe")
+            if(os.path.isfile('chromedriver.exe')):
+                driver = webdriver.Chrome(executable_path='chromedriver.exe')
+        else:
+            breaker()
+    driver.set_page_load_timeout(600)
+    stopPoint = fileName.index('.')
+    prepRev = fileName[0:stopPoint]
+    totalName = prepRev + "_rev_800notes.xlsx"
+    workbook = xlsxwriter.Workbook(totalName)
+    worksheet = workbook.add_worksheet()
+    worksheet.write(0, 0, "Telephone Number")
+    worksheet.write(0, 1, "Approximate Number of Messages")
+    worksheet.write(0, 2, "Number of Pages")
+    worksheet.write(0, 3, "Number of Scammers")
+    worksheet.write(0, 4, "Number of Spammers")
+    worksheet.write(0, 5, "Number of Debt Collectors")
+    worksheet.write(0, 6, "Number of Hospital")
+    worksheet.write(0, 7, "Sentiment")
+    siteType = "_rev_800notes.xlsx"
 
 # Set column to A:A, the first column.
 worksheet.set_column('A:A', 13)
@@ -334,16 +349,16 @@ for idx, cell_obj in enumerate(col):
 
             # Search for text on the sites that indicates their sentiment and generate the top response.
             scamNum = [div for div in soup.find_all('div', {'style': 'font-size:14px; margin:10px; overflow:hidden'})
-             if 'scam' in div.text.lower() or 'Scam' in div.text.lower() or 'scams' in div.text.lower()]
+                       if 'scam' in div.text.lower() or 'Scam' in div.text.lower() or 'scams' in div.text.lower()]
             scamCount = len(scamNum)
             spamNum = [div for div in soup.find_all('div', {'style': 'font-size:14px; margin:10px; overflow:hidden'})
-             if 'spam' in div.text.lower() or 'Spam' in div.text.lower() or 'spams' in div.text.lower()]
+                       if 'spam' in div.text.lower() or 'Spam' in div.text.lower() or 'spams' in div.text.lower()]
             spamCount = len(spamNum)
             debtNum = [div for div in soup.find_all('div', {'style': 'font-size:14px; margin:10px; overflow:hidden'})
-             if 'debt' in div.text.lower() or 'Debt' in div.text.lower() or 'credit' in div.text.lower()]
+                       if 'debt' in div.text.lower() or 'Debt' in div.text.lower() or 'credit' in div.text.lower()]
             debtCount = len(debtNum)
             hospitalNum = [div for div in soup.find_all('div', {'style': 'font-size:14px; margin:10px; overflow:hidden'})
-             if 'hospital' in div.text.lower() or 'Hospital' in div.text.lower() or 'medical' in div.text.lower()]
+                           if 'hospital' in div.text.lower() or 'Hospital' in div.text.lower() or 'medical' in div.text.lower()]
             hospitalCount = len(hospitalNum)
             worksheet.write(idx + 1, 3, scamCount)
             worksheet.write(idx + 1, 4, spamCount)

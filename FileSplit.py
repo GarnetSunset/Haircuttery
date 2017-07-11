@@ -95,9 +95,9 @@ if(int(row) > 1000):
         if(totalName.rfind('\\') != None):
             postSlash = fileName.rfind('\\') + 1
             folderName = totalName[postSlash:]
-            move(folderName,"WorkingDir/" + preName + '/' + folderName)
+            move(folderName, "WorkingDir/" + preName + '/' + folderName)
         else:
-            move(totalName,"WorkingDir/" + preName + '/' + totalName)
+            move(totalName, "WorkingDir/" + preName + '/' + totalName)
 
     copyfile(fileName, "WorkingDir/" + preName + '/' + fileName)
     copyfile('HairCut.py', "WorkingDir/" + preName + '/HairCut.py')
@@ -105,6 +105,11 @@ if(int(row) > 1000):
     tempFile = open('tempFile.log', 'w')
     tempFile.write(preName)
     tempFile.close()
+    if os.path.isfile('chrome.ini'):
+        copyfile('chrome.ini', "WorkingDir/" + preName + '/chrome.ini')
+    if os.path.isfile('chromedriver.exe'):
+        copyfile('chromedriver.exe', "WorkingDir/" +
+                 preName + '/chromedriver.exe')
 
     if delMe == 1:
         os.remove(fileName)
@@ -115,11 +120,16 @@ else:
         os.makedirs("WorkingDir")
     if not os.path.exists("WorkingDir/" + preName):
         os.makedirs("WorkingDir/" + preName)
-    copyfile(fileName,"WorkingDir/" + preName + "/" + fileName)
+    copyfile(fileName, "WorkingDir/" + preName + "/" + fileName)
     copyfile('HairCut.py', "WorkingDir/" + preName + '/HairCut.py')
     copyfile('Harvard.py', "WorkingDir/" + preName + '/Harvard.py')
     tempFile = open('tempSmall.log', 'w')
     tempFile.write(preName)
     tempFile.close()
+    if os.path.isfile('chrome.ini'):
+        copyfile('chrome.ini', "WorkingDir/" + preName + '/chrome.ini')
+    if os.path.isfile('chromedriver.exe'):
+        copyfile('chromedriver.exe', "WorkingDir/" +
+                 preName + '/chromedriver.exe')
     sys.exit()
 print('Ding! Job Done!')
