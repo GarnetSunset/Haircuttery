@@ -3,16 +3,22 @@
 *.csv
 *.xlsx
 *.xls
-*.db
-/WorkingDir
+tempFile
+tempSmall
+chrome.ini
+chromedriver.exe
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+*.db
 
 # C extensions
 *.so
+
+WorkingDir/*
+WorkingDir/
 
 # Distribution / packaging
 .Python
@@ -31,6 +37,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+*.log
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

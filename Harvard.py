@@ -4,6 +4,7 @@ import xlwt
 import xlrd
 from HTMLParser import HTMLParser
 
+
 def construct_entries():
     entries = []
     for i in xrange(len(list)):
@@ -15,12 +16,21 @@ def construct_entries():
         entries.append(entry)
     return entries
 
+def enumColumn(fileName, worksheet):
+    with open(fileName, 'rb') as f:
+        content = csv.reader(f)
+        for index_col, data_in_col in enumerate(content):
+            for index_row, data_in_cell in enumerate(data_in_col):
+                worksheet.write(index_col, index_row, data_in_cell)
+
 def get_full_number(entry):
     return entry.find('a', {"class": "oos_previewTitle"}).getText()
+
 
 def get_area_code(entry):
     full_number = get_full_number(entry)
     return full_number[:3]
+
 
 def get_comment(entry):
     comment = {}
@@ -28,11 +38,14 @@ def get_comment(entry):
     comment['content'] = get_comment_content(entry)
     return comment
 
+
 def get_comment_number(entry):
     return entry.find('span', {"class": "postCount"}).getText()
 
+
 def get_comment_content(entry):
     return entry.find('div', {"class": "oos_previewBody"}).getText()
+
 
 def Excel2CSV(ExcelFile, SheetName, CSVFile):
     import xlrd

@@ -8,8 +8,6 @@ ndg-httpsclient
 pyasn1
 regex
 numpy
-IPython 
 xlsxwriter
 lxml
 selenium
-impyla
