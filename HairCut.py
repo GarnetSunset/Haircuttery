@@ -23,7 +23,6 @@ import selenium.webdriver.support.ui as ui
 import sys
 import threading
 import time
-import urllib2
 import xlrd
 import xlsxwriter
 import xlwt
@@ -284,9 +283,9 @@ for idx, cell_obj in enumerate(col):
 
     # WhosCallinScrapes using the python Requests library. Nice and clean.
     if(website == "1"):
+
         reqInput = "http://whoscall.in/1/%s/" % (teleWho)
         time.sleep(1)
-        urlfile = urllib2.Request(reqInput)
         requestRec = requests.get(reqInput)
         soup = BeautifulSoup(requestRec.content, "lxml")
         noMatch = soup.find(text=re.compile(
@@ -329,6 +328,7 @@ for idx, cell_obj in enumerate(col):
             if scamCount == 0 and spamCount == 0 and debtCount == 0 and hospitalCount == 0:
                 worksheet.write(idx + 1, 7, "No Entries Detected")
 
+    # BBB, the beginning!
     if(website == "2"):
 
         # Selenium, get that site for me! (bbbUrl + bbbEnd are defined above)
@@ -350,8 +350,9 @@ for idx, cell_obj in enumerate(col):
         if len(Badge) != 0:
             worksheet.write(idx + 1, 1, "Is Accredited")
 
+    # 800Notes, the big one.
     if(website == "3"):
-        # 800Notes, the big one.
+
         try:
             driver.get('http://800notes.com/Phone.aspx/%s' % (tele800))
         except TimeoutException as ex:
@@ -391,10 +392,9 @@ for idx, cell_obj in enumerate(col):
             if(curSite.count("/") < 5):
                 pageNum = 1
             numMessages = int(pageNum) - 1
-            numMessages = numMessages * 20
-            convertNum = str(numMessages)
+            twentyNums = numMessages * 20
             thumbs = soup.find_all('a', {'class': 'oos_i_thumbDown'})
-            thumbPlus = len(thumbs) + int(convertNum)
+            thumbPlus = len(thumbs) + int(twentyNums)
             worksheet.write(idx + 1, 1, thumbPlus)
             time.sleep(2)
             if(pageExist is not None):
