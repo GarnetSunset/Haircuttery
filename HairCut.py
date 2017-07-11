@@ -87,7 +87,7 @@ def checkMe(website):
                 os.system('clear')
             print("Try Again.\n")
             website = raw_input(
-                "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
+                "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for WhitePages\n>")
             if os.name == 'nt':
                 os.system('cls')
             else:
@@ -102,7 +102,7 @@ def checkMe(website):
                 os.system('clear')
             print("Try Again.\n")
             website = raw_input(
-                "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
+                "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for WhitePages\n>")
             if os.name == 'nt':
                 os.system('cls')
             else:
