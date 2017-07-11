@@ -300,7 +300,7 @@ if(website == "4"):
             breaker()
     driver.set_page_load_timeout(600)
     stopPoint = fileName.index('.')
-    prepRev = fileName[0:stopPoint]3
+    prepRev = fileName[0:stopPoint]
     countitup = 0
     siteType = "_rev_wp.xlsx"
     totalName = prepRev + siteType
