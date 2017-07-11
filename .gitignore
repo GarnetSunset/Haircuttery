@@ -1,9 +1,10 @@
 # Documents
-.pyc
-.csv
-.xlsx
-.xls
+*.pyc
+*.csv
+*.xlsx
+*.xls
 *.db
+/WorkingDir
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -104,4 +105,3 @@ ENV/
 
 # mypy
 .mypy_cache/
-
