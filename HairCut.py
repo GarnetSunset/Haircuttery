@@ -2,7 +2,6 @@ from __future__ import print_function
 from bs4 import BeautifulSoup
 from collections import defaultdict
 from Harvard import Excel2CSV, enumColumn
-from IPython.display import HTML
 from os.path import join, dirname, abspath
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
@@ -26,6 +25,23 @@ import time
 import xlrd
 import xlsxwriter
 import xlwt
+
+bbbEnd = "&locationText=&locationLatLng=&page=1"
+bbbUrl = "https://www.bbb.org/en/us/search?inputText="
+bbbUrlAC = "https://www.bbb.org/en/us/search?accreditedFilter=1&inputText="
+breaker = 0
+countitup = 1
+dCount = 0
+debtCount = 0
+delMe = 0
+done = False
+hospitalCount = 0
+numFormat = "3"
+scamCount = 0
+spamCount = 0
+
+searchTerms = {'Scam': scamCount, 'Spam': spamCount,
+               'Debt Collector': debtCount, 'Hospital': hospitalCount}
 
 # Wait out my mistake.
 
@@ -51,6 +67,40 @@ def breaker():
     time.sleep(15)
     sys.exit()
 
+# Check the entry!
+
+
+def checkMe(website):
+    global dCount
+    if(dCount == 0):
+        while website not in ['1', '2', '3', 'd']:
+            if os.name == 'nt':
+                os.system('cls')
+            else:
+                os.system('clear')
+            print("Try Again.\n")
+            website = raw_input(
+                "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
+            if os.name == 'nt':
+                os.system('cls')
+            else:
+                os.system('clear')
+            if(website == 'd'):
+                dCount = 1
+    if(dCount == 1):
+        while website not in ['1', '2', '3']:
+            if os.name == 'nt':
+                os.system('cls')
+            else:
+                os.system('clear')
+            print("Try Again.\n")
+            website = raw_input(
+                "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
+            if os.name == 'nt':
+                os.system('cls')
+            else:
+                os.system('clear')
+
 # Loading Animation that plays when the user is running a file.
 
 
@@ -69,27 +119,6 @@ def TimeOutHandler(driver, webdriver, worksheet):
     driver.close()
     driver = webdriver.Chrome()
     worksheet.write(idx + 1, 7, "Timeout Exception")
-
-
-def whoSearchin(lowerCase, upperCase, plurals):
-    [div for div in soup.find_all('div', {'style': 'font-size:14px; margin:10px; overflow:hidden'})
-     if lowerCase in div.text.lower() or upperCase in div.text.lower() or plurals in div.text.lower()]
-
-
-bbbEnd = "&locationText=&locationLatLng=&page=1"
-bbbUrl = "https://www.bbb.org/en/us/search?inputText="
-bbbUrlAC = "https://www.bbb.org/en/us/search?accreditedFilter=1&inputText="
-breaker = 0
-countitup = 1
-debtCount = 0
-delMe = 0
-done = False
-hospitalCount = 0
-numFormat = "3"
-scamCount = 0
-searchTerms = {'Scam': scamCount, 'Spam': spamCount,
-               'Debt Collector': debtCount, 'Hospital': hospitalCount}
-spamCount = 0
 
 # Create a UTF-8 Workbook.
 book = xlwt.Workbook(encoding="utf-8")
@@ -121,6 +150,9 @@ if dragNDrop2 == "":
         "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
 else:
     website = dragNDrop2
+
+# No more bad inputs!
+checkMe(website=website)
 
 # Find the period in the file, which determines the prepRev or extension, and the fileName.
 stopPoint = fileName.index('.')
@@ -160,6 +192,7 @@ if(website == "d"):
         os.system('clear')
     website = raw_input(
         "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
+    checkMe(website=website)
     logging.basicConfig(level=logging.DEBUG)
     logging.debug('Only shown in debug mode')
 
@@ -300,17 +333,17 @@ for idx, cell_obj in enumerate(col):
             worksheet.write(idx + 1, 1, howManyAreThere)
 
             # Search for text on the sites that indicates their sentiment and generate the top response.
-            scamNum = whoSearchin(
-                lowerCase='scam', upperCase='Scam', plurals='scams')
+            scamNum = [div for div in soup.find_all('div', {'style': 'font-size:14px; margin:10px; overflow:hidden'})
+             if 'scam' in div.text.lower() or 'Scam' in div.text.lower() or 'scams' in div.text.lower()]
             scamCount = len(scamNum)
-            spamNum = whoSearchin(
-                lowerCase='spam', upperCase='Spam', plurals='spams')
+            spamNum = [div for div in soup.find_all('div', {'style': 'font-size:14px; margin:10px; overflow:hidden'})
+             if 'spam' in div.text.lower() or 'Spam' in div.text.lower() or 'spams' in div.text.lower()]
             spamCount = len(spamNum)
-            debtNum = whoSearchin(
-                lowerCase='debt', upperCase='Debt', plurals='credit')
+            debtNum = [div for div in soup.find_all('div', {'style': 'font-size:14px; margin:10px; overflow:hidden'})
+             if 'debt' in div.text.lower() or 'Debt' in div.text.lower() or 'credit' in div.text.lower()]
             debtCount = len(debtNum)
-            hospitalNum = whoSearchin(
-                lowerCase='hospital', upperCase='Hospital', plurals='medical')
+            hospitalNum = [div for div in soup.find_all('div', {'style': 'font-size:14px; margin:10px; overflow:hidden'})
+             if 'hospital' in div.text.lower() or 'Hospital' in div.text.lower() or 'medical' in div.text.lower()]
             hospitalCount = len(hospitalNum)
             worksheet.write(idx + 1, 3, scamCount)
             worksheet.write(idx + 1, 4, spamCount)
