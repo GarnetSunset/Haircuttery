@@ -72,6 +72,11 @@ def TimeOutHandler(driver, webdriver, worksheet):
     worksheet.write(idx + 1, 7, "Timeout Exception")
 
 
+def whoSearchin(lowerCase, upperCase, plurals):
+    [div for div in soup.find_all('div', {'style': 'font-size:14px; margin:10px; overflow:hidden'})
+     if lowerCase in div.text.lower() or upperCase in div.text.lower() or plurals in div.text.lower()]
+
+
 bbbEnd = "&locationText=&locationLatLng=&page=1"
 bbbUrl = "https://www.bbb.org/en/us/search?inputText="
 bbbUrlAC = "https://www.bbb.org/en/us/search?accreditedFilter=1&inputText="
@@ -83,6 +88,8 @@ done = False
 hospitalCount = 0
 numFormat = "3"
 scamCount = 0
+searchTerms = {'Scam': scamCount, 'Spam': spamCount,
+               'Debt Collector': debtCount, 'Hospital': hospitalCount}
 spamCount = 0
 
 # Create a UTF-8 Workbook.
@@ -294,17 +301,17 @@ for idx, cell_obj in enumerate(col):
             worksheet.write(idx + 1, 1, howManyAreThere)
 
             # Search for text on the sites that indicates their sentiment and generate the top response.
-            scamNum = [div for div in soup.find_all('div', {'style': 'font-size:14px; margin:10px; overflow:hidden'})
-                       if 'scam' in div.text.lower() or 'Scam' in div.text.lower() or 'scams' in div.text.lower()]
+            scamNum = whoSearchin(
+                lowerCase='scam', upperCase='Scam', plurals='scams')
             scamCount = len(scamNum)
-            spamNum = [div for div in soup.find_all('div', {'style': 'font-size:14px; margin:10px; overflow:hidden'})
-                       if 'spam' in div.text.lower() or 'Spam' in div.text.lower() or 'spams' in div.text.lower()]
+            spamNum = whoSearchin(
+                lowerCase='spam', upperCase='Spam', plurals='spams')
             spamCount = len(spamNum)
-            debtNum = [div for div in soup.find_all('div', {'style': 'font-size:14px; margin:10px; overflow:hidden'})
-                       if 'debt' in div.text.lower() or 'Debt' in div.text.lower() or 'credit' in div.text.lower()]
+            debtNum = whoSearchin(
+                lowerCase='debt', upperCase='Debt', plurals='credit')
             debtCount = len(debtNum)
-            hospitalNum = [div for div in soup.find_all(
-                'div', {'style': 'font-size:14px; margin:10px; overflow:hidden'}) if 'hospital' in div.text.lower() or 'Hospital' in div.text.lower()]
+            hospitalNum = whoSearchin(
+                lowerCase='hospital', upperCase='Hospital', plurals='medical')
             hospitalCount = len(hospitalNum)
             worksheet.write(idx + 1, 3, scamCount)
             worksheet.write(idx + 1, 4, spamCount)
@@ -315,8 +322,6 @@ for idx, cell_obj in enumerate(col):
             if hospitalCount > 0:
                 hospitalCount + 9999
 
-            searchTerms = {'Scam': scamCount, 'Spam': spamCount,
-                           'Debt Collector': debtCount, 'Hospital': hospitalCount}
             sentiment = max(searchTerms, key=searchTerms.get)
             worksheet.write(idx + 1, 7, sentiment)
 
@@ -389,8 +394,7 @@ for idx, cell_obj in enumerate(col):
             numMessages = numMessages * 20
             convertNum = str(numMessages)
             thumbs = soup.find_all('a', {'class': 'oos_i_thumbDown'})
-            thumbsLen = len(thumbs)
-            thumbPlus = thumbsLen + int(convertNum)
+            thumbPlus = len(thumbs) + int(convertNum)
             worksheet.write(idx + 1, 1, thumbPlus)
             time.sleep(2)
             if(pageExist is not None):
@@ -434,8 +438,6 @@ for idx, cell_obj in enumerate(col):
                 if hospitalCount > 0:
                     hospitalCount + 9999
 
-                searchTerms = {'Scam': scamCount, 'Spam': spamCount,
-                               'Debt Collector': debtCount, 'Hospital': hospitalCount}
                 sentiment = max(searchTerms, key=searchTerms.get)
                 worksheet.write(idx + 1, 7, sentiment)
                 if scamCount == 0 and spamCount == 0 and debtCount == 0 and hospitalCount == 0:
