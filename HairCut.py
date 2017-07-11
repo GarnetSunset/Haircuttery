@@ -58,6 +58,7 @@ def blocked():
         print("\n Ugh. I'm gonna go talk to the host of the site real quick. Should take an hour or two.")
         time.sleep(7200)
 
+
 def blockedwp():
     block = soup.find(text=re.compile(r"Your IP has"))
     type(block) is str
@@ -537,26 +538,19 @@ for idx, cell_obj in enumerate(col):
 
     if(website == "4"):
 
-        if(countitup == 0):
-            driver.get('http://www.whitepages.com/)
-        countitup=1
-
+        driver.get('http://www.whitepages.com/reverse_phone')
+        wpTextBox = driver.findElement(By.id('full-width has-button'))
         time.sleep(5)
-
-        # Selenium, get that site for me!
-        try:
-            driver.get('http://www.whitepages.com/phone/%s' % (tele800))
-        except TimeoutException as ex:
-            TimeOutHandler(driver=driver, worksheet=worksheet,
-                           webdriver=webdriver)
-            break
+        myTextBox.sendKeys(tele800);
+        time.sleep(5)
+        driver.find_element_by_tag_name('data-gaevent=phone').click()
         time.sleep(5)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, "lxml")
 
         # This entry doesn't exist if this regex succeeds.
-        noMatch = soup.find(text=re.compile(r"have been no recent searches for this phone"))
-        soup.prettify()
+        noMatch = soup.find(text=re.compile(
+            r"have been no recent searches for this phone"))
         type(noMatch) is str
 
         # Make sure we don't get blocked, and if we do, wait it out.
