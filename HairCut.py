@@ -541,6 +541,8 @@ for idx, cell_obj in enumerate(col):
             driver.get('http://www.whitepages.com/)
         countitup=1
 
+        time.sleep(5)
+
         # Selenium, get that site for me!
         try:
             driver.get('http://www.whitepages.com/phone/%s' % (tele800))
@@ -548,7 +550,7 @@ for idx, cell_obj in enumerate(col):
             TimeOutHandler(driver=driver, worksheet=worksheet,
                            webdriver=webdriver)
             break
-        time.sleep(10)
+        time.sleep(5)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, "lxml")
 
