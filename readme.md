@@ -51,8 +51,6 @@ https://www.microsoft.com/en-us/download/details.aspx?id=44266
 
 * pyasn1
 
-* IPython
-
 * xlsxwriter
 
 * lxml
