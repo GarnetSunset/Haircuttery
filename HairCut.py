@@ -58,6 +58,13 @@ def blocked():
         print("\n Ugh. I'm gonna go talk to the host of the site real quick. Should take an hour or two.")
         time.sleep(7200)
 
+def blockedwp():
+    block = soup.find(text=re.compile(r"Your IP has"))
+    type(block) is str
+    if(block is not None):
+        print("\n Ugh. I'm gonna go talk to the host of the site real quick. Should take an hour or two.")
+        time.sleep(7200)
+
 # Break if no chromedriver.
 
 
@@ -73,7 +80,7 @@ def breaker():
 def checkMe(website):
     global dCount
     if(dCount == 0):
-        while website not in ['1', '2', '3', 'd']:
+        while website not in ['1', '2', '3', '4', 'd']:
             if os.name == 'nt':
                 os.system('cls')
             else:
@@ -88,7 +95,7 @@ def checkMe(website):
             if(website == 'd'):
                 dCount = 1
     if(dCount == 1):
-        while website not in ['1', '2', '3']:
+        while website not in ['1', '2', '3', '4']:
             if os.name == 'nt':
                 os.system('cls')
             else:
@@ -148,7 +155,7 @@ else:
 # If not the string "dragNDrop2" will be empty and the user will be prompted.
 if dragNDrop2 == "":
     website = raw_input(
-        "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
+        "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for WhitePages\n>")
 else:
     website = dragNDrop2
 
@@ -192,7 +199,7 @@ if(website == "d"):
     else:
         os.system('clear')
     website = raw_input(
-        "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
+        "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for WhitePages\n>")
     checkMe(website=website)
     logging.basicConfig(level=logging.DEBUG)
     logging.debug('Only shown in debug mode')
@@ -204,7 +211,8 @@ g.start()
 if(website == "1"):
     stopPoint = fileName.index('.')
     prepRev = fileName[0:stopPoint]
-    totalName = prepRev + "_rev_who.xlsx"
+    siteType = "_rev_who.xlsx"
+    totalName = prepRev + siteType
     workbook = xlsxwriter.Workbook(totalName)
     worksheet = workbook.add_worksheet()
     worksheet.write(0, 0, "Telephone Number")
@@ -215,7 +223,7 @@ if(website == "1"):
     worksheet.write(0, 5, "Number of Debt Collectors")
     worksheet.write(0, 6, "Number of Hospital")
     worksheet.write(0, 7, "Sentiment")
-    siteType = "_rev_who.xlsx"
+
 
 if(website == "2"):
     if os.path.isfile('chrome.ini'):
@@ -235,12 +243,13 @@ if(website == "2"):
     driver.set_page_load_timeout(600)
     stopPoint = fileName.index('.')
     prepRev = fileName[0:stopPoint]
-    totalName = prepRev + "_rev_BBB.xlsx"
+    siteType = "_rev_BBB.xlsx"
+    totalName = prepRev + siteType
     workbook = xlsxwriter.Workbook(totalName)
     worksheet = workbook.add_worksheet()
     worksheet.write(0, 0, "Telephone Number")
     worksheet.write(0, 1, "Accredited")
-    siteType = "_rev_BBB.xlsx"
+
 
 if(website == "3"):
     if os.path.isfile('chrome.ini'):
@@ -260,7 +269,8 @@ if(website == "3"):
     driver.set_page_load_timeout(600)
     stopPoint = fileName.index('.')
     prepRev = fileName[0:stopPoint]
-    totalName = prepRev + "_rev_800notes.xlsx"
+    siteType = "_rev_800notes.xlsx"
+    totalName = prepRev + siteType
     workbook = xlsxwriter.Workbook(totalName)
     worksheet = workbook.add_worksheet()
     worksheet.write(0, 0, "Telephone Number")
@@ -271,7 +281,34 @@ if(website == "3"):
     worksheet.write(0, 5, "Number of Debt Collectors")
     worksheet.write(0, 6, "Number of Hospital")
     worksheet.write(0, 7, "Sentiment")
-    siteType = "_rev_800notes.xlsx"
+
+
+if(website == "4"):
+    if os.path.isfile('chrome.ini'):
+        with open('chrome.ini', 'r') as locationString:
+            driver = webdriver.Chrome(executable_path=locationString)
+            print('\nThe location of ChromeDriver you selected is "' +
+                  str(locationString) + '"')
+    else:
+        if(os.path.exists(r"C:/chromedriver.exe") or os.path.isfile('chromedriver.exe')):
+            if(os.path.exists(r"C:/chromedriver.exe")):
+                driver = webdriver.Chrome(
+                    executable_path=r"C:/chromedriver.exe")
+            if(os.path.isfile('chromedriver.exe')):
+                driver = webdriver.Chrome(executable_path='chromedriver.exe')
+        else:
+            breaker()
+    driver.set_page_load_timeout(600)
+    stopPoint = fileName.index('.')
+    prepRev = fileName[0:stopPoint]
+    siteType = "_rev_wp.xlsx"
+    totalName = prepRev + siteType
+    workbook = xlsxwriter.Workbook(totalName)
+    worksheet = workbook.add_worksheet()
+    worksheet.write(0, 0, "Telephone Number")
+    worksheet.write(0, 1, "Spam/Fraud Potential")
+    worksheet.write(0, 2, "Amount of Queries/30 Days")
+
 
 # Set column to A:A, the first column.
 worksheet.set_column('A:A', 13)
@@ -496,6 +533,36 @@ for idx, cell_obj in enumerate(col):
             scamCount = 0
             spamCount = 0
             worksheet.write(idx + 1, 2, int(pageNum))
+
+    if(website == "4"):
+
+        # Selenium, get that site for me!
+        try:
+            driver.get('http://www.whitepages.com/phone/%s' % (tele800))
+        except TimeoutException as ex:
+            TimeOutHandler(driver=driver, worksheet=worksheet,
+                           webdriver=webdriver)
+            break
+        time.sleep(10)
+        requestRec = driver.page_source
+        soup = BeautifulSoup(requestRec, "lxml")
+
+        # This entry doesn't exist if this regex succeeds.
+        noMatch = soup.find(text=re.compile(r"have been no recent searches for this phone"))
+        soup.prettify()
+        type(noMatch) is str
+
+        # Make sure we don't get blocked, and if we do, wait it out.
+        blockedwp()
+
+        # If the number has searches, enter the 'if'
+        if noMatch is None:
+            print("memeschool")
+        else:
+            worksheet.write(idx + 1, 2, "No searches in the last 30 days.")
+
+        for elem in soup(text=re.compile(r'Risk')):
+            worksheet.write(idx + 1, 1, elem.parent)
 
 # Close up Shop!
 workbook.close()

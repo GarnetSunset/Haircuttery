@@ -16,12 +16,14 @@ def construct_entries():
         entries.append(entry)
     return entries
 
+
 def enumColumn(fileName, worksheet):
     with open(fileName, 'rb') as f:
         content = csv.reader(f)
         for index_col, data_in_col in enumerate(content):
             for index_row, data_in_cell in enumerate(data_in_col):
                 worksheet.write(index_col, index_row, data_in_cell)
+
 
 def get_full_number(entry):
     return entry.find('a', {"class": "oos_previewTitle"}).getText()
