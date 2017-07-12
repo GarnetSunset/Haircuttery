@@ -107,13 +107,13 @@ def chromeOpen(breaker):
     global driver
     if os.path.isfile('chrome.ini'):
         with open('chrome.ini', 'r') as locationString:
-            driver = webdriver.Chrome(executable_path=locationString)
             print('\nThe location of ChromeDriver you selected is "' +
                   str(locationString) + '"')
     if(os.path.exists(r"C:/chromedriver.exe")):
-        driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
+        locationString="C:/chromedriver.exe"
     if(os.path.isfile('chromedriver.exe')):
-        driver = webdriver.Chrome(executable_path='chromedriver.exe')
+        locationString="chromedriver.exe"
+    driver = webdriver.Chrome(executable_path=locationString)
     else:
         breaker()
 
