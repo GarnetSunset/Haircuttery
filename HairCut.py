@@ -179,9 +179,9 @@ if prepRev == ".csv":
     # You must close the file because opening fails otherwise.
     excelFile = xlsxwriter.Workbook(totalName)
     worksheet = excelFile.add_worksheet()
-    enumColumn(fileName=fileName, worksheet=worksheet)
+    enumColumn(fileName, worksheet)
     excelFile.close()
-    fileName = (preName + '.xlsx')
+    fileName = totalName
     print("Temporary Convert to xlsx done.\n")
 
 # Get ready for XLRD to parse the original file (or the converted one).

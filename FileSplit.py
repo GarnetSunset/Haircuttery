@@ -34,19 +34,17 @@ if(fileName.rfind('\\') != None):
 reload(sys)
 sys.setdefaultencoding('utf')
 
+# Is the extension CSV? If so we'll convert it to xlsx.
 if prepRev == ".csv":
     totalName = preName + '.xlsx'
     excelFile = xlsxwriter.Workbook(totalName)
     excelFile.close()
+    # You must close the file because opening fails otherwise.
     excelFile = xlsxwriter.Workbook(totalName)
     worksheet = excelFile.add_worksheet()
-    with open(fileName, 'rb') as f:
-        content = csv.reader(f)
-        for index_col, data_in_col in enumerate(content):
-            for index_row, data_in_cell in enumerate(data_in_col):
-                worksheet.write(index_col, index_row, data_in_cell)
+    enumColumn(fileName=totalName, worksheet=worksheet)
     excelFile.close()
-    fileName = (preName + '.xlsx')
+    fileName = totalName
     print("Temporary Convert to xlsx done.\n")
 
 stopPoint = fileName.index('.')
