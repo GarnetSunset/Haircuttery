@@ -48,13 +48,12 @@ searchTerms = {'Scam': scamCount, 'Spam': spamCount,
 
 def blocked():
     block = soup.find(text=re.compile(r"OctoNet HTTP filter"))
-    extrablock = soup.find(text=re.compile(
+    block = soup.find(text=re.compile(
         r"returning an unknown error"))
-    extrablock = soup.find(
+    block = soup.find(
         text=re.compile(r"Gateway time-out"))
     type(block) is str
-    type(extrablock) is str
-    if(block is not None or extrablock is not None):
+    if(block is not None):
         print("\n Ugh. I'm gonna go talk to the host of the site real quick. Should take an hour or two.")
         time.sleep(7200)
 
