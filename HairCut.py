@@ -74,32 +74,20 @@ def checkMe(website):
     global dCount
     if(dCount == 0):
         while website not in ['1', '2', '3', 'd']:
-            if os.name == 'nt':
-                os.system('cls')
-            else:
-                os.system('clear')
-            print("Try Again.\n")
-            website = raw_input(
-                "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
-            if os.name == 'nt':
-                os.system('cls')
-            else:
-                os.system('clear')
             if(website == 'd'):
                 dCount = 1
-    if(dCount == 1):
-        while website not in ['1', '2', '3']:
-            if os.name == 'nt':
-                os.system('cls')
-            else:
-                os.system('clear')
+            cleaner()
             print("Try Again.\n")
             website = raw_input(
                 "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
-            if os.name == 'nt':
-                os.system('cls')
-            else:
-                os.system('clear')
+            cleaner()
+    if(dCount == 1):
+        while website not in ['1', '2', '3']:
+            cleaner()
+            print("Try Again.\n")
+            website = raw_input(
+                "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
+            cleaner()
 
 # Open chromedriver with options.
 
@@ -116,6 +104,14 @@ def chromeOpen(breaker):
         breaker()
     driver = webdriver.Chrome(executable_path=locationString)
 
+# Clean the screen.
+
+
+def cleaner():
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
 
 # Loading Animation that plays when the user is running a file.
 
