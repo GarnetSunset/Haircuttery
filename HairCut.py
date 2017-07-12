@@ -70,19 +70,14 @@ def breaker():
 
 
 def checkMe(website):
-    global dCount
-    if(dCount == 0):
-        while website not in ['1', '2', '3', 'd']:
-            if(website == 'd'):
-                dCount = 1
-            cleaner()
+    if(website == 'd'):
+        while website not in ['1', '2', '3']:
             print("Try Again.\n")
             website = raw_input(
                 "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
             cleaner()
-    if(dCount == 1):
-        while website not in ['1', '2', '3']:
-            cleaner()
+    else:
+        while website not in ['1', '2', '3', 'd']:
             print("Try Again.\n")
             website = raw_input(
                 "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
