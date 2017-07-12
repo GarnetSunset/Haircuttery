@@ -110,15 +110,12 @@ def chromeOpen(breaker):
             driver = webdriver.Chrome(executable_path=locationString)
             print('\nThe location of ChromeDriver you selected is "' +
                   str(locationString) + '"')
+    if(os.path.exists(r"C:/chromedriver.exe")):
+        driver = webdriver.Chrome(executable_path=r"C:/chromedriver.exe")
+    if(os.path.isfile('chromedriver.exe')):
+        driver = webdriver.Chrome(executable_path='chromedriver.exe')
     else:
-        if(os.path.exists(r"C:/chromedriver.exe") or os.path.isfile('chromedriver.exe')):
-            if(os.path.exists(r"C:/chromedriver.exe")):
-                driver = webdriver.Chrome(
-                    executable_path=r"C:/chromedriver.exe")
-            if(os.path.isfile('chromedriver.exe')):
-                driver = webdriver.Chrome(executable_path='chromedriver.exe')
-        else:
-            breaker()
+        breaker()
 
 # Loading Animation that plays when the user is running a file.
 
