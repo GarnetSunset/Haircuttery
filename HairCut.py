@@ -119,6 +119,22 @@ def loading():
         sys.stdout.flush()
         time.sleep(0.1)
 
+# PrepareCSV preps a CSV for EXCELence
+
+
+def PrepareCSV(preName, fileName):
+    global totalName
+    totalName = preName + '.xlsx'
+    excelFile = xlsxwriter.Workbook(totalName)
+    excelFile.close()
+    # You must close the file because opening fails otherwise.
+    excelFile = xlsxwriter.Workbook(totalName)
+    worksheet = excelFile.add_worksheet()
+    enumColumn(fileName, worksheet)
+    excelFile.close()
+    fileName = totalName
+    print("Temporary Convert to xlsx done.\n")
+
 # TimeoutHandler that takes care of webDriver fails.
 
 
@@ -160,7 +176,7 @@ else:
     website = dragNDrop2
 
 # No more bad inputs!
-checkMe(website=website)
+checkMe(website)
 
 # Find the period in the file, which determines the prepRev or extension, and the fileName.
 stopPoint = fileName.index('.')
@@ -173,19 +189,10 @@ sys.setdefaultencoding('utf')
 
 # Is the extension CSV? If so we'll convert it to xlsx.
 if prepRev == ".csv":
-    totalName = preName + '.xlsx'
-    excelFile = xlsxwriter.Workbook(totalName)
-    excelFile.close()
-    # You must close the file because opening fails otherwise.
-    excelFile = xlsxwriter.Workbook(totalName)
-    worksheet = excelFile.add_worksheet()
-    enumColumn(fileName, worksheet)
-    excelFile.close()
-    fileName = totalName
-    print("Temporary Convert to xlsx done.\n")
+    PrepareCSV(preName, fileName)
 
 # Get ready for XLRD to parse the original file (or the converted one).
-fname = join(dirname(abspath('__file__')), '%s' % fileName)
+fname = join(dirname(abspath('__file__')), '%s' % totalName)
 
 # Parse it XLRD!
 xl_workbook = xlrd.open_workbook(fname)

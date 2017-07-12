@@ -1,3 +1,4 @@
+from HairCut import PrepareCSV
 from Harvard import enumColumn
 from os.path import join, dirname, abspath
 from shutil import copyfile
@@ -36,20 +37,11 @@ sys.setdefaultencoding('utf')
 
 # Is the extension CSV? If so we'll convert it to xlsx.
 if prepRev == ".csv":
-    totalName = preName + '.xlsx'
-    excelFile = xlsxwriter.Workbook(totalName)
-    excelFile.close()
-    # You must close the file because opening fails otherwise.
-    excelFile = xlsxwriter.Workbook(totalName)
-    worksheet = excelFile.add_worksheet()
-    enumColumn(fileName, worksheet)
-    excelFile.close()
-    fileName = totalName
-    print("Temporary Convert to xlsx done.\n")
+    PrepareCSV(preName, fileName)
 
 stopPoint = fileName.index('.')
 prepRev = fileName[0:stopPoint]
-fname = join(dirname(abspath(__file__)), fileName)
+fname = join(dirname(abspath(__file__)), totalName)
 xl_workbook = xlrd.open_workbook(fname)
 sheet_names = xl_workbook.sheet_names()
 xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
