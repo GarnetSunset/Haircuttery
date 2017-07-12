@@ -91,15 +91,16 @@ def checkMe(website):
 
 # Open chromedriver with options.
 
+
 def chromeOpen(breaker):
     global driver
     if os.path.isfile('chrome.ini'):
         ini = open('chrome.ini', 'r')
         locationString = ini.read()
     elif(os.path.exists(r"C:/chromedriver.exe")):
-        locationString="C:/chromedriver.exe"
+        locationString = "C:/chromedriver.exe"
     elif(os.path.isfile('chromedriver.exe')):
-        locationString="chromedriver.exe"
+        locationString = "chromedriver.exe"
     else:
         breaker()
     driver = webdriver.Chrome(executable_path=locationString)
@@ -199,10 +200,7 @@ xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 
 # If the user types "d" for the website choice, they will be prompted again, but, this time given debug info.
 if(website == "d"):
-    if os.name == 'nt':
-        os.system('cls')
-    else:
-        os.system('clear')
+    cleaner()
     website = raw_input(
         "Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>")
     checkMe(website=website)
