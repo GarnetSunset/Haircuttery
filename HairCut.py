@@ -106,9 +106,8 @@ def checkMe(website):
 def chromeOpen(breaker):
     global driver
     if os.path.isfile('chrome.ini'):
-        with open('chrome.ini', 'r') as locationString:
-            print('\nThe location of ChromeDriver you selected is "' +
-                  str(locationString) + '"')
+        ini = open('chrome.ini', 'r')
+        locationString = ini.read()
     elif(os.path.exists(r"C:/chromedriver.exe")):
         locationString="C:/chromedriver.exe"
     elif(os.path.isfile('chromedriver.exe')):
