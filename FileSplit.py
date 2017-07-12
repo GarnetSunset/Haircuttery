@@ -42,7 +42,7 @@ if prepRev == ".csv":
     # You must close the file because opening fails otherwise.
     excelFile = xlsxwriter.Workbook(totalName)
     worksheet = excelFile.add_worksheet()
-    enumColumn(fileName=totalName, worksheet=worksheet)
+    enumColumn(fileName, worksheet)
     excelFile.close()
     fileName = totalName
     print("Temporary Convert to xlsx done.\n")
