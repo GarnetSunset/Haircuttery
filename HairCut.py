@@ -101,6 +101,25 @@ def checkMe(website):
             else:
                 os.system('clear')
 
+# Open chromedriver
+
+def chromeOpen(breaker):
+    global driver
+    if os.path.isfile('chrome.ini'):
+        with open('chrome.ini', 'r') as locationString:
+            driver = webdriver.Chrome(executable_path=locationString)
+            print('\nThe location of ChromeDriver you selected is "' +
+                  str(locationString) + '"')
+    else:
+        if(os.path.exists(r"C:/chromedriver.exe") or os.path.isfile('chromedriver.exe')):
+            if(os.path.exists(r"C:/chromedriver.exe")):
+                driver = webdriver.Chrome(
+                    executable_path=r"C:/chromedriver.exe")
+            if(os.path.isfile('chromedriver.exe')):
+                driver = webdriver.Chrome(executable_path='chromedriver.exe')
+        else:
+            breaker()
+
 # Loading Animation that plays when the user is running a file.
 
 
@@ -218,20 +237,7 @@ if(website == "1"):
     siteType = "_rev_who.xlsx"
 
 if(website == "2"):
-    if os.path.isfile('chrome.ini'):
-        with open('chrome.ini', 'r') as locationString:
-            driver = webdriver.Chrome(executable_path=locationString)
-            print('\nThe location of ChromeDriver you selected is "' +
-                  str(locationString) + '"')
-    else:
-        if(os.path.exists(r"C:/chromedriver.exe") or os.path.isfile('chromedriver.exe')):
-            if(os.path.exists(r"C:/chromedriver.exe")):
-                driver = webdriver.Chrome(
-                    executable_path=r"C:/chromedriver.exe")
-            if(os.path.isfile('chromedriver.exe')):
-                driver = webdriver.Chrome(executable_path='chromedriver.exe')
-        else:
-            breaker()
+    chromeOpen(breaker)
     driver.set_page_load_timeout(600)
     stopPoint = fileName.index('.')
     prepRev = fileName[0:stopPoint]
@@ -243,20 +249,7 @@ if(website == "2"):
     siteType = "_rev_BBB.xlsx"
 
 if(website == "3"):
-    if os.path.isfile('chrome.ini'):
-        with open('chrome.ini', 'r') as locationString:
-            driver = webdriver.Chrome(executable_path=locationString)
-            print('\nThe location of ChromeDriver you selected is "' +
-                  str(locationString) + '"')
-    else:
-        if(os.path.exists(r"C:/chromedriver.exe") or os.path.isfile('chromedriver.exe')):
-            if(os.path.exists(r"C:/chromedriver.exe")):
-                driver = webdriver.Chrome(
-                    executable_path=r"C:/chromedriver.exe")
-            if(os.path.isfile('chromedriver.exe')):
-                driver = webdriver.Chrome(executable_path='chromedriver.exe')
-        else:
-            breaker()
+    chromeOpen(breaker)
     driver.set_page_load_timeout(600)
     stopPoint = fileName.index('.')
     prepRev = fileName[0:stopPoint]
