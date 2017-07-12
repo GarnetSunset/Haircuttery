@@ -101,7 +101,7 @@ def checkMe(website):
             else:
                 os.system('clear')
 
-# Open chromedriver
+# Open chromedriver with options.
 
 def chromeOpen(breaker):
     global driver
@@ -109,13 +109,14 @@ def chromeOpen(breaker):
         with open('chrome.ini', 'r') as locationString:
             print('\nThe location of ChromeDriver you selected is "' +
                   str(locationString) + '"')
-    if(os.path.exists(r"C:/chromedriver.exe")):
+    elif(os.path.exists(r"C:/chromedriver.exe")):
         locationString="C:/chromedriver.exe"
-    if(os.path.isfile('chromedriver.exe')):
+    elif(os.path.isfile('chromedriver.exe')):
         locationString="chromedriver.exe"
-    driver = webdriver.Chrome(executable_path=locationString)
     else:
         breaker()
+    driver = webdriver.Chrome(executable_path=locationString)
+
 
 # Loading Animation that plays when the user is running a file.
 
