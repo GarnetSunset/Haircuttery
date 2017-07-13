@@ -124,6 +124,7 @@ def loading():
 
 def PrepareCSV(preName, fileName):
     global totalName
+    global fname
     totalName = preName + '.xlsx'
     excelFile = xlsxwriter.Workbook(totalName)
     excelFile.close()
@@ -133,7 +134,9 @@ def PrepareCSV(preName, fileName):
     enumColumn(fileName, worksheet)
     excelFile.close()
     fileName = totalName
+    fname = join(dirname(abspath('__file__')), '%s' % totalName)
     print("Temporary Convert to xlsx done.\n")
+
 
 # TimeoutHandler that takes care of webDriver fails.
 
@@ -192,7 +195,10 @@ if prepRev == ".csv":
     PrepareCSV(preName, fileName)
 
 # Get ready for XLRD to parse the original file (or the converted one).
-fname = join(dirname(abspath('__file__')), '%s' % totalName)
+try:
+    fname
+except NameError:
+    fname = join(dirname(abspath('__file__')), '%s' % fileName)
 
 # Parse it XLRD!
 xl_workbook = xlrd.open_workbook(fname)
