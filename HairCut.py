@@ -123,12 +123,9 @@ def loading():
 
 
 def PrepareCSV(preName, fileName):
-    global totalName
     global fname
+    global totalName
     totalName = preName + '.xlsx'
-    excelFile = xlsxwriter.Workbook(totalName)
-    excelFile.close()
-    # You must close the file because opening fails otherwise.
     excelFile = xlsxwriter.Workbook(totalName)
     worksheet = excelFile.add_worksheet()
     enumColumn(fileName, worksheet)
