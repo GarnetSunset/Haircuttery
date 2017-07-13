@@ -133,7 +133,6 @@ def PrepareCSV(preName, fileName):
     worksheet = excelFile.add_worksheet()
     enumColumn(fileName, worksheet)
     excelFile.close()
-    fileName = totalName
     fname = join(dirname(abspath('__file__')), '%s' % totalName)
     print("Temporary Convert to xlsx done.\n")
 
