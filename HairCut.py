@@ -577,13 +577,14 @@ for (idx, cell_obj) in enumerate(col):
                     spamCount = len(spamNum) + spamCount
                     debtCount = len(debtNum) + debtCount
                     hospitalCount = len(hospitalNum) + hospitalCount
+                    lastCommentsEquals = lastComments + lastCommentsEquals
                     blocked()
                 worksheet.write(idx + 1, 1, thumbPlus)
                 worksheet.write(idx + 1, 3, scamCount)
                 worksheet.write(idx + 1, 4, spamCount)
                 worksheet.write(idx + 1, 5, debtCount)
                 worksheet.write(idx + 1, 6, hospitalCount)
-                worksheet.write(idx + 1, 10, lastComments)
+                worksheet.write(idx + 1, 10, lastCommentsEquals)
 
                 if hospitalCount > 0:
                     hospitalCount + 9999
