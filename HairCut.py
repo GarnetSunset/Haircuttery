@@ -2,7 +2,8 @@
 from __future__ import print_function
 from bs4 import BeautifulSoup
 from collections import defaultdict
-from datetime import *; from dateutil.relativedelta import *
+from datetime import *
+from dateutil.relativedelta import *
 from Harvard import Excel2CSV, enumColumn
 from os.path import join, dirname, abspath
 from selenium import webdriver
@@ -131,16 +132,13 @@ def compareResults(hospitalCount,scamNum,worksheet,spamCount,debtCount):
 
     if(hospitalCount > 0):
         worksheet.write(idx + 1, 7, "Hospital")
-    elif(scamCount == 0 and spamCount == 0 and debtCount == 0):
-        worksheet.write(idx + 1, 7, "No Entries Detected")
-    elif(scamCount == spamCount and scamCount == debtCount and spamCount == debtCount):
+
+# EqualBoy
+
+
+def EqualBoy(scamCount, spamCount, debtCount, worksheet):
+    if(scamCount == spamCount  == debtCount):
         worksheet.write(idx + 1, 7, "Equal")
-    elif(scamCount == spamCount):
-        worksheet.write(idx + 1, 7, "Scam/Spam")
-    elif(scamCount == debtCount):
-        worksheet.write(idx + 1, 7, "Scam/Debt")
-    elif(spamCount == debtCount):
-        worksheet.write(idx + 1, 7, "Spam/Debt")
 
 
 # Search for latest date.
@@ -152,6 +150,7 @@ def lastDate(soup):
         worksheet.write(idx + 1, 9, now.strftime("%d %b %Y"))
 
 # How many of these were posted in the last year?
+
 
 def lastYear(soup):
     global lastComments
@@ -166,7 +165,6 @@ def lastYear(soup):
             lastComments += 1
 
 
-
 # Loading Animation that plays when the user is running a file.
 
 def loading():
@@ -176,6 +174,13 @@ def loading():
         sys.stdout.write('\rloading ' + s)
         sys.stdout.flush()
         time.sleep(0.1)
+
+
+# No Boys
+
+def NoBoys(scamCount, spamCount, debtCount, worksheet):
+    if(scamCount == 0 and spamCount == 0 and debtCount == 0):
+        worksheet.write(idx + 1, 7, "No Entries Detected")
 
 
 # PrepareCSV preps a CSV for EXCELence
@@ -192,7 +197,28 @@ def PrepareCSV(preName, fileName):
     print('Temporary Convert to xlsx done.\n')
 
 
+# ScamSpam
+
+def ScamSpam(scamCount, spamCount, worksheet):
+    if(scamCount == spamCount):
+        worksheet.write(idx + 1, 7, "Scam/Spam")
+
+# ScamDebt
+
+
+def ScamDebt(spamCount, debtCount, worksheet):
+    if(scamCount == debtCount):
+        worksheet.write(idx + 1, 7, "Scam/Debt")
+
+
+# SpamDebt
+
+def SpamDebt(spamCount, debtCount, worksheet):
+    if(spamCount == debtCount):
+        worksheet.write(idx + 1, 7, "Spam/Debt")
+
 # TimeoutHandler that takes care of webDriver fails.
+
 
 def TimeOutHandler(driver, webdriver, worksheet):
     driver.close()
@@ -464,7 +490,13 @@ for (idx, cell_obj) in enumerate(col):
 
             # Hospitals are important to look at, so I boost them.
 
-            compareResults(hospitalCount,scamNum,worksheet,spamCount,debtCount)
+            compareResults(hospitalCount, scamNum,
+                           worksheet, spamCount, debtCount)
+            NoBoys(scamCount, spamCount, debtCount, worksheet)
+            EqualBoy(scamCount, spamCount, debtCount, worksheet)
+            ScamSpam(scamCount, spamCount, worksheet)
+            ScamDebt(spamCount, debtCount, worksheet)
+            SpamDebt(spamCount, debtCount, worksheet)
 
     # BBB, the beginning!
 
@@ -598,7 +630,13 @@ for (idx, cell_obj) in enumerate(col):
                 worksheet.write(idx + 1, 6, hospitalCount)
                 worksheet.write(idx + 1, 10, lastCommentsEquals)
 
-                compareResults(hospitalCount,scamNum,worksheet,spamCount,debtCount)
+                compareResults(hospitalCount, scamNum,
+                               worksheet, spamCount, debtCount)
+                NoBoys(scamCount, spamCount, debtCount, worksheet)
+                EqualBoy(scamCount, spamCount, debtCount, worksheet)
+                ScamSpam(scamCount, spamCount, worksheet)
+                ScamDebt(spamCount, debtCount, worksheet)
+                SpamDebt(spamCount, debtCount, worksheet)
 
             countitup = 1
             debtCount = 0
