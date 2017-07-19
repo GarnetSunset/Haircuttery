@@ -1,4 +1,3 @@
-from HairCut import PrepareCSV
 from Harvard import enumColumn
 from os.path import join, dirname, abspath
 from shutil import copyfile
@@ -16,7 +15,6 @@ dragNDrop = ''.join(sys.argv[1:])
 beginGrab = 1
 counting = 0
 delMe = 0
-endGame = "HairCut.py"
 thousands = 0
 
 if dragNDrop == "":
@@ -24,21 +22,24 @@ if dragNDrop == "":
 else:
     fileOnly = dragNDrop.rfind('\\') + 1
     fileName = dragNDrop[fileOnly:]
-
+    print("memeboy")
 stopPoint = fileName.index('.')
 prepRev = fileName[stopPoint:]
 preName = fileName[:stopPoint]
 if(fileName.rfind('\\') != None):
     postSlash = fileName.rfind('\\') + 1
     preName = fileName[postSlash:stopPoint]
-
 reload(sys)
 sys.setdefaultencoding('utf')
-
 # Is the extension CSV? If so we'll convert it to xlsx.
 if prepRev == ".csv":
-    PrepareCSV(preName, fileName)
-
+    totalName = preName + '.xlsx'
+    excelFile = xlsxwriter.Workbook(totalName)
+    worksheet = excelFile.add_worksheet()
+    enumColumn(fileName, worksheet)
+    excelFile.close()
+    fname = join(dirname(abspath('__file__')), '%s' % totalName)
+    print('Temporary Convert to xlsx done.\n')
 stopPoint = fileName.index('.')
 prepRev = fileName[0:stopPoint]
 fname = join(dirname(abspath(__file__)), totalName)
@@ -47,12 +48,10 @@ sheet_names = xl_workbook.sheet_names()
 xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 book = xlwt.Workbook(encoding="utf-8")
 worksheet = book.add_sheet("Results", cell_overwrite_ok=True)
-
 workbook = xlrd.open_workbook(fileName)
 for sheet in workbook.sheets():
     for row in range(sheet.nrows):
         row = int(row)
-
 if(int(row) > 1000):
     subDivide = int(row) / 1000
     while(thousands != subDivide + 1):
@@ -88,7 +87,6 @@ if(int(row) > 1000):
             move(folderName, "WorkingDir/" + preName + '/' + folderName)
         else:
             move(totalName, "WorkingDir/" + preName + '/' + totalName)
-
     copyfile(fileName, "WorkingDir/" + preName + '/' + fileName)
     copyfile('HairCut.py', "WorkingDir/" + preName + '/HairCut.py')
     copyfile('Harvard.py', "WorkingDir/" + preName + '/Harvard.py')
