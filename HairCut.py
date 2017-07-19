@@ -445,17 +445,24 @@ for (idx, cell_obj) in enumerate(col):
 
             # Hospitals are important to look at, so I boost them.
 
-            if hospitalCount > 0:
-                hospitalCount + 9999
-
-            sentiment = max(searchTerms, key=searchTerms.get)
-            worksheet.write(idx + 1, 7, sentiment)
-
-            # Stalemate?
-
-            if scamCount == 0 and spamCount == 0 and debtCount == 0 \
-                    and hospitalCount == 0:
-                worksheet.write(idx + 1, 7, 'No Entries Detected')
+            if(hospitalCount > 0):
+                worksheet.write(idx + 1, 7, "Hospital")
+            elif scamCount == 0 and spamCount == 0 and debtCount == 0:
+                worksheet.write(idx + 1, 7, "No Entries Detected")
+            elif(scamCount > spamCount and scamCount > debtCount):
+                worksheet.write(idx + 1, 7, "Scam")
+ 	    elif(spamCount > scamCount and spamCount > debtCount):
+                worksheet.write(idx + 1, 7, "Spam")
+            elif(debtCount > scamCount and debtCount > scamCount):
+                worksheet.write(idx + 1, 7, "Debt Collector")
+            elif(scamCount == spamCount and scamCount == debtCount and spamCount == debtCount):
+                worksheet.write(idx + 1, 7, "Equal")
+            elif(scamCount == spamCount):
+                worksheet.write(idx + 1, 7, "Scam/Spam")
+            elif(scamCount == debtCount):
+                worksheet.write(idx + 1, 7, "Scam/Debt")
+            elif(spamCount == debtCount):
+                worksheet.write(idx + 1, 7, "Spam/Debt")
 
     # BBB, the beginning!
 
@@ -587,14 +594,24 @@ for (idx, cell_obj) in enumerate(col):
                 worksheet.write(idx + 1, 6, hospitalCount)
                 worksheet.write(idx + 1, 10, lastCommentsEquals)
 
-                if hospitalCount > 0:
-                    hospitalCount + 9999
-
-                sentiment = max(searchTerms, key=searchTerms.get)
-                worksheet.write(idx + 1, 7, sentiment)
-                if scamCount == 0 and spamCount == 0 and debtCount == 0 \
-                        and hospitalCount == 0:
-                    worksheet.write(idx + 1, 7, 'No Entries Detected')
+                if(hospitalCount > 0):
+                    worksheet.write(idx + 1, 7, "Hospital")
+                elif scamCount == 0 and spamCount == 0 and debtCount == 0:
+                    worksheet.write(idx + 1, 7, "No Entries Detected")
+                elif(scamCount > spamCount and scamCount > debtCount):
+                    worksheet.write(idx + 1, 7, "Scam")
+                elif(spamCount > scamCount and spamCount > debtCount):
+                    worksheet.write(idx + 1, 7, "Spam")
+                elif(debtCount > scamCount and debtCount > scamCount):
+                    worksheet.write(idx + 1, 7, "Debt Collector")
+                elif(scamCount == spamCount and scamCount == debtCount and spamCount == debtCount):
+                    worksheet.write(idx + 1, 7, "Equal")
+                elif(scamCount == spamCount):
+                    worksheet.write(idx + 1, 7, "Scam/Spam")
+                elif(scamCount == debtCount):
+                    worksheet.write(idx + 1, 7, "Scam/Debt")
+                elif(spamCount == debtCount):
+                    worksheet.write(idx + 1, 7, "Spam/Debt")
 
             countitup = 1
             debtCount = 0
