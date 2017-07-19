@@ -41,7 +41,7 @@ if prepRev == ".csv":
     print('Temporary Convert to xlsx done.\n')
 else:
     totalName = preName + prepRev
-fname = join(dirname(abspath('__file__')), '%s' % totalName)
+    fname = join(dirname(abspath('__file__')), '%s' % fileName)
 stopPoint = fileName.index('.')
 prepRev = fileName[0:stopPoint]
 xl_workbook = xlrd.open_workbook(fname)
@@ -49,7 +49,7 @@ sheet_names = xl_workbook.sheet_names()
 xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 book = xlwt.Workbook(encoding="utf-8")
 worksheet = book.add_sheet("Results", cell_overwrite_ok=True)
-workbook = xlrd.open_workbook(fileName)
+workbook = xlrd.open_workbook(totalName)
 for sheet in workbook.sheets():
     for row in range(sheet.nrows):
         row = int(row)

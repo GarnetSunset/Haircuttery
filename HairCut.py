@@ -125,8 +125,10 @@ def compareResults(hospitalCount,scamNum,worksheet,spamCount,debtCount):
         'Debt Collector': debtCount,
         r"Hospital": hospitalCount,
     }
+
     sentiment = max(searchTerms, key=searchTerms.get)
     worksheet.write(idx + 1, 7, sentiment)
+
     if(hospitalCount > 0):
         worksheet.write(idx + 1, 7, "Hospital")
     elif(scamCount == 0 and spamCount == 0 and debtCount == 0):
@@ -194,7 +196,6 @@ def PrepareCSV(preName, fileName):
 
 def TimeOutHandler(driver, webdriver, worksheet):
     driver.close()
-    driver = webdriver.Chrome()
     worksheet.write(idx + 1, 7, 'Timeout Exception')
     breakerLoop = 1
 
@@ -498,6 +499,7 @@ for (idx, cell_obj) in enumerate(col):
         except TimeoutException, ex:
             TimeOutHandler(driver=driver, worksheet=worksheet,
                            webdriver=webdriver)
+            driver = webdriver.Chrome()
         time.sleep(2)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
@@ -523,6 +525,7 @@ for (idx, cell_obj) in enumerate(col):
             except TimeoutException, ex:
                 TimeOutHandler(driver=driver, worksheet=worksheet,
                                webdriver=webdriver)
+                driver = webdriver.Chrome()
             blocked()
             curSite = driver.current_url
             pageExist = soup.find('a', class_='oos_i_thumbDown')
@@ -559,7 +562,7 @@ for (idx, cell_obj) in enumerate(col):
                         TimeOutHandler(driver=driver,
                                        worksheet=worksheet,
                                        webdriver=webdriver)
-                        break
+                        driver = webdriver.Chrome()
                     requestRec = driver.page_source
                     soup = BeautifulSoup(requestRec, 'lxml')
                     lastYear(soup)
