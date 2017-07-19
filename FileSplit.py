@@ -22,7 +22,6 @@ if dragNDrop == "":
 else:
     fileOnly = dragNDrop.rfind('\\') + 1
     fileName = dragNDrop[fileOnly:]
-    print("memeboy")
 stopPoint = fileName.index('.')
 prepRev = fileName[stopPoint:]
 preName = fileName[:stopPoint]
