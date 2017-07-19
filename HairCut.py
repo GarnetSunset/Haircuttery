@@ -2,6 +2,7 @@
 from __future__ import print_function
 from bs4 import BeautifulSoup
 from collections import defaultdict
+from datetime import *; from dateutil.relativedelta import *
 from Harvard import Excel2CSV, enumColumn
 from os.path import join, dirname, abspath
 from selenium import webdriver
@@ -41,6 +42,7 @@ delMe = 0
 done = False
 hospitalCount = 0
 now = datetime.datetime.now()
+notNow = now - relativedelta(years=1)
 numFormat = '3'
 scamCount = 0
 spamCount = 0
@@ -127,6 +129,21 @@ def lastDate(soup):
         worksheet.write(idx + 1, 9, str(elm.text))
     if "ago" in elm.text:
         worksheet.write(idx + 1, 9, now.strftime("%d %b %Y"))
+
+# How many of these were posted in the last year?
+
+def lastYear(soup):
+    global lastComments
+    lastComments = 0
+    for elm in soup.select(".oos_contletList time"):
+        if "ago" in elm.text:
+            commentTime = now.strftime("%d %b %Y")
+            commentTime = now.strptime(commentTime, "%d %b %Y")
+        else:
+            commentTime = now.strptime(elm.text, "%d %b %Y")
+        if commentTime > notNow:
+            lastComments += 1
+
 
 
 # Loading Animation that plays when the user is running a file.
@@ -301,6 +318,7 @@ if website == '3':
     worksheet.write(0, 7, 'Sentiment')
     worksheet.write(0, 8, 'Last Year')
     worksheet.write(0, 9, 'Last Date of Comment')
+    worksheet.write(0, 10, 'Number of Comments in the Last Year')
     siteType = '_rev_800notes.xlsx'
 
 # Set column to A:A, the first column.
@@ -535,6 +553,7 @@ for (idx, cell_obj) in enumerate(col):
                         break
                     requestRec = driver.page_source
                     soup = BeautifulSoup(requestRec, 'lxml')
+                    lastYear(soup)
                     countitup = int(countitup) + 1
                     if countitup % 2 == 0:
                         time.sleep(5)
@@ -564,6 +583,7 @@ for (idx, cell_obj) in enumerate(col):
                 worksheet.write(idx + 1, 4, spamCount)
                 worksheet.write(idx + 1, 5, debtCount)
                 worksheet.write(idx + 1, 6, hospitalCount)
+                worksheet.write(idx + 1, 10, lastComments)
 
                 if hospitalCount > 0:
                     hospitalCount + 9999
