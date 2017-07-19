@@ -39,9 +39,11 @@ if prepRev == ".csv":
     excelFile.close()
     fname = join(dirname(abspath('__file__')), '%s' % totalName)
     print('Temporary Convert to xlsx done.\n')
+else:
+    totalName = preName + prepRev
+fname = join(dirname(abspath('__file__')), '%s' % totalName)
 stopPoint = fileName.index('.')
 prepRev = fileName[0:stopPoint]
-fname = join(dirname(abspath(__file__)), totalName)
 xl_workbook = xlrd.open_workbook(fname)
 sheet_names = xl_workbook.sheet_names()
 xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])

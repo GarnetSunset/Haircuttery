@@ -621,9 +621,9 @@ if dragNDrop == '':
 # Was the file originially a CSV?
 
 if prepRev == '.csv':
-    totalName = preName + prepRev
-else:
     totalName = preName + '.xlsx'
+else:
+    totalName = preName + prepRev
 
 # If we haven't already moved all of the files, here we go.
 
