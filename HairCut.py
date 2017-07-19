@@ -48,13 +48,6 @@ numFormat = '3'
 scamCount = 0
 spamCount = 0
 
-searchTerms = {
-    r"Scam": scamCount,
-    'Spam': spamCount,
-    'Debt Collector': debtCount,
-    r"Hospital": hospitalCount,
-}
-
 
 # Wait out my mistake.
 
@@ -126,16 +119,18 @@ def cleaner():
 # Compare Results
 
 def compareResults(hospitalCount,scamNum,worksheet,spamCount,debtCount):
+    searchTerms = {
+        r"Scam": scamCount,
+        'Spam': spamCount,
+        'Debt Collector': debtCount,
+        r"Hospital": hospitalCount,
+    }
+    sentiment = max(searchTerms, key=searchTerms.get)
+    worksheet.write(idx + 1, 7, sentiment)
     if(hospitalCount > 0):
         worksheet.write(idx + 1, 7, "Hospital")
     elif(scamCount == 0 and spamCount == 0 and debtCount == 0):
         worksheet.write(idx + 1, 7, "No Entries Detected")
-    elif(scamCount > spamCount and scamCount > debtCount):
-        worksheet.write(idx + 1, 7, "Scam")
-    elif(spamCount > scamCount and spamCount > debtCount):
-        worksheet.write(idx + 1, 7, "Spam")
-    elif(debtCount > scamCount and debtCount > scamCount):
-        worksheet.write(idx + 1, 7, "Debt Collector")
     elif(scamCount == spamCount and scamCount == debtCount and spamCount == debtCount):
         worksheet.write(idx + 1, 7, "Equal")
     elif(scamCount == spamCount):
