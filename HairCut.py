@@ -123,6 +123,29 @@ def cleaner():
         os.system('clear')
 
 
+# Compare Results
+
+def compareResults(hospitalCount,scamNum,worksheet,spamCount,debtCount):
+    if(hospitalCount > 0):
+        worksheet.write(idx + 1, 7, "Hospital")
+    elif scamCount == 0 and spamCount == 0 and debtCount == 0:
+        worksheet.write(idx + 1, 7, "No Entries Detected")
+    elif(scamCount > spamCount and scamCount > debtCount):
+        worksheet.write(idx + 1, 7, "Scam")
+    elif(spamCount > scamCount and spamCount > debtCount):
+        worksheet.write(idx + 1, 7, "Spam")
+    elif(debtCount > scamCount and debtCount > scamCount):
+        worksheet.write(idx + 1, 7, "Debt Collector")
+    elif(scamCount == spamCount and scamCount == debtCount and spamCount == debtCount):
+        worksheet.write(idx + 1, 7, "Equal")
+    elif(scamCount == spamCount):
+        worksheet.write(idx + 1, 7, "Scam/Spam")
+    elif(scamCount == debtCount):
+        worksheet.write(idx + 1, 7, "Scam/Debt")
+    elif(spamCount == debtCount):
+        worksheet.write(idx + 1, 7, "Spam/Debt")
+
+
 # Search for latest date.
 
 def lastDate(soup):
@@ -445,24 +468,7 @@ for (idx, cell_obj) in enumerate(col):
 
             # Hospitals are important to look at, so I boost them.
 
-            if(hospitalCount > 0):
-                worksheet.write(idx + 1, 7, "Hospital")
-            elif scamCount == 0 and spamCount == 0 and debtCount == 0:
-                worksheet.write(idx + 1, 7, "No Entries Detected")
-            elif(scamCount > spamCount and scamCount > debtCount):
-                worksheet.write(idx + 1, 7, "Scam")
- 	    elif(spamCount > scamCount and spamCount > debtCount):
-                worksheet.write(idx + 1, 7, "Spam")
-            elif(debtCount > scamCount and debtCount > scamCount):
-                worksheet.write(idx + 1, 7, "Debt Collector")
-            elif(scamCount == spamCount and scamCount == debtCount and spamCount == debtCount):
-                worksheet.write(idx + 1, 7, "Equal")
-            elif(scamCount == spamCount):
-                worksheet.write(idx + 1, 7, "Scam/Spam")
-            elif(scamCount == debtCount):
-                worksheet.write(idx + 1, 7, "Scam/Debt")
-            elif(spamCount == debtCount):
-                worksheet.write(idx + 1, 7, "Spam/Debt")
+            compareResults(hospitalCount,scamNum,worksheet,spamCount,debtCount)
 
     # BBB, the beginning!
 
@@ -594,24 +600,7 @@ for (idx, cell_obj) in enumerate(col):
                 worksheet.write(idx + 1, 6, hospitalCount)
                 worksheet.write(idx + 1, 10, lastCommentsEquals)
 
-                if(hospitalCount > 0):
-                    worksheet.write(idx + 1, 7, "Hospital")
-                elif scamCount == 0 and spamCount == 0 and debtCount == 0:
-                    worksheet.write(idx + 1, 7, "No Entries Detected")
-                elif(scamCount > spamCount and scamCount > debtCount):
-                    worksheet.write(idx + 1, 7, "Scam")
-                elif(spamCount > scamCount and spamCount > debtCount):
-                    worksheet.write(idx + 1, 7, "Spam")
-                elif(debtCount > scamCount and debtCount > scamCount):
-                    worksheet.write(idx + 1, 7, "Debt Collector")
-                elif(scamCount == spamCount and scamCount == debtCount and spamCount == debtCount):
-                    worksheet.write(idx + 1, 7, "Equal")
-                elif(scamCount == spamCount):
-                    worksheet.write(idx + 1, 7, "Scam/Spam")
-                elif(scamCount == debtCount):
-                    worksheet.write(idx + 1, 7, "Scam/Debt")
-                elif(spamCount == debtCount):
-                    worksheet.write(idx + 1, 7, "Spam/Debt")
+                compareResults(hospitalCount,scamNum,worksheet,spamCount,debtCount)
 
             countitup = 1
             debtCount = 0
