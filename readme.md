@@ -22,6 +22,8 @@ Dropping Files into DropOnMe.bat will seperate them into 1000 cell files which c
 
 Download and Install this: <https://www.microsoft.com/en-us/download/details.aspx?id=44266>
 
+Run requirements.bat to install necessary files.
+
 #### Chrome Support
 
 1. Download the appropriate executable for your operating system <https://sites.google.com/a/chromium.org/chromedriver/downloads>

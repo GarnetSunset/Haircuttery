@@ -1,13 +1,5 @@
 @ECHO OFF
 
-where /q pip
-IF ERRORLEVEL 1 (
-    cls
-) ELSE (
-    easy_install pip
-    pip install -q -r requirements.txt
-)
-
 cls
 
 python "FileSplit.py" %*

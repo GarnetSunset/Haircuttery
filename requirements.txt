@@ -11,4 +11,4 @@ numpy
 xlsxwriter
 lxml
 selenium
-dateutil  
+dateutil

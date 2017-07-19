@@ -41,6 +41,7 @@ debtCount = 0
 delMe = 0
 done = False
 hospitalCount = 0
+lastCommentsEquals = 0
 now = datetime.datetime.now()
 notNow = now - relativedelta(years=1)
 numFormat = '3'
