@@ -32,6 +32,7 @@ bbbUrl = 'https://www.bbb.org/en/us/search?inputText='
 bbbUrlAC = \
     'https://www.bbb.org/en/us/search?accreditedFilter=1&inputText='
 breaker = 0
+breakerLoop = 0
 countitup = 1
 dCount = 0
 debtCount = 0
@@ -47,7 +48,7 @@ searchTerms = {
     'Spam': spamCount,
     'Debt Collector': debtCount,
     r"Hospital": hospitalCount,
-    }
+}
 
 
 # Wait out my mistake.
@@ -117,6 +118,14 @@ def cleaner():
         os.system('clear')
 
 
+# Search for latest date.
+
+def lastDate(soup):
+    global dateString
+    for elm in soup.select(".oos_contletList time"):
+        worksheet.write(idx + 1, 9, str(elm.text))
+
+
 # Loading Animation that plays when the user is running a file.
 
 def loading():
@@ -148,6 +157,7 @@ def TimeOutHandler(driver, webdriver, worksheet):
     driver.close()
     driver = webdriver.Chrome()
     worksheet.write(idx + 1, 7, 'Timeout Exception')
+    breakerLoop = 1
 
 
 # Create a UTF-8 Workbook.
@@ -157,7 +167,8 @@ book = xlwt.Workbook(encoding='utf-8')
 # Assign a User-Agent to python.
 
 headers = \
-    {'User-Agent': 'Chrome/39.0.2171.95 Safari/537.36 AppleWebKit/537.36 (KHTML, like Gecko)'}
+    {'User-Agent':
+        'Chrome/39.0.2171.95 Safari/537.36 AppleWebKit/537.36 (KHTML, like Gecko)'}
 
 # Create a worksheet named "Results".
 
@@ -285,6 +296,8 @@ if website == '3':
     worksheet.write(0, 5, 'Number of Debt Collectors')
     worksheet.write(0, 6, 'Number of Hospital')
     worksheet.write(0, 7, 'Sentiment')
+    worksheet.write(0, 8, 'Last Year')
+    worksheet.write(0, 9, 'Last Date of Comment')
     siteType = '_rev_800notes.xlsx'
 
 # Set column to A:A, the first column.
@@ -365,7 +378,7 @@ for (idx, cell_obj) in enumerate(col):
         soup = BeautifulSoup(requestRec.content, 'lxml')
         noMatch = \
             soup.find(text=re.compile(r"no reports yet on the phone number"
-                      ))
+                                      ))
         type(noMatch) is str
         if noMatch is None:
             worksheet.write(idx + 1, 2, 'Got a hit')
@@ -373,33 +386,33 @@ for (idx, cell_obj) in enumerate(col):
             # Check for number of comments.
 
             howMany = soup.find_all('img', {'src': '/default-avatar.gif'
-                                    })
+                                            })
             howManyAreThere = len(howMany)
             worksheet.write(idx + 1, 1, howManyAreThere)
 
             # Search for text on the sites that indicates their sentiment and generate the top response.
 
             scamNum = [div for div in soup.find_all('div',
-                       {'style': 'font-size:14px; margin:10px; overflow:hidden'
-                       }) if 'scam' in div.text.lower() or r"Scam"
+                                                    {'style': 'font-size:14px; margin:10px; overflow:hidden'
+                                                     }) if 'scam' in div.text.lower() or r"Scam"
                        in div.text.lower() or 'scams'
                        in div.text.lower()]
             scamCount = len(scamNum)
             spamNum = [div for div in soup.find_all('div',
-                       {'style': 'font-size:14px; margin:10px; overflow:hidden'
-                       }) if 'spam' in div.text.lower() or 'Spam'
+                                                    {'style': 'font-size:14px; margin:10px; overflow:hidden'
+                                                     }) if 'spam' in div.text.lower() or 'Spam'
                        in div.text.lower() or 'spams'
                        in div.text.lower()]
             spamCount = len(spamNum)
             debtNum = [div for div in soup.find_all('div',
-                       {'style': 'font-size:14px; margin:10px; overflow:hidden'
-                       }) if 'debt' in div.text.lower() or 'Debt'
+                                                    {'style': 'font-size:14px; margin:10px; overflow:hidden'
+                                                     }) if 'debt' in div.text.lower() or 'Debt'
                        in div.text.lower() or 'credit'
                        in div.text.lower()]
             debtCount = len(debtNum)
             hospitalNum = [div for div in soup.find_all('div',
-                           {'style': 'font-size:14px; margin:10px; overflow:hidden'
-                           }) if 'hospital' in div.text.lower()
+                                                        {'style': 'font-size:14px; margin:10px; overflow:hidden'
+                                                         }) if 'hospital' in div.text.lower()
                            or r"Hospital" in div.text.lower()
                            or 'medical' in div.text.lower()]
             hospitalCount = len(hospitalNum)
@@ -419,7 +432,7 @@ for (idx, cell_obj) in enumerate(col):
             # Stalemate?
 
             if scamCount == 0 and spamCount == 0 and debtCount == 0 \
-                and hospitalCount == 0:
+                    and hospitalCount == 0:
                 worksheet.write(idx + 1, 7, 'No Entries Detected')
 
     # BBB, the beginning!
@@ -440,7 +453,7 @@ for (idx, cell_obj) in enumerate(col):
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
         Badge = soup.find_all('aside', {'class': 'search-result__aside'
-                              })
+                                        })
         if len(Hit) != 0:
             worksheet.write(idx + 1, 1, 'Got a Hit')
         if len(Badge) != 0:
@@ -455,7 +468,6 @@ for (idx, cell_obj) in enumerate(col):
         except TimeoutException, ex:
             TimeOutHandler(driver=driver, worksheet=worksheet,
                            webdriver=webdriver)
-            break
         time.sleep(2)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
@@ -464,7 +476,7 @@ for (idx, cell_obj) in enumerate(col):
 
         noMatch = \
             soup.find(text=re.compile(r"Report the call using the form"
-                      ))
+                                      ))
         soup.prettify()
         type(noMatch) is str
 
@@ -472,14 +484,15 @@ for (idx, cell_obj) in enumerate(col):
 
         blocked()
 
-        if noMatch is None:
+        worksheet.write(idx + 1, 8, '|')
+
+        if noMatch is None and breakerLoop == 0:
             try:
                 driver.get('http://800notes.com/Phone.aspx/%s/10000'
                            % tele800)
             except TimeoutException, ex:
                 TimeOutHandler(driver=driver, worksheet=worksheet,
                                webdriver=webdriver)
-                break
             blocked()
             curSite = driver.current_url
             pageExist = soup.find('a', class_='oos_i_thumbDown')
@@ -492,24 +505,30 @@ for (idx, cell_obj) in enumerate(col):
                 pageNum = 1
             if curSite.count('/') < 5:
                 pageNum = 1
+
             numMessages = int(pageNum) - 1
             twentyNums = numMessages * 20
             thumbs = soup.find_all('a', {'class': 'oos_i_thumbDown'})
             thumbPlus = len(thumbs) + int(twentyNums)
-            worksheet.write(idx + 1, 1, thumbPlus)
+
+            requestRec = driver.page_source
+            soup = BeautifulSoup(requestRec, 'lxml')
+            lastDate(soup)
+
             time.sleep(2)
-            if pageExist is not None:
+            if pageExist is not None and breakerLoop == 0:
                 while int(countitup) != int(pageNum) + 1:
                     try:
                         if countitup == 1:
-                            driver.get('http://800notes.com/Phone.aspx/{}'.format(tele800))
+                            driver.get(
+                                'http://800notes.com/Phone.aspx/{}'.format(tele800))
                         else:
                             driver.get('http://800notes.com/Phone.aspx/{}/{}/'.format(tele800,
-                                    countitup))
+                                                                                      countitup))
                     except TimeoutException, ex:
                         TimeOutHandler(driver=driver,
-                                worksheet=worksheet,
-                                webdriver=webdriver)
+                                       worksheet=worksheet,
+                                       webdriver=webdriver)
                         break
                     requestRec = driver.page_source
                     soup = BeautifulSoup(requestRec, 'lxml')
@@ -519,24 +538,25 @@ for (idx, cell_obj) in enumerate(col):
                     else:
                         time.sleep(4)
                     scamNum = soup.find_all('div',
-                            class_='oos_contletBody',
-                            text=re.compile(r"Scam",
-                            flags=re.IGNORECASE))
+                                            class_='oos_contletBody',
+                                            text=re.compile(r"Scam",
+                                                            flags=re.IGNORECASE))
                     spamNum = \
                         soup.find_all(text=re.compile(r"Call type: Telemarketer"
-                            ))
+                                                      ))
                     debtNum = \
                         soup.find_all(text=re.compile(r"Call type: Debt collector"
-                            ))
+                                                      ))
                     hospitalNum = soup.find_all('div',
-                            class_='oos_contletBody',
-                            text=re.compile(r"Hospital",
-                            flags=re.IGNORECASE))
+                                                class_='oos_contletBody',
+                                                text=re.compile(r"Hospital",
+                                                                flags=re.IGNORECASE))
                     scamCount = len(scamNum) + scamCount
                     spamCount = len(spamNum) + spamCount
                     debtCount = len(debtNum) + debtCount
                     hospitalCount = len(hospitalNum) + hospitalCount
                     blocked()
+                worksheet.write(idx + 1, 1, thumbPlus)
                 worksheet.write(idx + 1, 3, scamCount)
                 worksheet.write(idx + 1, 4, spamCount)
                 worksheet.write(idx + 1, 5, debtCount)
@@ -548,8 +568,9 @@ for (idx, cell_obj) in enumerate(col):
                 sentiment = max(searchTerms, key=searchTerms.get)
                 worksheet.write(idx + 1, 7, sentiment)
                 if scamCount == 0 and spamCount == 0 and debtCount == 0 \
-                    and hospitalCount == 0:
+                        and hospitalCount == 0:
                     worksheet.write(idx + 1, 7, 'No Entries Detected')
+
             countitup = 1
             debtCount = 0
             hospitalCount = 0
@@ -558,6 +579,9 @@ for (idx, cell_obj) in enumerate(col):
             worksheet.write(idx + 1, 2, int(pageNum))
 
 # Close up Shop!
+
+if website == '2' or website == '3':
+    driver.close()
 
 workbook.close()
 prepRev = preName + '_temp.csv'
