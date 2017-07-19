@@ -587,11 +587,11 @@ for (idx, cell_obj) in enumerate(col):
                                                 class_='oos_contletBody',
                                                 text=re.compile(r"Hospital",
                                                                 flags=re.IGNORECASE))
-                    scamCount = len(scamNum) + scamCount
-                    spamCount = len(spamNum) + spamCount
-                    debtCount = len(debtNum) + debtCount
-                    hospitalCount = len(hospitalNum) + hospitalCount
-                    lastCommentsEquals = lastComments + lastCommentsEquals
+                    scamCount += len(scamNum)
+                    spamCount += len(spamNum)
+                    debtCount += len(debtNum)
+                    hospitalCount += len(hospitalNum)
+                    lastCommentsEquals += lastComments
                     blocked()
                 worksheet.write(idx + 1, 1, thumbPlus)
                 worksheet.write(idx + 1, 3, scamCount)
