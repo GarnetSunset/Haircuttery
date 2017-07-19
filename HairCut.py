@@ -12,6 +12,7 @@ from shutil import copyfile
 from shutil import move
 from xlrd.sheet import ctype_text
 import csv
+import datetime
 import glob
 import itertools
 import logging
@@ -39,6 +40,7 @@ debtCount = 0
 delMe = 0
 done = False
 hospitalCount = 0
+now = datetime.datetime.now()
 numFormat = '3'
 scamCount = 0
 spamCount = 0
@@ -121,9 +123,10 @@ def cleaner():
 # Search for latest date.
 
 def lastDate(soup):
-    global dateString
     for elm in soup.select(".oos_contletList time"):
         worksheet.write(idx + 1, 9, str(elm.text))
+    if "ago" in elm.text:
+        worksheet.write(idx + 1, 9, now.strftime("%d %b %Y"))
 
 
 # Loading Animation that plays when the user is running a file.
