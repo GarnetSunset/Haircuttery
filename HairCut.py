@@ -505,7 +505,7 @@ for (idx, cell_obj) in enumerate(col):
 
         blocked()
 
-        worksheet.write(idx + 1, 8, '|')
+        worksheet.write(idx + 1, 8, '|X|')
 
         if noMatch is None and breakerLoop == 0:
             try:
