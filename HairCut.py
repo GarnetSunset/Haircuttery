@@ -128,7 +128,7 @@ def cleaner():
 def compareResults(hospitalCount,scamNum,worksheet,spamCount,debtCount):
     if(hospitalCount > 0):
         worksheet.write(idx + 1, 7, "Hospital")
-    elif scamCount == 0 and spamCount == 0 and debtCount == 0:
+    elif(scamCount == 0 and spamCount == 0 and debtCount == 0):
         worksheet.write(idx + 1, 7, "No Entries Detected")
     elif(scamCount > spamCount and scamCount > debtCount):
         worksheet.write(idx + 1, 7, "Scam")
