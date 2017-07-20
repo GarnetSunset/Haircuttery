@@ -119,7 +119,7 @@ def cleaner():
 
 # Compare Results
 
-def compareResults(hospitalCount,scamNum,worksheet,spamCount,debtCount):
+def compareResults(hospitalCount, scamNum, worksheet, spamCount, debtCount):
     searchTerms = {
         r"Scam": scamCount,
         'Spam': spamCount,
@@ -137,7 +137,7 @@ def compareResults(hospitalCount,scamNum,worksheet,spamCount,debtCount):
 
 
 def EqualBoy(scamCount, spamCount, debtCount, worksheet):
-    if(scamCount == spamCount  == debtCount):
+    if(scamCount == spamCount == debtCount):
         worksheet.write(idx + 1, 7, "Equal")
 
 
