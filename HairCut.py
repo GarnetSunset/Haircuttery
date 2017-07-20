@@ -119,19 +119,15 @@ def cleaner():
 
 # Compare Results
 
-def compareResults(hospitalCount, scamNum, worksheet, spamCount, debtCount):
+def compareResults(scamNum, worksheet, spamCount, debtCount):
     searchTerms = {
         r"Scam": scamCount,
         'Spam': spamCount,
         'Debt Collector': debtCount,
-        r"Hospital": hospitalCount,
     }
 
     sentiment = max(searchTerms, key=searchTerms.get)
     worksheet.write(idx + 1, 7, sentiment)
-
-    if(hospitalCount > 0):
-        worksheet.write(idx + 1, 7, "Hospital")
 
 # EqualBoy
 
@@ -497,6 +493,8 @@ for (idx, cell_obj) in enumerate(col):
             ScamSpam(scamCount, spamCount, worksheet)
             ScamDebt(spamCount, debtCount, worksheet)
             SpamDebt(spamCount, debtCount, worksheet)
+            if(hospitalCount > 0):
+                worksheet.write(idx + 1, 7, "Hospital")
 
     # BBB, the beginning!
 
@@ -630,13 +628,15 @@ for (idx, cell_obj) in enumerate(col):
                 worksheet.write(idx + 1, 6, hospitalCount)
                 worksheet.write(idx + 1, 10, lastCommentsEquals)
 
-                compareResults(hospitalCount, scamNum,
+                compareResults(scamNum,
                                worksheet, spamCount, debtCount)
                 NoBoys(scamCount, spamCount, debtCount, worksheet)
                 EqualBoy(scamCount, spamCount, debtCount, worksheet)
                 ScamSpam(scamCount, spamCount, worksheet)
                 ScamDebt(spamCount, debtCount, worksheet)
                 SpamDebt(spamCount, debtCount, worksheet)
+                if(hospitalCount > 0):
+                    worksheet.write(idx + 1, 7, "Hospital")
 
             countitup = 1
             debtCount = 0
