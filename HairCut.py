@@ -46,6 +46,7 @@ lastCommentsEquals = 0
 now = datetime.datetime.now()
 notNow = now - relativedelta(years=1)
 numFormat = '3'
+reset = 0
 scamCount = 0
 spamCount = 0
 
@@ -148,9 +149,10 @@ def lastDate(soup):
 # How many of these were posted in the last year?
 
 
-def lastYear(soup):
+def lastYear(reset,soup):
     global lastComments
-    lastComments = 0
+    if(reset == 1):
+        lastComments = 0
     for elm in soup.select(".oos_contletList time"):
         if "ago" in elm.text:
             commentTime = now.strftime("%d %b %Y")
@@ -593,9 +595,12 @@ for (idx, cell_obj) in enumerate(col):
                                        worksheet=worksheet,
                                        webdriver=webdriver)
                         driver = webdriver.Chrome()
+                    lastComments = 0
+                    lastCommentsEquals = 0
+                    reset = 0
                     requestRec = driver.page_source
                     soup = BeautifulSoup(requestRec, 'lxml')
-                    lastYear(soup)
+                    lastYear(reset, soup)
                     countitup = int(countitup) + 1
                     if countitup % 2 == 0:
                         time.sleep(5)
@@ -642,6 +647,7 @@ for (idx, cell_obj) in enumerate(col):
             debtCount = 0
             hospitalCount = 0
             lastCommentsEquals = 0
+            reset = 1
             scamCount = 0
             spamCount = 0
             worksheet.write(idx + 1, 2, int(pageNum))
