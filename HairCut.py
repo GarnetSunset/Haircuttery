@@ -641,6 +641,7 @@ for (idx, cell_obj) in enumerate(col):
             countitup = 1
             debtCount = 0
             hospitalCount = 0
+            lastComments = 0
             scamCount = 0
             spamCount = 0
             worksheet.write(idx + 1, 2, int(pageNum))
