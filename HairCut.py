@@ -32,8 +32,7 @@ import xlwt
 
 bbbEnd = '&locationText=&locationLatLng=&page=1'
 bbbUrl = 'https://www.bbb.org/en/us/search?inputText='
-bbbUrlAC = \
-    'https://www.bbb.org/en/us/search?accreditedFilter=1&inputText='
+bbbUrlAC = 'https://www.bbb.org/en/us/search?accreditedFilter=1&inputText='
 breaker = 0
 breakerLoop = 0
 countitup = 1
@@ -42,7 +41,7 @@ debtCount = 0
 delMe = 0
 done = False
 hospitalCount = 0
-lastCommentsEquals = 0
+lastComments = 0
 now = datetime.datetime.now()
 notNow = now - relativedelta(years=1)
 numFormat = '3'
@@ -151,8 +150,6 @@ def lastDate(soup):
 
 def lastYear(reset,soup):
     global lastComments
-    if(reset == 1):
-        lastComments = 0
     for elm in soup.select(".oos_contletList time"):
         if "ago" in elm.text:
             commentTime = now.strftime("%d %b %Y")
@@ -595,8 +592,6 @@ for (idx, cell_obj) in enumerate(col):
                                        worksheet=worksheet,
                                        webdriver=webdriver)
                         driver = webdriver.Chrome()
-                    lastComments = 0
-                    lastCommentsEquals = 0
                     reset = 0
                     requestRec = driver.page_source
                     soup = BeautifulSoup(requestRec, 'lxml')
@@ -624,14 +619,13 @@ for (idx, cell_obj) in enumerate(col):
                     spamCount += len(spamNum)
                     debtCount += len(debtNum)
                     hospitalCount += len(hospitalNum)
-                    lastCommentsEquals += lastComments
                     blocked()
                 worksheet.write(idx + 1, 1, thumbPlus)
                 worksheet.write(idx + 1, 3, scamCount)
                 worksheet.write(idx + 1, 4, spamCount)
                 worksheet.write(idx + 1, 5, debtCount)
                 worksheet.write(idx + 1, 6, hospitalCount)
-                worksheet.write(idx + 1, 10, lastCommentsEquals)
+                worksheet.write(idx + 1, 10, lastComments)
 
                 compareResults(scamNum,
                                worksheet, spamCount, debtCount)
@@ -646,7 +640,7 @@ for (idx, cell_obj) in enumerate(col):
             countitup = 1
             debtCount = 0
             hospitalCount = 0
-            lastCommentsEquals = 0
+
             reset = 1
             scamCount = 0
             spamCount = 0
