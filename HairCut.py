@@ -529,7 +529,8 @@ for (idx, cell_obj) in enumerate(col):
         try:
             driver.get('http://800notes.com/Phone.aspx/%s' % tele800)
         except TimeoutException, ex:
-            TimeOutHandler(driver=driver, worksheet=worksheet,
+            TimeOutHandler(driver=driver,
+                           worksheet=worksheet,
                            webdriver=webdriver)
             driver = webdriver.Chrome()
         time.sleep(2)
@@ -555,7 +556,8 @@ for (idx, cell_obj) in enumerate(col):
                 driver.get('http://800notes.com/Phone.aspx/%s/10000'
                            % tele800)
             except TimeoutException, ex:
-                TimeOutHandler(driver=driver, worksheet=worksheet,
+                TimeOutHandler(driver=driver,
+                               worksheet=worksheet,
                                webdriver=webdriver)
                 driver = webdriver.Chrome()
             blocked()
