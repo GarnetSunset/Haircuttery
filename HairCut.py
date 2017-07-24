@@ -142,6 +142,7 @@ def EqualBoy(scamCount, spamCount, debtCount, worksheet):
 def lastDate(soup):
     for elm in soup.select(".oos_contletList time"):
         worksheet.write(idx + 1, 9, str(elm.text))
+        element = str(elm.text)
     if "ago" in elm.text:
         worksheet.write(idx + 1, 9, now.strftime("%d %b %Y"))
 
