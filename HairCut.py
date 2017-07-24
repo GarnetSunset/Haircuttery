@@ -143,11 +143,11 @@ def lastDate(soup):
     for elm in soup.select(".oos_contletList time"):
         worksheet.write(idx + 1, 9, str(elm.text))
         element = str(elm.text)
-    if "ago" in elm.text:
-        worksheet.write(idx + 1, 9, now.strftime("%d %b %Y"))
+        if "ago" in element:
+            worksheet.write(idx + 1, 9, now.strftime("%d %b %Y"))
+
 
 # How many of these were posted in the last year?
-
 
 def lastYear(lastComments, reset, soup, worksheet):
     for elm in soup.select(".oos_contletList time"):
