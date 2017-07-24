@@ -683,7 +683,7 @@ for (idx, cell_obj) in enumerate(col):
             spamCount = 0
             worksheet.write(idx + 1, 2, int(pageNum))
 
-    if website = '4':
+    if website == '4':
         try:
             driver.get('https://www.shouldianswer.com/phone-number/%s' % teleBBB)
         except TimeoutException, ex:
