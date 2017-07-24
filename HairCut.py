@@ -695,7 +695,20 @@ for (idx, cell_obj) in enumerate(col):
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
 
+        # This entry doesn't exist if this regex succeeds.
 
+        noMatch = \
+            soup.find(text=re.compile(r"PAGE NOT FOUND"))
+        soup.prettify()
+        type(noMatch) is str
+
+        # Make sure we don't get blocked, and if we do, wait it out.
+
+        blocked()
+
+        if noMatch is None:
+            worksheet.write(idx + 1, 2, 'Got a hit')
+        
 
 # Close up Shop!
 
