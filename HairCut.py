@@ -150,9 +150,10 @@ def lastDate(soup):
 
 def lastYear(lastComments, reset, soup, worksheet):
     for elm in soup.select(".oos_contletList time"):
+        element = str(elm.text)
         if reset == 1:
             lastComments = 0
-        if "ago" in elm.text:
+        if "ago" in element:
             commentTime = now.strftime("%d %b %Y")
             commentTime = now.strptime(commentTime, "%d %b %Y")
         else:
