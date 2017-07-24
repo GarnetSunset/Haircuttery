@@ -129,8 +129,8 @@ def compareResults(scamNum, worksheet, spamCount, debtCount):
     sentiment = max(searchTerms, key=searchTerms.get)
     worksheet.write(idx + 1, 7, sentiment)
 
-# EqualBoy
 
+# EqualBoy
 
 def EqualBoy(scamCount, spamCount, debtCount, worksheet):
     if(scamCount == spamCount == debtCount):
@@ -202,8 +202,8 @@ def ScamSpam(scamCount, spamCount, worksheet):
     if(scamCount == spamCount):
         worksheet.write(idx + 1, 7, "Scam/Spam")
 
-# ScamDebt
 
+# ScamDebt
 
 def ScamDebt(spamCount, debtCount, worksheet):
     if(scamCount == debtCount):
@@ -216,8 +216,8 @@ def SpamDebt(spamCount, debtCount, worksheet):
     if(spamCount == debtCount):
         worksheet.write(idx + 1, 7, "Spam/Debt")
 
-# TimeoutHandler that takes care of webDriver fails.
 
+# TimeoutHandler that takes care of webDriver fails.
 
 def TimeOutHandler(driver, webdriver, worksheet):
     driver.close()
@@ -229,20 +229,24 @@ def TimeOutHandler(driver, webdriver, worksheet):
 
 book = xlwt.Workbook(encoding='utf-8')
 
+
 # Assign a User-Agent to python.
 
 headers = \
     {'User-Agent':
         'Chrome/39.0.2171.95 Safari/537.36 AppleWebKit/537.36 (KHTML, like Gecko)'}
 
+
 # Create a worksheet named "Results".
 
 worksheet = book.add_sheet('Results', cell_overwrite_ok=True)
+
 
 # Join the dragged files to create strings.
 
 dragNDrop = ''.join(sys.argv[1:2])
 dragNDrop2 = ''.join(sys.argv[2:3])
+
 
 # Was a file dragged onto the Batch file?
 # If not the string "dragNDrop" will be empty and the user will be prompted.
@@ -253,10 +257,12 @@ Input the file with extension
 >''')
 else:
 
+
     # Obtain the fileName only by removing the directory name.
 
     fileOnly = dragNDrop.rfind('\\') + 1
     fileName = dragNDrop[fileOnly:]
+
 
 # Was a site given in the Batch file?
 # If not the string "dragNDrop2" will be empty and the user will be prompted.
@@ -268,9 +274,11 @@ if dragNDrop2 == '':
 else:
     website = dragNDrop2
 
+
 # No more bad inputs!
 
 checkMe(website)
+
 
 # Find the period in the file, which determines the prepRev or extension, and the fileName.
 
@@ -278,15 +286,18 @@ stopPoint = fileName.index('.')
 prepRev = fileName[stopPoint:]
 preName = fileName[:stopPoint]
 
+
 # Make sure we're still encoding in UTF. Don't want any mistakes now, do we?
 
 reload(sys)
 sys.setdefaultencoding('utf')
 
+
 # Is the extension CSV? If so we'll convert it to xlsx.
 
 if prepRev == '.csv':
     PrepareCSV(preName, fileName)
+
 
 # Get ready for XLRD to parse the original file (or the converted one).
 
