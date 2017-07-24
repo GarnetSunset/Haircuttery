@@ -77,18 +77,16 @@ def breaker():
 
 def checkMe(website):
     if website == 'd':
-        while website not in ['1', '2', '3']:
+        while website not in ['1', '2', '3', '4']:
             print('Try Again.\n')
             website = \
-                raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>'
-                          )
+                raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for ShouldIAnswer\n>')
             cleaner()
     else:
-        while website not in ['1', '2', '3', 'd']:
+        while website not in ['1', '2', '3', '4', 'd']:
             print('Try Again.\n')
             website = \
-                raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>'
-                          )
+                raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for ShouldIAnswer\n>')
             cleaner()
 
 
@@ -316,7 +314,7 @@ xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 if website == 'd':
     cleaner()
     website = \
-        raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>'
+        raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for ShouldIAnswer\n>'
                   )
     checkMe(website=website)
     logging.basicConfig(level=logging.DEBUG)
@@ -683,6 +681,8 @@ for (idx, cell_obj) in enumerate(col):
             spamCount = 0
             worksheet.write(idx + 1, 2, int(pageNum))
 
+    # ShouldIAnswer, Community Requested.
+
     if website == '4':
         try:
             driver.get('https://www.shouldianswer.com/phone-number/%s' % teleBBB)
@@ -691,6 +691,11 @@ for (idx, cell_obj) in enumerate(col):
                            worksheet=worksheet,
                            webdriver=webdriver)
             driver = webdriver.Chrome()
+        time.sleep(2)
+        requestRec = driver.page_source
+        soup = BeautifulSoup(requestRec, 'lxml')
+
+
 
 # Close up Shop!
 
