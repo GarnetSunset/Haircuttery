@@ -99,7 +99,7 @@ def chromeOpen(breaker):
     if os.path.isfile('chrome.ini'):
         ini = open('chrome.ini', 'r')
         locationString = ini.read()
-    elif os.path.exists(r"C:/chromedriver.exe"):
+    if os.path.exists(r"C:/chromedriver.exe"):
         locationString = r"C:/chromedriver.exe"
     elif os.path.isfile('chromedriver.exe'):
         locationString = 'chromedriver.exe'
