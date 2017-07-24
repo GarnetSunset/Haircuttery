@@ -148,9 +148,10 @@ def lastDate(soup):
 # How many of these were posted in the last year?
 
 
-def lastYear(reset,soup):
-    global lastComments
+def lastYear(lastComments, reset, soup, worksheet):
     for elm in soup.select(".oos_contletList time"):
+        if reset == 1:
+            lastComments = 0
         if "ago" in elm.text:
             commentTime = now.strftime("%d %b %Y")
             commentTime = now.strptime(commentTime, "%d %b %Y")
@@ -158,6 +159,7 @@ def lastYear(reset,soup):
             commentTime = now.strptime(elm.text, "%d %b %Y")
         if commentTime > notNow:
             lastComments += 1
+    worksheet.write(idx + 1, 10, lastComments)
 
 
 # Loading Animation that plays when the user is running a file.
@@ -592,10 +594,10 @@ for (idx, cell_obj) in enumerate(col):
                                        worksheet=worksheet,
                                        webdriver=webdriver)
                         driver = webdriver.Chrome()
-                    reset = 0
                     requestRec = driver.page_source
                     soup = BeautifulSoup(requestRec, 'lxml')
-                    lastYear(reset, soup)
+                    lastYear(lastComments, reset, soup, worksheet)
+                    reset = 0
                     countitup = int(countitup) + 1
                     if countitup % 2 == 0:
                         time.sleep(5)
@@ -620,12 +622,12 @@ for (idx, cell_obj) in enumerate(col):
                     debtCount += len(debtNum)
                     hospitalCount += len(hospitalNum)
                     blocked()
+                reset = 1
                 worksheet.write(idx + 1, 1, thumbPlus)
                 worksheet.write(idx + 1, 3, scamCount)
                 worksheet.write(idx + 1, 4, spamCount)
                 worksheet.write(idx + 1, 5, debtCount)
                 worksheet.write(idx + 1, 6, hospitalCount)
-                worksheet.write(idx + 1, 10, lastComments)
 
                 compareResults(scamNum,
                                worksheet, spamCount, debtCount)
@@ -640,8 +642,6 @@ for (idx, cell_obj) in enumerate(col):
             countitup = 1
             debtCount = 0
             hospitalCount = 0
-
-            reset = 1
             scamCount = 0
             spamCount = 0
             worksheet.write(idx + 1, 2, int(pageNum))
