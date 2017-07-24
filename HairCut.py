@@ -269,8 +269,7 @@ else:
 
 if dragNDrop2 == '':
     website = \
-        raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes\n>'
-                  )
+        raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for ShouldIAnswer\n>')
 else:
     website = dragNDrop2
 
@@ -376,6 +375,30 @@ if website == '3':
     worksheet.write(0, 9, 'Last Date of Comment')
     worksheet.write(0, 10, 'Number of Comments in the Last Year')
     siteType = '_rev_800notes.xlsx'
+
+if website == '4':
+    chromeOpen(breaker)
+    driver.set_page_load_timeout(600)
+    stopPoint = fileName.index('.')
+    prepRev = fileName[0:stopPoint]
+    totalName = prepRev + '_rev_ShouldI.xlsx'
+    workbook = xlsxwriter.Workbook(totalName)
+    worksheet = workbook.add_worksheet()
+    worksheet.write(0, 0, 'Telephone Number')
+    worksheet.write(0, 1, 'Number of Non-Profit')
+    worksheet.write(0, 2, 'Number of Nuisance call')
+    worksheet.write(0, 3, 'Number of Unsolicited')
+    worksheet.write(0, 4, 'Number of Call centre')
+    worksheet.write(0, 5, 'Number of Telemarketer')
+    worksheet.write(0, 6, 'Number of Service')
+    worksheet.write(0, 7, 'Number of Debt Collector')
+    worksheet.write(0, 8, 'Number of Company')
+    worksheet.write(0, 9, 'Number of Scam')
+    worksheet.write(0, 10, 'Positive Reviews'')
+    worksheet.write(0, 11, 'Neutral Reviews')
+    worksheet.write(0, 12, 'Negative Reviews')
+    worksheet.write(0, 13, 'Sentiment')
+    siteType = '_rev_ShouldI.xlsx'
 
 # Set column to A:A, the first column.
 
