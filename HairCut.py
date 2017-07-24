@@ -394,7 +394,7 @@ if website == '4':
     worksheet.write(0, 7, 'Number of Debt Collector')
     worksheet.write(0, 8, 'Number of Company')
     worksheet.write(0, 9, 'Number of Scam')
-    worksheet.write(0, 10, 'Positive Reviews'')
+    worksheet.write(0, 10, 'Positive Reviews')
     worksheet.write(0, 11, 'Neutral Reviews')
     worksheet.write(0, 12, 'Negative Reviews')
     worksheet.write(0, 13, 'Sentiment')
@@ -560,7 +560,6 @@ for (idx, cell_obj) in enumerate(col):
     # 800Notes, the big one.
 
     if website == '3':
-
         try:
             driver.get('http://800notes.com/Phone.aspx/%s' % tele800)
         except TimeoutException, ex:
@@ -683,6 +682,15 @@ for (idx, cell_obj) in enumerate(col):
             scamCount = 0
             spamCount = 0
             worksheet.write(idx + 1, 2, int(pageNum))
+
+    if website = '4':
+        try:
+            driver.get('https://www.shouldianswer.com/phone-number/%s' % teleBBB)
+        except TimeoutException, ex:
+            TimeOutHandler(driver=driver,
+                           worksheet=worksheet,
+                           webdriver=webdriver)
+            driver = webdriver.Chrome()
 
 # Close up Shop!
 
