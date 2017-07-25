@@ -29,7 +29,7 @@ set fileName="%folderName%_%COUNTER%.xlsx"
 if exist %fileName% (
 
 python "HairCut.py" %fileName% %webSite% %tnFormat%
-pause
+
 ) else (
 
 ECHO That's All!
