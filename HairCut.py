@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from collections import defaultdict
 from datetime import *
 from dateutil.relativedelta import *
-from Harvard import Excel2CSV, enumColumn
+from Harvard import enumColumn
 from os.path import join, dirname, abspath
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
@@ -173,11 +173,41 @@ def loading():
         time.sleep(0.1)
 
 
+# Negative Boy
+
+def negativeBoy(element):
+    if "negative" in element:
+        stopPoint = element.index('negative')
+        Numbers = element[stopPoint-6:stopPoint-2]
+        Numbers = re.sub("[^0-9]", "", Numbers)
+        worksheet.write(idx + 1, 1, Numbers)
+
+
+# Neutral Boy
+
+def neutralBoy(element):
+    if "neutral" in element:
+        stopPoint = element.index('neutral')
+        Numbers = element[stopPoint-6:stopPoint-2]
+        Numbers = re.sub("[^0-9]", "", Numbers)
+        worksheet.write(idx + 1, 2, Numbers)
+
+
 # No Boys
 
 def NoBoys(scamCount, spamCount, debtCount, worksheet):
     if(scamCount == 0 and spamCount == 0 and debtCount == 0):
         worksheet.write(idx + 1, 7, "No Entries Detected")
+
+
+# Positive Boy
+
+def positiveBoy(element):
+    if "positive" in element:
+        stopPoint = element.index('positive')
+        Numbers = element[stopPoint-6:stopPoint-2]
+        Numbers = re.sub("[^0-9]", "", Numbers)
+        worksheet.write(idx + 1, 3, Numbers)
 
 
 # PrepareCSV preps a CSV for EXCELence
@@ -197,28 +227,13 @@ def PrepareCSV(preName, fileName):
 # Ratings Board - Majority of ShouldIAnswer
 
 def ratingsKiddo(soup):
-    global negativity
-    global neutrality
-    global positivity
     for elm in soup.select(".ratings"):
         element = str(elm.text)
         ratingsWord = element.index('Ratings')
         element.replace("Ratings", "")
-        if "negative" in element:
-            stopPoint = element.index('negative')
-            Numbers = element[stopPoint-6:stopPoint-2]
-            Numbers = re.sub("[^0-9]", "", Numbers)
-            worksheet.write(idx + 1, 1, Numbers)
-        if "neutral" in element:
-            stopPoint = element.index('neutral')
-            Numbers = element[stopPoint-6:stopPoint-2]
-            Numbers = re.sub("[^0-9]", "", Numbers)
-            worksheet.write(idx + 1, 2, Numbers)
-        if "positive" in element:
-            stopPoint = element.index('positive')
-            Numbers = element[stopPoint-6:stopPoint-2]
-            Numbers = re.sub("[^0-9]", "", Numbers)
-            worksheet.write(idx + 1, 3, Numbers)
+        negativeBoy(element)
+        neutralBoy(element)
+        positiveBoy(element)
 
 
 # ScamSpam
@@ -743,8 +758,6 @@ if website == '2' or website == '3' or website == '4':
     driver.close()
 
 workbook.close()
-prepRev = preName + '_temp.csv'
-Excel2CSV(totalName, 'Sheet1', prepRev)
 
 # Determine if file was dragged or not for creation of Dirs.
 
@@ -767,8 +780,6 @@ if dragNDrop == '':
     copyfile(totalName, 'WorkingDir/' + preName + '/' + totalName)
     move(preName + siteType, 'WorkingDir/' + preName + '/' + preName
          + siteType)
-    move(preName + '_temp.csv', 'WorkingDir/' + preName + '/' + preName
-         + '_temp.csv')
 
 # End Animation.
 
