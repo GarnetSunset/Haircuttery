@@ -912,7 +912,7 @@ for (idx, cell_obj) in enumerate(col):
                            worksheet=worksheet,
                            webdriver=webdriver)
             driver = webdriver.Chrome()
-        time.sleep(2)
+        time.sleep(5)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
 
