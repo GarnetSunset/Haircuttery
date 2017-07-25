@@ -292,8 +292,8 @@ def NoBoys(scamCount, spamCount, debtCount, worksheet):
 def nonProfit(element):
     global nonNum
     nonNum = "0"
-    if "neutral" in element:
-        stopPoint = element.index('neutral')
+    if "Non-profit Organization" in element:
+        stopPoint = element.index('Non-profit Organization')
         nonNum = element[stopPoint - 6:stopPoint - 2]
         nonNum = re.sub("[^0-9]", "", nonNum)
         worksheet.write(idx + 1, 12, nonNum)
@@ -304,8 +304,8 @@ def nonProfit(element):
 def nuiCall(element):
     global nuiNum
     nuiNum = "0"
-    if "neutral" in element:
-        stopPoint = element.index('neutral')
+    if "Nuisance call" in element:
+        stopPoint = element.index('Nuisance call')
         nuiNum = element[stopPoint - 6:stopPoint - 2]
         nuiNum = re.sub("[^0-9]", "", nuiNum)
         worksheet.write(idx + 1, 11, nuiNum)
