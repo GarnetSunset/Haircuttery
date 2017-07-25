@@ -47,6 +47,16 @@ notNow = now - relativedelta(years=1)
 numFormat = '3'
 reset = 0
 scamCount = 0
+searchTerms = {
+    r"Scam": scamCount,
+    'Spam': spamCount,
+    'Debt Collector': debtCount,
+}
+shouldTerms = {
+    r"Positive": int(posNumbers),
+    'Neutral': int(neuNumbers),
+    'Negative': int(negNumbers),
+}
 spamCount = 0
 
 
@@ -117,13 +127,7 @@ def cleaner():
 
 # Compare Results
 
-def compareResults(scamCount, spamCount, worksheet, column, debtCount):
-    searchTerms = {
-        r"Scam": scamCount,
-        'Spam': spamCount,
-        'Debt Collector': debtCount,
-    }
-
+def compareResults(scamCount, spamCount, column, debtCount):
     sentiment = max(searchTerms, key=searchTerms.get)
     worksheet.write(idx + 1, column, sentiment)
 
@@ -240,12 +244,7 @@ def ratingsKiddo(soup):
         negativeBoy(element)
         neutralBoy(element)
         positiveBoy(element)
-        searchTerms = {
-            r"Positive": int(posNumbers),
-            'Neutral': int(neuNumbers),
-            'Negative': int(negNumbers),
-        }
-        sentiment = max(searchTerms, key=searchTerms.get)
+        sentiment = max(shouldTerms, key=ShouldTerms.get)
         worksheet.write(idx + 1, 13, sentiment)
 
 
@@ -576,7 +575,7 @@ for (idx, cell_obj) in enumerate(col):
 
             # Hospitals are important to look at, so I boost them.
 
-            compareResults(scamCount, spamCount, worksheet, 7, debtCount)
+            compareResults(scamCount, spamCount, 7, debtCount)
             NoBoys(scamCount, spamCount, debtCount, worksheet)
             EqualBoy(scamCount, spamCount, debtCount, worksheet)
             ScamSpam(scamCount, spamCount, worksheet)
@@ -718,7 +717,7 @@ for (idx, cell_obj) in enumerate(col):
                 worksheet.write(idx + 1, 5, debtCount)
                 worksheet.write(idx + 1, 6, hospitalCount)
 
-                compareResults(scamCount, spamCount, worksheet, 7, debtCount)
+                compareResults(scamCount, spamCount, 7, debtCount)
                 NoBoys(scamCount, spamCount, debtCount, worksheet)
                 EqualBoy(scamCount, spamCount, debtCount, worksheet)
                 ScamSpam(scamCount, spamCount, worksheet)
