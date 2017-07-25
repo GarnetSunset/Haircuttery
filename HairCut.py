@@ -194,6 +194,33 @@ def PrepareCSV(preName, fileName):
     print('Temporary Convert to xlsx done.\n')
 
 
+# Ratings Board - Majority of ShouldIAnswer
+
+def ratingsKiddo(soup):
+    global negativity
+    global neutrality
+    global positivity
+    for elm in soup.select(".ratings"):
+        element = str(elm.text)
+        ratingsWord = element.index('Ratings')
+        element.replace("Ratings", "")
+        if "negative" in element:
+            stopPoint = element.index('negative')
+            Numbers = element[stopPoint-6:stopPoint-2]
+            Numbers = re.sub("[^0-9]", "", Numbers)
+            worksheet.write(idx + 1, 1, Numbers)
+        if "neutral" in element:
+            stopPoint = element.index('neutral')
+            Numbers = element[stopPoint-6:stopPoint-2]
+            Numbers = re.sub("[^0-9]", "", Numbers)
+            worksheet.write(idx + 1, 2, Numbers)
+        if "positive" in element:
+            stopPoint = element.index('positive')
+            Numbers = element[stopPoint-6:stopPoint-2]
+            Numbers = re.sub("[^0-9]", "", Numbers)
+            worksheet.write(idx + 1, 3, Numbers)
+
+
 # ScamSpam
 
 def ScamSpam(scamCount, spamCount, worksheet):
@@ -383,18 +410,18 @@ if website == '4':
     workbook = xlsxwriter.Workbook(totalName)
     worksheet = workbook.add_worksheet()
     worksheet.write(0, 0, 'Telephone Number')
-    worksheet.write(0, 1, 'Number of Non-Profit')
-    worksheet.write(0, 2, 'Number of Nuisance call')
-    worksheet.write(0, 3, 'Number of Unsolicited')
+    worksheet.write(0, 1, 'Negative Reviews')
+    worksheet.write(0, 2, 'Neutral Reviews')
+    worksheet.write(0, 3, 'Positive Reviews')
     worksheet.write(0, 4, 'Number of Call centre')
     worksheet.write(0, 5, 'Number of Telemarketer')
     worksheet.write(0, 6, 'Number of Service')
     worksheet.write(0, 7, 'Number of Debt Collector')
     worksheet.write(0, 8, 'Number of Company')
     worksheet.write(0, 9, 'Number of Scam')
-    worksheet.write(0, 10, 'Positive Reviews')
-    worksheet.write(0, 11, 'Neutral Reviews')
-    worksheet.write(0, 12, 'Negative Reviews')
+    worksheet.write(0, 10, 'Number of Unsolicited')
+    worksheet.write(0, 11, 'Number of Nuisance call')
+    worksheet.write(0, 12, 'Number of Non-Profit')
     worksheet.write(0, 13, 'Sentiment')
     siteType = '_rev_ShouldI.xlsx'
 
@@ -707,12 +734,12 @@ for (idx, cell_obj) in enumerate(col):
         blocked()
 
         if noMatch is None:
-            worksheet.write(idx + 1, 2, 'Got a hit')
-        
+            ratingsKiddo(soup)
+
 
 # Close up Shop!
 
-if website == '2' or website == '3':
+if website == '2' or website == '3' or website == '4':
     driver.close()
 
 workbook.close()
