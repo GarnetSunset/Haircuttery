@@ -102,8 +102,8 @@ def categoryKiddo(soup):
         nonProfit(element)
         cataSet()
         sentiment = max(cataTerms, key=cataTerms.get)
-        if all(value == 0 for value in cataTerms.values()) == True:
-            sentiment = "No categories given"
+        if all(value == "0" for value in cataTerms.values()) == True:
+            sentiment = "No Categories"
         worksheet.write(idx + 1, 14, sentiment)
 
 
