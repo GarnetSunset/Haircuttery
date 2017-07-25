@@ -117,7 +117,7 @@ def cleaner():
 
 # Compare Results
 
-def compareResults(scamNum, worksheet, spamCount, debtCount):
+def compareResults(scamCount, spamCount, worksheet, column, debtCount):
     searchTerms = {
         r"Scam": scamCount,
         'Spam': spamCount,
@@ -125,7 +125,7 @@ def compareResults(scamNum, worksheet, spamCount, debtCount):
     }
 
     sentiment = max(searchTerms, key=searchTerms.get)
-    worksheet.write(idx + 1, 7, sentiment)
+    worksheet.write(idx + 1, column, sentiment)
 
 
 # EqualBoy
@@ -176,21 +176,25 @@ def loading():
 # Negative Boy
 
 def negativeBoy(element):
+    global negNumbers
+    negNumbers = "0"
     if "negative" in element:
         stopPoint = element.index('negative')
-        Numbers = element[stopPoint-6:stopPoint-2]
-        Numbers = re.sub("[^0-9]", "", Numbers)
-        worksheet.write(idx + 1, 1, Numbers)
+        negNumbers = element[stopPoint-6:stopPoint-2]
+        negNumbers = re.sub("[^0-9]", "", negNumbers)
+        worksheet.write(idx + 1, 1, negNumbers)
 
 
 # Neutral Boy
 
 def neutralBoy(element):
+    global neuNumbers
+    neuNumbers = "0"
     if "neutral" in element:
         stopPoint = element.index('neutral')
-        Numbers = element[stopPoint-6:stopPoint-2]
-        Numbers = re.sub("[^0-9]", "", Numbers)
-        worksheet.write(idx + 1, 2, Numbers)
+        neuNumbers = element[stopPoint-6:stopPoint-2]
+        neuNumbers = re.sub("[^0-9]", "", neuNumbers)
+        worksheet.write(idx + 1, 2, neuNumbers)
 
 
 # No Boys
@@ -203,11 +207,13 @@ def NoBoys(scamCount, spamCount, debtCount, worksheet):
 # Positive Boy
 
 def positiveBoy(element):
+    global posNumbers
+    posNumbers = "0"
     if "positive" in element:
         stopPoint = element.index('positive')
-        Numbers = element[stopPoint-6:stopPoint-2]
-        Numbers = re.sub("[^0-9]", "", Numbers)
-        worksheet.write(idx + 1, 3, Numbers)
+        posNumbers = element[stopPoint-6:stopPoint-2]
+        posNumbers = re.sub("[^0-9]", "", posNumbers)
+        worksheet.write(idx + 1, 3, posNumbers)
 
 
 # PrepareCSV preps a CSV for EXCELence
@@ -234,6 +240,13 @@ def ratingsKiddo(soup):
         negativeBoy(element)
         neutralBoy(element)
         positiveBoy(element)
+        searchTerms = {
+            r"Positive": int(posNumbers),
+            'Neutral': int(neuNumbers),
+            'Negative': int(negNumbers),
+        }
+        sentiment = max(searchTerms, key=searchTerms.get)
+        worksheet.write(idx + 1, 13, sentiment)
 
 
 # ScamSpam
@@ -563,8 +576,7 @@ for (idx, cell_obj) in enumerate(col):
 
             # Hospitals are important to look at, so I boost them.
 
-            compareResults(hospitalCount, scamNum,
-                           worksheet, spamCount, debtCount)
+            compareResults(scamCount, spamCount, worksheet, 7, debtCount)
             NoBoys(scamCount, spamCount, debtCount, worksheet)
             EqualBoy(scamCount, spamCount, debtCount, worksheet)
             ScamSpam(scamCount, spamCount, worksheet)
@@ -706,8 +718,7 @@ for (idx, cell_obj) in enumerate(col):
                 worksheet.write(idx + 1, 5, debtCount)
                 worksheet.write(idx + 1, 6, hospitalCount)
 
-                compareResults(scamNum,
-                               worksheet, spamCount, debtCount)
+                compareResults(scamCount, spamCount, worksheet, 7, debtCount)
                 NoBoys(scamCount, spamCount, debtCount, worksheet)
                 EqualBoy(scamCount, spamCount, debtCount, worksheet)
                 ScamSpam(scamCount, spamCount, worksheet)
