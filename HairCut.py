@@ -85,6 +85,14 @@ def callCenter(element):
         worksheet.write(idx + 1, 4, callNum)
 
 
+# Catagory None
+
+def cateNone():
+    if all(value == "0" for value in cateTerms.values()) == True:
+        sentiment = "No Categories"
+        worksheet.write(idx + 1, 14, sentiment)
+
+
 # Category Listing
 
 def categoryKiddo(soup):
@@ -100,17 +108,17 @@ def categoryKiddo(soup):
         unSol(element)
         nuiCall(element)
         nonProfit(element)
-        cataSet()
-        sentiment = max(cataTerms, key=cataTerms.get)
-        if all(value == "0" for value in cataTerms.values()) == True:
-            sentiment = "No Categories"
+        cateSet()
+        sentiment = max(cateTerms, key=cateTerms.get)
         worksheet.write(idx + 1, 14, sentiment)
+        cateNone()
 
 
 # Category Setter
-def cataSet():
-    global cataTerms
-    cataTerms = {
+
+def cateSet():
+    global cateTerms
+    cateTerms = {
         'Call Center': callNum,
         'Telemarketer': teleNum,
         'Service Number': servNum,
