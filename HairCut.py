@@ -131,14 +131,14 @@ def checkMe(website):
             print('Try Again.\n')
             website = \
                 raw_input(
-                    'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for ShouldIAnswer\n>')
+                    'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer\n>')
             cleaner()
     else:
         while website not in ['1', '2', '3', '4', 'd']:
             print('Try Again.\n')
             website = \
                 raw_input(
-                    'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for ShouldIAnswer\n>')
+                    'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer\n>')
             cleaner()
 
 
@@ -480,7 +480,7 @@ else:
 if dragNDrop2 == '':
     website = \
         raw_input(
-            'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for ShouldIAnswer\n>')
+            'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer\n>')
 else:
     website = dragNDrop2
 
@@ -527,7 +527,7 @@ xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 if website == 'd':
     cleaner()
     website = \
-        raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for ShouldIAnswer\n>'
+        raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer\n>'
                   )
     checkMe(website=website)
     logging.basicConfig(level=logging.DEBUG)

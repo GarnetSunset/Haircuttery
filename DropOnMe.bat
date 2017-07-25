@@ -20,7 +20,7 @@ Set COUNTER=1
 
 cls
 
-SET /P webSite=Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes,  input 4 for ShouldIAnswer:
+SET /P webSite=Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes,  &input 4 for ShouldIAnswer:
 
 :HairCut
 
