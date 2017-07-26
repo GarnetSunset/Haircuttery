@@ -96,22 +96,10 @@ def cateNone():
 # Category Listing
 
 def categoryKiddo(soup):
+    global element
     for elm in soup.select(".categories"):
         element = str(elm.text)
         element.replace("Categories", "")
-        callCenter(element)
-        teleMarker(element)
-        serVice(element)
-        debtColl(element)
-        comPany(element)
-        scamCom(element)
-        unSol(element)
-        nuiCall(element)
-        nonProfit(element)
-        cateSet()
-        sentiment = max(cateTerms, key=cateTerms.get)
-        worksheet.write(idx + 1, 14, sentiment)
-        cateNone()
 
 
 # Category Setter
@@ -930,6 +918,19 @@ for (idx, cell_obj) in enumerate(col):
         if noMatch is None:
             ratingsKiddo(soup)
             categoryKiddo(soup)
+            callCenter(element)
+            teleMarker(element)
+            serVice(element)
+            debtColl(element)
+            comPany(element)
+            scamCom(element)
+            unSol(element)
+            nuiCall(element)
+            nonProfit(element)
+            cateSet()
+            sentiment = max(cateTerms, key=cateTerms.get)
+            worksheet.write(idx + 1, 14, sentiment)
+            cateNone()
 
 
 # Close up Shop!
