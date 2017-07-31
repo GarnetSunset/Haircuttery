@@ -111,6 +111,15 @@ def businessEntries(soup):
         worksheet.write(idx + 1, 4, howLen)
         worksheet.write(idx + 1, 5, '1')
 
+# Business Name
+
+def businessName(soup):
+    for elm in soup.select(".info"):
+        element = str(elm)
+        stopPoint = element.index('span itemprop="name">')
+        busName = element[stopPoint:]
+        busName = busName[busName.index('>')+1:busName.index('<')]
+        worksheet.write(idx + 1, 6, busName)
 
 
 # Call Center
@@ -1052,6 +1061,15 @@ for (idx, cell_obj) in enumerate(col):
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
 
+        fivehundred = \
+            soup.find(text=re.compile(r"Internal Server Error"))
+        soup.prettify()
+        type(fivehundred) is str
+
+        if fivehundred != None:
+            time.sleep(10)
+            driver.get('https://www.yellowpages.com/search?search_terms=%s' % teleBBB)
+
         secondMatch = \
             soup.find(text=re.compile(r"We did not find any business"))
         soup.prettify()
@@ -1061,7 +1079,7 @@ for (idx, cell_obj) in enumerate(col):
 
         if secondMatch is None:
             businessEntries(soup)
-            #businessName(soup)
+            businessName(soup)
             addressBus(soup)
 
 
