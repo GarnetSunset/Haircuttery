@@ -4,13 +4,21 @@
 
 A program I wrote for as a personal project, meant to scrape Better Business Bureau and 800notes with an excel file.
 
-## How to Use
+## Sites Supported
 
-### Windows Users:
+http://whoscall.in/
+https://www.bbb.org/
+http://800notes.com/
+https://www.shouldianswer.com/
+https://people.yellowpages.com
+
+# How to Use
+
+## Windows Users:
 
 Just drag the file you would like to work on into "DropOnMe.bat." You'll be asked to choose a site to scrape.
 
-### Linux/Mac Users
+## Linux/Mac Users
 
 Make sure you have the Dependencies listed below, and run HairCut.py via either the terminal or double clicking, should your distro support that.
 
@@ -20,9 +28,7 @@ Dropping Files into DropOnMe.bat will seperate them into 1000 cell files which c
 
 ### Windows Users
 
-Download and Install this: <https://www.microsoft.com/en-us/download/details.aspx?id=44266>
-
-Run requirements.bat to install necessary files.
+Run requirements.bat to install necessary files and the Python Compiler.
 
 #### Chrome Support
 

@@ -20,8 +20,8 @@ Set COUNTER=1
 
 cls
 
-echo Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, 
-SET /P webSite=input 4 for ShouldIAnswer:
+echo Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes,
+SET /P webSite=input 4 for ShouldIAnswer, input 5 for YellowPages:
 
 :HairCut
 

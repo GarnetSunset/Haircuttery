@@ -50,6 +50,18 @@ scamCount = 0
 spamCount = 0
 
 
+# Get the address.
+
+def addressGet(soup):
+    for elm in soup.select(".address"):
+        element = str(elm)
+        stopPoint = element.index('>')
+        address = element[stopPoint + 2:]
+        caret = address.index('<')
+        address = address[:caret]
+        address = " ".join(address.split())
+        worksheet.write(idx + 1, 3, address)
+
 # Wait out my mistake.
 
 def blocked():
@@ -71,6 +83,18 @@ def breaker():
           )
     time.sleep(15)
     sys.exit()
+
+
+# Business Name Get!
+
+def businessName(soup):
+    for elm in soup.select(".result-left"):
+        element = str(elm)
+        stopPoint = element.index('sbp')
+        busName = element[stopPoint + 5:]
+        caret = busName.index('<')
+        busName = busName[:caret]
+        worksheet.write(idx + 1, 2, busName)
 
 
 # Call Center
@@ -135,18 +159,18 @@ def cateSet():
 
 def checkMe(website):
     if website == 'd':
-        while website not in ['1', '2', '3', '4']:
+        while website not in ['1', '2', '3', '4', '5']:
             print('Try Again.\n')
             website = \
                 raw_input(
-                    'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer\n>')
+                    'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer, input 5 for YellowPages\n>')
             cleaner()
     else:
-        while website not in ['1', '2', '3', '4', 'd']:
+        while website not in ['1', '2', '3', '4', '5', 'd']:
             print('Try Again.\n')
             website = \
                 raw_input(
-                    'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer\n>')
+                    'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer, input 5 for YellowPages\n>')
             cleaner()
 
 
@@ -164,6 +188,7 @@ def chromeOpen(breaker):
     else:
         breaker()
     driver = webdriver.Chrome(executable_path=locationString)
+    driver.set_window_position(2000, 0)
 
 
 # Clean the screen.
@@ -309,6 +334,19 @@ def nuiCall(element):
         nuiNum = element[stopPoint - 6:stopPoint - 2]
         nuiNum = re.sub("[^0-9]", "", nuiNum)
         worksheet.write(idx + 1, 11, nuiNum)
+
+
+# Number of Pages
+
+def numberOfPages(soup):
+    for elm in soup.select(".result-top-left-detail"):
+        element = str(elm)
+        stopPoint = element.index('Showing')
+        pageNum = element[stopPoint + 18:]
+        caret = pageNum.index('<')
+        pageNum = pageNum[:caret]
+        pageNum = re.sub("[^0-9]", "", pageNum)
+        worksheet.write(idx + 1, 1, pageNum)
 
 
 # Positive Boy
@@ -489,7 +527,7 @@ else:
 if dragNDrop2 == '':
     website = \
         raw_input(
-            'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer\n>')
+            'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer, input 5 for YellowPages\n>')
 else:
     website = dragNDrop2
 
@@ -536,7 +574,7 @@ xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 if website == 'd':
     cleaner()
     website = \
-        raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer\n>'
+        raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer, input 5 for YellowPages\n>'
                   )
     checkMe(website=website)
     logging.basicConfig(level=logging.DEBUG)
@@ -620,6 +658,20 @@ if website == '4':
     worksheet.write(0, 13, 'Sentiment')
     worksheet.write(0, 14, 'Category Sentiment')
     siteType = '_rev_ShouldI.xlsx'
+
+if website == '5':
+    chromeOpen(breaker)
+    driver.set_page_load_timeout(600)
+    stopPoint = fileName.index('.')
+    prepRev = fileName[0:stopPoint]
+    totalName = prepRev + '_rev_YellowPages.xlsx'
+    workbook = xlsxwriter.Workbook(totalName)
+    worksheet = workbook.add_worksheet()
+    worksheet.write(0, 0, 'Telephone Number')
+    worksheet.write(0, 1, 'Number of Pages')
+    worksheet.write(0, 2, 'Name of Person/Business')
+    worksheet.write(0, 3, 'Address')
+    siteType = '_rev_800notes.xlsx'
 
 # Set column to A:A, the first column.
 
@@ -932,10 +984,39 @@ for (idx, cell_obj) in enumerate(col):
             ratingsKiddo(soup)
             categoryKiddo(soup)
 
+    if website == '5':
+        try:
+            driver.get('https://people.yellowpages.com/reversephonelookup?phone=%s&site=79' % teleBBB
+            )
+        except TimeoutException, ex:
+            TimeOutHandler(driver=driver,
+                           worksheet=worksheet,
+                           webdriver=webdriver)
+            driver = webdriver.Chrome()
+        time.sleep(5)
+        requestRec = driver.page_source
+        soup = BeautifulSoup(requestRec, 'lxml')
+
+        # This entry doesn't exist if this regex succeeds.
+
+        noMatch = \
+            soup.find(text=re.compile(r"didn't find any results for"))
+        soup.prettify()
+        type(noMatch) is str
+
+        # Make sure we don't get blocked, and if we do, wait it out.
+
+        blocked()
+
+        if noMatch is None:
+            numberOfPages(soup)
+            businessName(soup)
+            addressGet(soup)
+
 
 # Close up Shop!
 
-if website == '2' or website == '3' or website == '4':
+if website == '2' or website == '3' or website == '4' or website == '5':
     driver.close()
 
 workbook.close()
