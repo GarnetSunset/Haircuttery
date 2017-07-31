@@ -72,8 +72,7 @@ def addressBus(soup):
         locality = str(elm.text)
     for elm in soup.select(".adr"):
         postal = str(elm.text)
-        postal = postal[-5:]
-    element = street + ", " + locality + postal
+    element = street + ", " + locality + postal[-5:]
     worksheet.write(idx + 1, 7, element)
 
 
@@ -111,12 +110,6 @@ def businessEntries(soup):
         howLen = len(howMany)
         worksheet.write(idx + 1, 4, howLen)
         worksheet.write(idx + 1, 5, '1')
-    else:
-        for elm in soup.select("pagination"):
-            element = str(elm.text)
-            entryIndex = element.index('of')
-            entryNum = entryNum[entryIndex + 3:]
-            worksheet.write(idx + 1, 4, entryNum)
 
 
 
