@@ -50,9 +50,9 @@ scamCount = 0
 spamCount = 0
 
 
-# Get the address.
+# Get the people address.
 
-def addressGet(soup):
+def addressPeople(soup):
     for elm in soup.select(".address"):
         element = str(elm)
         stopPoint = element.index('>')
@@ -61,6 +61,21 @@ def addressGet(soup):
         address = address[:caret]
         address = " ".join(address.split())
         worksheet.write(idx + 1, 3, address)
+
+
+# Get the business address.
+
+def addressBus(soup):
+    for elm in soup.select(".street-address"):
+        street = str(elm.text)
+    for elm in soup.select(".locality"):
+        locality = str(elm.text)
+    for elm in soup.select(".adr"):
+        postal = str(elm.text)
+        postal = postal[-5:]
+    element = street + ", " + locality + postal
+    worksheet.write(idx + 1, 7, element)
+
 
 # Wait out my mistake.
 
@@ -79,22 +94,30 @@ def blocked():
 
 def breaker():
     done = True
-    print("\nPlease refer to the Readme, you don't have chromedriver.exe in 'C:\chromedriver'"
-          )
+    print("\nPlease refer to the Readme, you don't have chromedriver.exe in 'C:\chromedriver'")
     time.sleep(15)
     sys.exit()
 
 
-# Business Name Get!
+# Number of Entries
 
-def businessName(soup):
-    for elm in soup.select(".result-left"):
-        element = str(elm)
-        stopPoint = element.index('sbp')
-        busName = element[stopPoint + 5:]
-        caret = busName.index('<')
-        busName = busName[:caret]
-        worksheet.write(idx + 1, 2, busName)
+def businessEntries(soup):
+    noMatch = \
+        soup.find(text=re.compile(r"Showing"))
+    type(noMatch) is str
+
+    if noMatch is None:
+        howMany = soup.find_all('div', {'class': 'media-thumbnail'})
+        howLen = len(howMany)
+        worksheet.write(idx + 1, 4, howLen)
+        worksheet.write(idx + 1, 5, '1')
+    else:
+        for elm in soup.select("pagination"):
+            element = str(elm.text)
+            entryIndex = element.index('of')
+            entryNum = entryNum[entryIndex + 3:]
+            worksheet.write(idx + 1, 4, entryNum)
+
 
 
 # Call Center
@@ -188,7 +211,7 @@ def chromeOpen(breaker):
     else:
         breaker()
     driver = webdriver.Chrome(executable_path=locationString)
-    driver.set_window_position(2000, 0)
+    driver.set_window_position(3000, 0)
 
 
 # Clean the screen.
@@ -338,7 +361,7 @@ def nuiCall(element):
 
 # Number of Pages
 
-def numberOfPages(soup):
+def peoplePages(soup):
     for elm in soup.select(".result-top-left-detail"):
         element = str(elm)
         stopPoint = element.index('Showing')
@@ -347,6 +370,18 @@ def numberOfPages(soup):
         pageNum = pageNum[:caret]
         pageNum = re.sub("[^0-9]", "", pageNum)
         worksheet.write(idx + 1, 1, pageNum)
+
+
+# Person Name Get!
+
+def personName(soup):
+    for elm in soup.select(".result-left"):
+        element = str(elm)
+        stopPoint = element.index('sbp')
+        perName = element[stopPoint + 5:]
+        caret = perName.index('<')
+        perName = perName[:caret]
+        worksheet.write(idx + 1, 2, perName)
 
 
 # Positive Boy
@@ -668,9 +703,13 @@ if website == '5':
     workbook = xlsxwriter.Workbook(totalName)
     worksheet = workbook.add_worksheet()
     worksheet.write(0, 0, 'Telephone Number')
-    worksheet.write(0, 1, 'Number of Pages')
-    worksheet.write(0, 2, 'Name of Person/Business')
-    worksheet.write(0, 3, 'Address')
+    worksheet.write(0, 1, 'Number of Pages - People')
+    worksheet.write(0, 2, 'Name of Person')
+    worksheet.write(0, 3, 'Address - People')
+    worksheet.write(0, 4, 'Number of Listings - Business')
+    worksheet.write(0, 5, 'Number of Pages - Business')
+    worksheet.write(0, 6, 'Name of Business')
+    worksheet.write(0, 7, 'Address - Business')
     siteType = '_rev_800notes.xlsx'
 
 # Set column to A:A, the first column.
@@ -687,17 +726,11 @@ for (idx, cell_obj) in enumerate(col):
     cell_type_str = ctype_text.get(cell_obj.ctype, 'unknown type')
     cell_obj_str = str(cell_obj)
 
+    # Cut the numbers to their appropriate format.
+
     # Does a dash, parenthesis, or none of those exist? That will decide the numFormat.
 
     if '-' in cell_obj_str:
-        numFormat = '1'
-
-    if '(' in cell_obj_str:
-        numFormat = '2'
-
-    # Cut the numbers to their appropriate format.
-
-    if numFormat == '1':
         firstStart = cell_obj_str.index('-') - 3
         firstEnd = firstStart + 3
         secondStart = cell_obj_str.index('-') + 1
@@ -714,7 +747,7 @@ for (idx, cell_obj) in enumerate(col):
             + cell_obj_str[secondStart:secondEnd] + '-' \
             + cell_obj_str[thirdStart:thirdEnd]
 
-    if numFormat == '2':
+    elif '(' in cell_obj_str:
         firstStart = cell_obj_str.index('(') + 1
         firstEnd = firstStart + 3
         secondStart = cell_obj_str.index(' ') + 1
@@ -731,7 +764,7 @@ for (idx, cell_obj) in enumerate(col):
             + cell_obj_str[secondStart:secondEnd] + '-' \
             + cell_obj_str[thirdStart:thirdEnd]
 
-    if numFormat == '3':
+    else:
         teleWho = cell_obj_str[8:11] + cell_obj_str[11:14] \
             + cell_obj_str[14:18]
         teleBBB = cell_obj_str[8:11] + cell_obj_str[11:14] \
@@ -1009,9 +1042,34 @@ for (idx, cell_obj) in enumerate(col):
         blocked()
 
         if noMatch is None:
-            numberOfPages(soup)
-            businessName(soup)
-            addressGet(soup)
+            peoplePages(soup)
+            personName(soup)
+            addressPeople(soup)
+
+        try:
+            driver.get('https://www.yellowpages.com/search?search_terms=%s' % teleBBB
+            )
+        except TimeoutException, ex:
+            TimeOutHandler(driver=driver,
+                           worksheet=worksheet,
+                           webdriver=webdriver)
+            driver = webdriver.Chrome()
+
+        time.sleep(5)
+        requestRec = driver.page_source
+        soup = BeautifulSoup(requestRec, 'lxml')
+
+        secondMatch = \
+            soup.find(text=re.compile(r"We did not find any business"))
+        soup.prettify()
+        type(secondMatch) is str
+
+        blocked()
+
+        if secondMatch is None:
+            businessEntries(soup)
+            #businessName(soup)
+            addressBus(soup)
 
 
 # Close up Shop!
