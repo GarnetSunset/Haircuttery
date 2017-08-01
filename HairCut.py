@@ -482,7 +482,7 @@ def SpamDebt(spamCount, debtCount, worksheet):
         worksheet.write(idx + 1, 7, "Spam/Debt")
 
 
-# Telemarketer Should I Answer Listings
+# Telemarketer Should I Answer Listingsh
 
 def teleMarker(element):
     global teleNum
@@ -1066,9 +1066,16 @@ for (idx, cell_obj) in enumerate(col):
         soup.prettify()
         type(fivehundred) is str
 
-        if fivehundred != None:
-            time.sleep(10)
+        while fivehundred != None:
+            time.sleep(20)
             driver.get('https://www.yellowpages.com/search?search_terms=%s' % teleBBB)
+            requestRec = driver.page_source
+            soup = BeautifulSoup(requestRec, 'lxml')
+            fivehundred = \
+                soup.find(text=re.compile(r"Internal Server Error"))
+            soup.prettify()
+            type(fivehundred) is str
+
 
         secondMatch = \
             soup.find(text=re.compile(r"We did not find any business"))
