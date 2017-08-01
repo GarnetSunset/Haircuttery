@@ -7,10 +7,15 @@ A program I wrote for as a personal project, meant to scrape Better Business Bur
 ## Sites Supported
 
 http://whoscall.in/
+
 https://www.bbb.org/
+
 http://800notes.com/
+
 https://www.shouldianswer.com/
+
 https://people.yellowpages.com
+
 https://www.yellowpages.com
 
 # How to Use
