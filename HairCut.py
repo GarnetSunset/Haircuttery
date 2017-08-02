@@ -42,12 +42,15 @@ delMe = 0
 done = False
 hospitalCount = 0
 lastComments = 0
+locality = ""
 now = datetime.datetime.now()
 notNow = now - relativedelta(years=1)
 numFormat = '3'
+postal = ""
 reset = 0
 scamCount = 0
 spamCount = 0
+street = ""
 
 
 # Get the people address.
@@ -65,15 +68,16 @@ def addressPeople(soup):
 
 # Get the business address.
 
-def addressBus(soup):
+def addressBus(street,locality,postal,soup):
     for elm in soup.select(".street-address"):
         street = str(elm.text)
     for elm in soup.select(".locality"):
         locality = str(elm.text)
     for elm in soup.select(".adr"):
         postal = str(elm.text)
-    element = street + ", " + locality + postal[-5:]
-    worksheet.write(idx + 1, 7, element)
+    if street and locality and postal != "":
+        element = street + ", " + locality + postal[-5:]
+        worksheet.write(idx + 1, 7, element)
 
 
 # Wait out my mistake.
@@ -1088,7 +1092,7 @@ for (idx, cell_obj) in enumerate(col):
         if secondMatch is None:
             businessEntries(soup)
             businessName(soup)
-            addressBus(soup)
+            addressBus(street,locality,postal,soup)
 
 
 # Close up Shop!
