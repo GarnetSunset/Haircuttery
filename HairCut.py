@@ -1128,6 +1128,11 @@ if dragNDrop == '':
     move(preName + siteType, 'WorkingDir/' + preName + '/' + preName
          + siteType)
 
+# Delete the PYC
+
+if os.path.isfile('Harvard.pyc'):
+    os.remove('Harvard.pyc')
+
 # End Animation.
 
 done = True
