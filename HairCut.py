@@ -82,8 +82,8 @@ def addressBus(street,locality,postal,soup):
 
 # Wait out my mistake.
 
-def blocked():
-    block = soup.find(text=re.compile(r"OctoNet HTTP filter"))
+def blocked(soup):
+    block = soup.find(text=re.compile(r"has been blocked"))
     block = soup.find(text=re.compile(r"returning an unknown error"))
     block = soup.find(text=re.compile(r"Gateway time-out"))
     type(block) is str
@@ -218,7 +218,7 @@ def chromeOpen(breaker):
     else:
         breaker()
     driver = webdriver.Chrome(executable_path=locationString)
-    driver.set_window_position(4000, 0)
+    driver.set_window_position(4000, 651)
 
 
 # Clean the screen.
@@ -265,6 +265,13 @@ def debtColl(element):
         debtNum = element[stopPoint - 6:stopPoint - 2]
         debtNum = re.sub("[^0-9]", "", debtNum)
         worksheet.write(idx + 1, 7, debtNum)
+
+# DriverOpen
+
+
+def driverOpen(webdriver):
+    driver = webdriver.Chrome()
+    driver.set_window_position(4000, 651)
 
 # EqualBoy - Are these Equal?
 
@@ -879,8 +886,7 @@ for (idx, cell_obj) in enumerate(col):
             TimeOutHandler(driver=driver,
                            worksheet=worksheet,
                            webdriver=webdriver)
-            driver = webdriver.Chrome()
-            driver.set_window_position(4000, 0)
+            driverOpen(webdriver)
         time.sleep(2)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
@@ -895,7 +901,7 @@ for (idx, cell_obj) in enumerate(col):
 
         # Make sure we don't get blocked, and if we do, wait it out.
 
-        blocked()
+        blocked(soup)
 
         worksheet.write(idx + 1, 8, '|X|')
 
@@ -907,9 +913,8 @@ for (idx, cell_obj) in enumerate(col):
                 TimeOutHandler(driver=driver,
                                worksheet=worksheet,
                                webdriver=webdriver)
-                driver = webdriver.Chrome()
-                driver.set_window_position(4000, 0)
-            blocked()
+                driverOpen(webdriver)
+            blocked(soup)
             curSite = driver.current_url
             pageExist = soup.find('a', class_='oos_i_thumbDown')
             type(pageExist) is str
@@ -945,8 +950,7 @@ for (idx, cell_obj) in enumerate(col):
                         TimeOutHandler(driver=driver,
                                        worksheet=worksheet,
                                        webdriver=webdriver)
-                        driver = webdriver.Chrome()
-                        driver.set_window_position(4000, 0)
+                        driverOpen(webdriver)
                     requestRec = driver.page_source
                     soup = BeautifulSoup(requestRec, 'lxml')
                     lastYear(lastComments, reset, soup, worksheet)
@@ -974,7 +978,7 @@ for (idx, cell_obj) in enumerate(col):
                     spamCount += len(spamNum)
                     debtCount += len(debtNum)
                     hospitalCount += len(hospitalNum)
-                    blocked()
+                    blocked(soup)
                 reset = 1
                 worksheet.write(idx + 1, 1, thumbPlus)
                 worksheet.write(idx + 1, 3, scamCount)
@@ -1011,8 +1015,7 @@ for (idx, cell_obj) in enumerate(col):
             TimeOutHandler(driver=driver,
                            worksheet=worksheet,
                            webdriver=webdriver)
-            driver = webdriver.Chrome()
-            driver.set_window_position(4000, 0)
+            driverOpen(webdriver)
         time.sleep(5)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
@@ -1026,7 +1029,7 @@ for (idx, cell_obj) in enumerate(col):
 
         # Make sure we don't get blocked, and if we do, wait it out.
 
-        blocked()
+        blocked(soup)
 
         if noMatch is None:
             ratingsKiddo(soup)
@@ -1040,8 +1043,7 @@ for (idx, cell_obj) in enumerate(col):
             TimeOutHandler(driver=driver,
                            worksheet=worksheet,
                            webdriver=webdriver)
-            driver = webdriver.Chrome()
-            driver.set_window_position(4000, 0)
+            driverOpen(webdriver)
         time.sleep(5)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
@@ -1055,7 +1057,7 @@ for (idx, cell_obj) in enumerate(col):
 
         # Make sure we don't get blocked, and if we do, wait it out.
 
-        blocked()
+        blocked(soup)
 
         if noMatch is None:
             peoplePages(soup)
@@ -1069,8 +1071,7 @@ for (idx, cell_obj) in enumerate(col):
             TimeOutHandler(driver=driver,
                            worksheet=worksheet,
                            webdriver=webdriver)
-            driver = webdriver.Chrome()
-            driver.set_window_position(4000, 0)
+            driverOpen(webdriver)
         time.sleep(5)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
@@ -1096,7 +1097,7 @@ for (idx, cell_obj) in enumerate(col):
         soup.prettify()
         type(secondMatch) is str
 
-        blocked()
+        blocked(soup)
 
         if secondMatch is None:
             businessEntries(soup)
