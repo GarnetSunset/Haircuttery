@@ -245,6 +245,7 @@ def comPany(element):
 # Compare Results for Maximum
 
 def compareResults(scamCount, spamCount, column, debtCount):
+    global sentiment
     searchTerms = {
         r"Scam": scamCount,
         'Spam': spamCount,
@@ -981,9 +982,12 @@ for (idx, cell_obj) in enumerate(col):
                 compareResults(scamCount, spamCount, 7, debtCount)
                 NoBoys(scamCount, spamCount, debtCount, worksheet)
                 EqualBoy(scamCount, spamCount, debtCount, worksheet)
-                ScamSpam(scamCount, spamCount, worksheet)
-                ScamDebt(spamCount, debtCount, worksheet)
-                SpamDebt(spamCount, debtCount, worksheet)
+                if(sentiment == "Scam" or sentiment == "Spam"):
+                    ScamSpam(scamCount, spamCount, worksheet)
+                if(sentiment == "Scam" or sentiment == "Debt Collector"):
+                    ScamDebt(spamCount, debtCount, worksheet)
+                if(sentiment == "Spam" or sentiment == "Debt Collector"):
+                    SpamDebt(spamCount, debtCount, worksheet)
                 if(hospitalCount > 0):
                     worksheet.write(idx + 1, 7, "Hospital")
 
