@@ -218,7 +218,7 @@ def chromeOpen(breaker):
     else:
         breaker()
     driver = webdriver.Chrome(executable_path=locationString)
-    driver.set_window_position(3000, 0)
+    driver.set_window_position(4000, 0)
 
 
 # Clean the screen.
@@ -880,6 +880,7 @@ for (idx, cell_obj) in enumerate(col):
                            worksheet=worksheet,
                            webdriver=webdriver)
             driver = webdriver.Chrome()
+            driver.set_window_position(4000, 0)
         time.sleep(2)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
@@ -907,6 +908,7 @@ for (idx, cell_obj) in enumerate(col):
                                worksheet=worksheet,
                                webdriver=webdriver)
                 driver = webdriver.Chrome()
+                driver.set_window_position(4000, 0)
             blocked()
             curSite = driver.current_url
             pageExist = soup.find('a', class_='oos_i_thumbDown')
@@ -944,6 +946,7 @@ for (idx, cell_obj) in enumerate(col):
                                        worksheet=worksheet,
                                        webdriver=webdriver)
                         driver = webdriver.Chrome()
+                        driver.set_window_position(4000, 0)
                     requestRec = driver.page_source
                     soup = BeautifulSoup(requestRec, 'lxml')
                     lastYear(lastComments, reset, soup, worksheet)
@@ -1009,6 +1012,7 @@ for (idx, cell_obj) in enumerate(col):
                            worksheet=worksheet,
                            webdriver=webdriver)
             driver = webdriver.Chrome()
+            driver.set_window_position(4000, 0)
         time.sleep(5)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
@@ -1037,6 +1041,7 @@ for (idx, cell_obj) in enumerate(col):
                            worksheet=worksheet,
                            webdriver=webdriver)
             driver = webdriver.Chrome()
+            driver.set_window_position(4000, 0)
         time.sleep(5)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
@@ -1065,7 +1070,7 @@ for (idx, cell_obj) in enumerate(col):
                            worksheet=worksheet,
                            webdriver=webdriver)
             driver = webdriver.Chrome()
-
+            driver.set_window_position(4000, 0)
         time.sleep(5)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
