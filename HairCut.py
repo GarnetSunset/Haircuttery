@@ -217,8 +217,7 @@ def chromeOpen(breaker):
         locationString = 'chromedriver.exe'
     else:
         breaker()
-    driver = webdriver.Chrome(executable_path=locationString)
-    driver.set_window_position(4000, 651)
+    driverOpen(webdriver)
 
 
 # Clean the screen.
@@ -270,6 +269,7 @@ def debtColl(element):
 
 
 def driverOpen(webdriver):
+    global driver
     driver = webdriver.Chrome()
     driver.set_window_position(4000, 651)
 
