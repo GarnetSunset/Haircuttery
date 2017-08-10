@@ -68,7 +68,7 @@ def addressPeople(soup):
 
 # Get the business address.
 
-def addressBus(street,locality,postal,soup):
+def addressBus(street, locality, postal, soup):
     for elm in soup.select(".street-address"):
         street = str(elm.text)
     for elm in soup.select(".locality"):
@@ -1102,7 +1102,7 @@ for (idx, cell_obj) in enumerate(col):
         if secondMatch is None:
             businessEntries(soup)
             businessName(soup)
-            addressBus(street,locality,postal,soup)
+            addressBus(street, locality, postal, soup)
 
 
 # Close up Shop!
