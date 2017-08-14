@@ -30,6 +30,8 @@ import xlrd
 import xlsxwriter
 import xlwt
 
+# Full Definitions
+
 bbbEnd = '&locationText=&locationLatLng=&page=1'
 bbbUrl = 'https://www.bbb.org/en/us/search?inputText='
 bbbUrlAC = 'https://www.bbb.org/en/us/search?accreditedFilter=1&inputText='
