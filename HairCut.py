@@ -191,14 +191,14 @@ def cateSet():
 
 def checkMe(website):
     if website == 'd':
-        while website not in ['1', '2', '3', '4', '5']:
+        while website not in ['1', '2', '3', '4', '5', 'A']:
             print('Try Again.\n')
             website = \
                 raw_input(
                     'Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer, input 5 for YellowPages\n>')
             cleaner()
     else:
-        while website not in ['1', '2', '3', '4', '5', 'd']:
+        while website not in ['1', '2', '3', '4', '5', 'A', 'd']:
             print('Try Again.\n')
             website = \
                 raw_input(
@@ -461,7 +461,6 @@ def scamCom(element):
 
 # ScamDebt
 
-
 def ScamDebt(spamCount, debtCount, worksheet):
     if(scamCount == debtCount):
         worksheet.write(idx + 1, 7, "Scam/Debt")
@@ -594,7 +593,7 @@ checkMe(website)
 stopPoint = fileName.index('.')
 prepRev = fileName[stopPoint:]
 preName = fileName[:stopPoint]
-
+nestedName = "WorkingDir/" + preName + "/" + preName
 
 # Make sure we're still encoding in UTF. Don't want any mistakes now, do we?
 
@@ -626,8 +625,7 @@ xl_sheet = xl_workbook.sheet_by_name(sheet_names[0])
 if website == 'd':
     cleaner()
     website = \
-        raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer, input 5 for YellowPages\n>'
-                  )
+        raw_input('Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes, \ninput 4 for ShouldIAnswer, input 5 for YellowPages\n>')
     checkMe(website=website)
     logging.basicConfig(level=logging.DEBUG)
     logging.debug('Only shown in debug mode')
@@ -636,10 +634,10 @@ if website == 'd':
 
 g = threading.Thread(target=loading)
 g.start()
+stopPoint = fileName.index('.')
+prepRev = fileName[0:stopPoint]
 
 if website == '1':
-    stopPoint = fileName.index('.')
-    prepRev = fileName[0:stopPoint]
     totalName = prepRev + '_rev_who.xlsx'
     workbook = xlsxwriter.Workbook(totalName)
     worksheet = workbook.add_worksheet()
@@ -656,8 +654,6 @@ if website == '1':
 if website == '2':
     chromeOpen(breaker)
     driver.set_page_load_timeout(600)
-    stopPoint = fileName.index('.')
-    prepRev = fileName[0:stopPoint]
     totalName = prepRev + '_rev_BBB.xlsx'
     workbook = xlsxwriter.Workbook(totalName)
     worksheet = workbook.add_worksheet()
@@ -668,8 +664,6 @@ if website == '2':
 if website == '3':
     chromeOpen(breaker)
     driver.set_page_load_timeout(600)
-    stopPoint = fileName.index('.')
-    prepRev = fileName[0:stopPoint]
     totalName = prepRev + '_rev_800notes.xlsx'
     workbook = xlsxwriter.Workbook(totalName)
     worksheet = workbook.add_worksheet()
@@ -689,8 +683,6 @@ if website == '3':
 if website == '4':
     chromeOpen(breaker)
     driver.set_page_load_timeout(600)
-    stopPoint = fileName.index('.')
-    prepRev = fileName[0:stopPoint]
     totalName = prepRev + '_rev_ShouldI.xlsx'
     workbook = xlsxwriter.Workbook(totalName)
     worksheet = workbook.add_worksheet()
@@ -714,8 +706,6 @@ if website == '4':
 if website == '5':
     chromeOpen(breaker)
     driver.set_page_load_timeout(600)
-    stopPoint = fileName.index('.')
-    prepRev = fileName[0:stopPoint]
     totalName = prepRev + '_rev_YellowPages.xlsx'
     workbook = xlsxwriter.Workbook(totalName)
     worksheet = workbook.add_worksheet()
@@ -728,6 +718,14 @@ if website == '5':
     worksheet.write(0, 6, 'Name of Business')
     worksheet.write(0, 7, 'Address - Business')
     siteType = '_rev_800notes.xlsx'
+
+if website == 'A':
+    totalName = prepRev + '_rev_Reviewnotes.xlsx'
+    workbook = xlsxwriter.Workbook(totalName)
+    worksheet = workbook.add_worksheet()
+    worksheet.write(0, 0, 'Telephone Number')
+    worksheet.write(0, 1, 'Review Note')
+    siteType = '_rev_Reviewnotes.xlsx'
 
 # Set column to A:A, the first column.
 
@@ -1018,7 +1016,7 @@ for (idx, cell_obj) in enumerate(col):
                            worksheet=worksheet,
                            webdriver=webdriver)
             driverOpen(webdriver)
-        time.sleep(5)
+        time.sleep(10)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
 
@@ -1105,6 +1103,35 @@ for (idx, cell_obj) in enumerate(col):
             businessEntries(soup)
             businessName(soup)
             addressBus(street, locality, postal, soup)
+
+
+    # My last addition. Full composition brief note taker.
+
+    if website == 'A':
+        if dragNDrop != '':
+            nestedName = preName
+        if(os.path.isfile(nestedName + "_rev_YellowPages.xlsx")):
+            workman = xlrd.open_workbook(nestedName + "_rev_YellowPages.xlsx")
+            workboy = workman.sheet_by_name('Sheet1')
+            busName = workboy.cell(idx + 1, 6).value
+            busAddy = workboy.cell(idx + 1, 7).value
+        else:
+            busName = ""
+            busAddy = ""
+
+        if(os.path.isfile(nestedName + "_rev_800notes.xlsx")):
+            workman = xlrd.open_workbook(nestedName + "_rev_800notes.xlsx")
+            workboy = workman.sheet_by_name('Sheet1')
+            eightDate = workboy.cell(idx + 1, 9).value
+            eightMessages = workboy.cell(idx + 1, 10).value
+            eightMessages = str(eightMessages)[:-2]
+            eightSentiment = workboy.cell(idx + 1, 7).value
+        else:
+            eightDate = "N/A"
+            eightMessages = "0"
+            eightSentiment = ""
+        reviewNote = 'BN={0}; BA={1}; BW=; CB=; CT=; 8N={2} | {3} COMMENTS IN THE PAST YEAR; N/K={4};'.format(busName, busAddy, eightDate, eightMessages, eightSentiment)
+        worksheet.write(idx + 1, 1, reviewNote)
 
 
 # Close up Shop!
