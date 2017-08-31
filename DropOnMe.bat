@@ -1,5 +1,7 @@
 @ECHO OFF
 
+setlocal EnableDelayedExpansion
+
 cls
 
 python "FileSplit.py" %*
@@ -21,7 +23,7 @@ Set COUNTER=1
 cls
 
 echo Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes,
-SET /P webSite=input 4 for ShouldIAnswer, input 5 for YellowPages:
+SET /P webSite=input 4 for ShouldIAnswer, input 5 for YellowPages, or A for All:
 
 :HairCut
 
@@ -29,7 +31,25 @@ set fileName="%folderName%_%COUNTER%.xlsx"
 
 if exist %fileName% (
 
-python "HairCut.py" %fileName% %webSite% %tnFormat%
+if "%webSite%" == "A" (
+
+python "Haircut.py" %fileName% 1
+
+python "Haircut.py" %fileName% 2
+
+python "Haircut.py" %fileName% 3
+
+python "Haircut.py" %fileName% 4
+
+python "Haircut.py" %fileName% 5
+
+python "Haircut.py" %fileName% A
+
+) else (
+
+python "HairCut.py" %fileName% %webSite%
+
+)
 
 ) else (
 
@@ -61,6 +81,29 @@ cd /d %folderName%
 
 cls
 
-python "Haircut.py" %*
+echo Input 1 for whoscall.in results, input 2 for BBB, input 3 for 800Notes,
+SET /P webSite=input 4 for ShouldIAnswer, input 5 for YellowPages, or A for All:
+
+set fileName="%folderName%.xlsx"
+
+if "%webSite%" == "A" (
+
+python "Haircut.py" %fileName% 1
+
+python "Haircut.py" %fileName% 2
+
+python "Haircut.py" %fileName% 3
+
+python "Haircut.py" %fileName% 4
+
+python "Haircut.py" %fileName% 5
+
+python "Haircut.py" %fileName% A
+
+) else (
+
+python "Haircut.py" %fileName% %webSite%
+
+)
 
 EXIT /B
