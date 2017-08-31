@@ -22,7 +22,7 @@ https://www.yellowpages.com
 
 ## Windows Users:
 
-Just drag the file you would like to work on into "DropOnMe.bat." You'll be asked to choose a site to scrape.
+Just drag the file you would like to work on into "DropOnMe.bat." You'll be asked to choose a site to scrape, or type "A" to do an all in one scrape and bundle operation with the important info seperated.
 
 ## Linux/Mac Users
 
