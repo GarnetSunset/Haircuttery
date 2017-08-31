@@ -46,40 +46,46 @@ Run requirements.bat to install necessary files and the Python Compiler.
   - The Working Directory of Haircuttery
   - Or a directory of your choice by creating a file called "chrome.ini" with the directory and executable on one line.
 
+## Excel or CSV format
+
+Check Example.xlsx for an example of a correctly formatted input file.
+
 ## Dependencies:
 
+### General
+
+- Chrome with Chrome Webdriver.
+
+### Python
+
 - xlrd
-
 - xlwt
-
 - bs4
-
 - requests
-
 - flask
-
 - numpy
-
 - regex
-
 - pyopenssl
-
 - ndg-httpsclient
-
 - pyasn1
-
 - xlsxwriter
-
 - lxml
-
 - selenium
 
 pip can fetch these with the command "pip install -r requirements.txt"
 
+# This program is no longer being worked on by me, thanks for all the fish.
+
+(ಥ﹏ಥ)
+
+I'll accept pull requests for new features though.
+
 ## Credits:
+
+StackOverflow, RTFM is too hard for me so you guys rock.
 
 FGAO22, for an awesome example and basis. <https://github.com/fgao22/GSD>
 
-rprasad, for his XLRD guide. <https://blogs.harvard.edu/rprasad/2014/06/16/reading-excel-with-python-xlrd/>
+rprasad, for his excellent XLRD guide. <https://blogs.harvard.edu/rprasad/2014/06/16/reading-excel-with-python-xlrd/>
 
 Diego Rosales, Helpful Programming Friend. My Rubber Duck and Siamese mind.

@@ -2,6 +2,7 @@
 *.pyc
 *.csv
 *.xlsx
+!Example.xlsx
 *.xls
 tempFile
 tempSmall
