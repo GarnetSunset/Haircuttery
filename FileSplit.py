@@ -109,7 +109,7 @@ else:
         os.makedirs("WorkingDir")
     if not os.path.exists("WorkingDir/" + preName):
         os.makedirs("WorkingDir/" + preName)
-    copyfile(fileName, "WorkingDir/" + preName + "/" + fileName)
+    copyfile(totalName, "WorkingDir/" + preName + "/" + totalName)
     copyfile('HairCut.py', "WorkingDir/" + preName + '/HairCut.py')
     copyfile('Harvard.py', "WorkingDir/" + preName + '/Harvard.py')
     tempFile = open('tempSmall.log', 'w')
