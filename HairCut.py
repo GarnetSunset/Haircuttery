@@ -99,7 +99,7 @@ def blocked(soup):
 
 def breaker():
     done = True
-    print("\nPlease refer to the Readme, you don't have chromedriver.exe in 'C:\chromedriver'")
+    print("\nPlease refer to the Readme, you don't have chromedriver.exe anywhere!")
     time.sleep(15)
     sys.exit()
 
