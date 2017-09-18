@@ -32,11 +32,7 @@ Make sure you have the Dependencies listed below, and run HairCut.py via either 
 
 Dropping Files into DropOnMe.bat will seperate them into 1000 cell files which can be used to prevent lockout on certain sites.
 
-### Windows Users
-
-Run requirements.bat to install necessary files and the Python Compiler.
-
-#### Chrome Support
+### Chrome Support
 
 1. Download the appropriate executable for your operating system <https://sites.google.com/a/chromium.org/chromedriver/downloads>
 
@@ -51,6 +47,10 @@ Run requirements.bat to install necessary files and the Python Compiler.
 Check Example.xlsx for an example of a correctly formatted input file.
 
 ## Dependencies:
+
+### Windows Users
+
+Run requirements.bat to install necessary files and the Python Compiler.
 
 ### General
 

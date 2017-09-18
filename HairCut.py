@@ -587,7 +587,6 @@ else:
 
 checkMe(website)
 
-
 # Find the period in the file, which determines the prepRev or extension, and the fileName.
 
 stopPoint = fileName.index('.')
