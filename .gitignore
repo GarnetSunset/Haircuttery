@@ -9,6 +9,7 @@ tempSmall
 chrome.ini
 chromedriver.exe
 VCForPython27.msi
+chromedriver_win32.zip
 
 
 # Byte-compiled / optimized / DLL files
