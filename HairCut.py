@@ -1158,7 +1158,7 @@ else:
 # If we haven't already moved all of the files, here we go.
 
 if dragNDrop == '':
-    copyfile(totalName, 'WorkingDir/' + preName + '/' + totalName)
+    copyfile(preName + ".xlsx", 'WorkingDir/' + preName + '/' + preName + ".xlsx")
     move(preName + siteType, 'WorkingDir/' + preName + '/' + preName
          + siteType)
 
