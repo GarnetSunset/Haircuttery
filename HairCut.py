@@ -141,7 +141,7 @@ def callCenter(element):
         worksheet.write(idx + 1, 4, callNum)
 
 
-# Catagory None
+# Category None
 
 def cateNone():
     if all(value == "0" for value in cateTerms.values()) == True:
