@@ -789,7 +789,7 @@ for (idx, cell_obj) in enumerate(col):
 
     worksheet.write(idx + 1, 0, '1' + teleWho)
 
-    # WhosCallinScrapes using the python Requests library. Nice and clean.
+    # WhosCallin Scrapes using the python Requests library. Nice and clean.
 
     if website == '1':
 
