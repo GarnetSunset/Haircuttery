@@ -966,7 +966,7 @@ for (idx, cell_obj) in enumerate(col):
                            worksheet=worksheet,
                            webdriver=webdriver)
             driverOpen(webdriver)
-        time.sleep(10)
+        time.sleep(20)
         requestRec = driver.page_source
         soup = BeautifulSoup(requestRec, 'lxml')
 
