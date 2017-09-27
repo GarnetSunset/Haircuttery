@@ -8,5 +8,6 @@ unzip chromedriver_win32.zip
 del VCForPython27.msi
 del chromedriver_win32.zip
 del unzip.exe
-C:\Python27\easy_install.exe pip
-C:\Python27\pip.exe install -q -r requirements.txt
+del python-2.7.msi
+C:\Python27\Scripts\easy_install.exe pip
+C:\Python27\Scripts\pip.exe install -q -r requirements.txt
