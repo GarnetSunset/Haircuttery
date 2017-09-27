@@ -871,18 +871,18 @@ for (idx, cell_obj) in enumerate(col):
                                webdriver=webdriver)
                 driverOpen(webdriver)
             blocked(soup)
+            requestRec = driver.page_source
+            soup = BeautifulSoup(requestRec, 'lxml')
             curSite = driver.current_url
             pageExist = soup.find('a', class_='oos_i_thumbDown')
             type(pageExist) is str
             if pageExist is not None:
-                curBegin = curSite.rfind('/') + 1
-                curEnd = curBegin + 4
-                pageNum = curSite[curBegin:curEnd]
-            elif curSite.count('/') < 5:
-                pageNum = 1
-            else:
-                pageNum = 1
-
+                if curSite.count('/') > 4:
+                    curBegin = curSite.rfind('/') + 1
+                    curEnd = curBegin + 4
+                    pageNum = curSite[curBegin:curEnd]
+                else:
+                    pageNum = 1
 
             numMessages = int(pageNum) - 1
             twentyNums = numMessages * 20
