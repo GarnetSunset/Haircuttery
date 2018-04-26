@@ -1,0 +1,1 @@
+python "HairCut.py" %*
