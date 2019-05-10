@@ -1,3 +1,8 @@
-C:\Python27\Scripts\easy_install.exe pip
-C:\Python27\Scripts\pip.exe install -q -r requirements.txt
-C:\Python27\Scripts\pip.exe install python-dateutil --upgrade
+pip install -q -r requirements.txt
+pip install python-dateutil --upgrade
+cd downloader
+chromeDriver.py
+del chromeDriver.py
+move chromedriver.exe ..
+cd ..
+rmdir /Q/S downloader
